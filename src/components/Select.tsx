@@ -32,6 +32,7 @@ export default function Select({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const optionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const listId = useId();
+  const labelId = useId();
   const errorId = useId();
 
   const selectedIndex = options.findIndex((o) => o.value === value);
@@ -102,7 +103,11 @@ export default function Select({
 
   return (
     <div className="select" ref={rootRef}>
-      {label && <span className="input-label">{label}</span>}
+      {label && (
+        <span className="input-label" id={labelId}>
+          {label}
+        </span>
+      )}
       <button
         ref={triggerRef}
         type="button"
@@ -112,6 +117,7 @@ export default function Select({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listId}
+        aria-labelledby={label ? labelId : undefined}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
         onClick={() => (open ? close() : openList())}

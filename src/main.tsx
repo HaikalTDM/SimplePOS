@@ -12,12 +12,16 @@ import "@fontsource/poppins/600.css";
 import "./styles/variables.css";
 import "./styles/base.css";
 import "./styles/components.css";
+import "./styles/onboarding.css";
+import { ToastProvider } from "./components";
 import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <ToastProvider>
+        <App />
+      </ToastProvider>
     </BrowserRouter>
   </StrictMode>
 );

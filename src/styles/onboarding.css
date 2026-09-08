@@ -1,0 +1,244 @@
+/* ============================================================
+   Onboarding + app gate styles.
+   ============================================================ */
+
+/* ---------- Onboarding shell ---------- */
+
+.onboarding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100dvh;
+  padding: 32px 20px 56px;
+  background: var(--bg);
+}
+
+.onboarding__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.onboarding__header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.onboarding__brand {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.onboarding__steps {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.onboarding__steps-text {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.onboarding__dots {
+  display: flex;
+  gap: 8px;
+}
+
+.onboarding__dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: transparent;
+  color: #ffffff;
+}
+
+.onboarding__dot--active {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.onboarding__dot--done {
+  border-color: var(--accent);
+  background: var(--accent-tint-soft);
+  color: var(--accent-deep);
+}
+
+.onboarding__title {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.onboarding__subtitle {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.onboarding__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.onboarding__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.onboarding__skip {
+  margin-left: auto;
+}
+
+.onboarding__added {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent-deep);
+}
+
+/* ---------- Payment method rows ---------- */
+
+.pay-card {
+  margin-top: 16px;
+  padding: 4px 20px;
+}
+
+.pay-card__row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+}
+
+.pay-card__row + .pay-card__row {
+  border-top: 1px solid var(--border);
+}
+
+.pay-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-tint);
+  color: var(--accent-deep);
+}
+
+.pay-card__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.pay-card__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pay-card__note {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ---------- QR upload ---------- */
+
+.qr-upload {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 4px 0 14px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+}
+
+.qr-upload__label {
+  min-height: 44px;
+}
+
+.qr-upload__label:focus-within {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.qr-upload__preview {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+.qr-upload__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.qr-upload__remove:hover {
+  color: var(--error);
+  border-color: var(--error);
+}
+
+/* ---------- App gate ---------- */
+
+.gate-splash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 100dvh;
+  background: var(--bg);
+}
+
+.gate-splash__brand {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.gate-splash__ellipsis {
+  font-size: 16px;
+  color: var(--text-muted);
+}
+
+.gate-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 20px;
+  background: var(--bg);
+}

@@ -30,3 +30,5 @@ Tasks:
 Task 1: complete (commit 75e7096, controller-verified: manifest matches SPEC §64, palette/tokens match §12/§14/§15; typecheck+test+build pass. Minor (deferred): --legacy-peer-deps needed on install; @testing-library/dom added as RTL peer; fontsource full-subset bundles)
 
 Task 2: complete (commit a2be799, 28/28 tests, controller-verified contract surface. Minor (deferred): backup store keyed by exportedAt; single cached db connection)
+
+Task 3: complete (commit 47720fb, 42/42 tests re-run by controller. Minor (deferred): shade tokens local to components.css; RTL cleanup added to setup.ts)

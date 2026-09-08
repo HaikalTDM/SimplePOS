@@ -1,0 +1,97 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
+import { IDBFactory } from "fake-indexeddb";
+import { ToastProvider } from "../../components";
+import { closeDatabase, openDatabase, stallDb } from "../../lib/db";
+import type { Stall } from "../../types";
+import App from "../../App";
+
+const mocks = vi.hoisted(() => ({ failOpen: false }));
+vi.mock("../../lib/db", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../../lib/db")>();
+  return {
+    ...actual,
+    openDatabase: (version?: number) =>
+      mocks.failOpen
+        ? Promise.reject(new Error("blocked"))
+        : actual.openDatabase(version),
+  };
+});
+
+function renderApp(entry: string) {
+  return render(
+    <ToastProvider>
+      <MemoryRouter initialEntries={[entry]}>
+        <App />
+      </MemoryRouter>
+    </ToastProvider>
+  );
+}
+
+async function seedCompletedStall() {
+  const db = await openDatabase();
+  const now = new Date().toISOString();
+  const stall: Stall = {
+    id: "stall-1",
+    name: "YayaCake",
+    currency: "MYR",
+    businessType: "Retail",
+    paymentMethods: { cash: true, qr: { enabled: false, image: null }, card: false },
+    lowStockThreshold: 10,
+    onboardingCompletedAt: now,
+    createdAt: now,
+    updatedAt: now,
+  };
+  await stallDb.put(db, stall);
+}
+
+beforeEach(() => {
+  closeDatabase();
+  globalThis.indexedDB = new IDBFactory();
+  mocks.failOpen = false;
+});
+
+describe("AppGate", () => {
+  it("redirects to onboarding when the db is empty", async () => {
+    renderApp("/pos");
+    expect(await screen.findByText("Let's set up your stall")).toBeInTheDocument();
+    expect(screen.queryByText("POS")).not.toBeInTheDocument();
+  });
+
+  it("redirects an unfinished stall to onboarding", async () => {
+    const db = await openDatabase();
+    const now = new Date().toISOString();
+    await stallDb.put(db, {
+      id: "stall-1",
+      name: "YayaCake",
+      currency: "MYR",
+      businessType: "Retail",
+      paymentMethods: { cash: true, qr: { enabled: false, image: null }, card: false },
+      lowStockThreshold: 10,
+      onboardingCompletedAt: "",
+      createdAt: now,
+      updatedAt: now,
+    });
+    renderApp("/pos");
+    expect(await screen.findByText("Let's set up your stall")).toBeInTheDocument();
+  });
+
+  it("renders children when a completed stall exists", async () => {
+    await seedCompletedStall();
+    renderApp("/pos");
+    expect(await screen.findByText("POS")).toBeInTheDocument();
+  });
+
+  it("shows the error screen when the db fails to open, and retries", async () => {
+    mocks.failOpen = true;
+    renderApp("/pos");
+    expect(await screen.findByText("We couldn't open your data")).toBeInTheDocument();
+
+    mocks.failOpen = false;
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByText("Let's set up your stall")).toBeInTheDocument();
+  });
+});
