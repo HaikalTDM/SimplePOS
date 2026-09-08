@@ -38,3 +38,5 @@ Task 4: complete (commit 4df3620, 56/56 tests re-run by controller. Minor (defer
 Task 5: complete (commit 06f3879, 67/67 tests. Minor (deferred): in-memory sold-check (no productId index, V1 scale); layout/nav wiring missing — added Task 5b)
 
 Task 5b: complete (commit 557f9b0, 72/72 tests)
+
+Task 6: complete (commits ee45386 + e7707bc, 82/82 tests. Minor (deferred): mobile sheet untested in jsdom — manual QA later; onPay stub left for Task 7)

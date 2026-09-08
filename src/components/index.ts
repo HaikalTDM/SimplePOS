@@ -21,4 +21,6 @@ export type { NavProps } from "./Navigation";
 export { default as ProductCard } from "./ProductCard";
 export { default as PosCart } from "./PosCart";
 export { default as CategoryBar } from "./CategoryBar";
+export { default as PaymentModal } from "./PaymentModal";
+export type { PaymentModalProps } from "./PaymentModal";
 export * from "./icons";

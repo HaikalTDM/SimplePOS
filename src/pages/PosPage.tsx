@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Product } from "../types";
 import { formatMoney } from "../utils/currency";
-import { EmptyState, IconCart, IconClear, IconProducts, IconSearch, Input, KeycapButton, useToast } from "../components";
+import { EmptyState, IconCart, IconClear, IconProducts, IconSearch, Input, KeycapButton, PaymentModal, useToast } from "../components";
+import type { StockChange } from "../lib/checkout/checkout";
 import { useStall } from "../contexts/StallContext";
 import { useProducts } from "../contexts/ProductsContext";
 import { useCart } from "../contexts/CartContext";
@@ -37,19 +38,34 @@ export default function PosPage() {
   const { stall } = useStall();
   const currency = stall?.currency ?? "MYR";
   const threshold = stall?.lowStockThreshold ?? 10;
-  const { products, loading } = useProducts();
-  const { entries, totalQty, totalMinor, invalid, addItem, setQty, removeItem, getQty } =
+  const { products, loading, refresh } = useProducts();
+  const { items, entries, totalQty, totalMinor, invalid, addItem, setQty, removeItem, getQty, clear } =
     useCart();
   const { toast } = useToast();
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(ALL);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [paymentOpen, setPaymentOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
   const capToasts = useRef<Set<string>>(new Set());
 
-  // Task 7 wires checkout here.
-  const onPay = () => {};
+  const onPay = () => {
+    if (totalQty === 0) return;
+    setPaymentOpen(true);
+  };
+
+  // The checkout service never touches the cart (§39): it is cleared only
+  // here, after the transaction committed.
+  const handlePaymentSuccess = useCallback(
+    (_stockChanges: StockChange[]) => {
+      clear();
+      void refresh();
+      toast({ message: "Sale recorded", variant: "success" });
+      setPaymentOpen(false);
+    },
+    [clear, refresh, toast]
+  );
 
   const active = useMemo(() => products.filter((p) => p.active), [products]);
 
@@ -218,6 +234,14 @@ export default function PosPage() {
           </div>
         </div>
       )}
+
+      <PaymentModal
+        open={paymentOpen}
+        onClose={() => setPaymentOpen(false)}
+        items={items}
+        totalMinor={totalMinor}
+        onSuccess={handlePaymentSuccess}
+      />
     </div>
   );
 }
