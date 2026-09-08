@@ -1,0 +1,38 @@
+:root {
+  /* Brand palette (SPEC §12) */
+  --bg: #F5F1E8;
+  --accent: #6B7C99;
+  --accent-gold: #C99A4A;
+  --text: #2C2C2C;
+  --border: #E8E6E1;
+  --success: #4CAF50;
+  --error: #E74C3C;
+
+  /* Neutral shades for hierarchy/accessibility */
+  --text-muted: #6E6E68;
+  --bg-card: #FFFFFF;
+  --bg-subtle: #EFEBE0;
+
+  /* Shape */
+  --radius-sm: 8px;
+  --radius-keycap: 12px;
+
+  /* Keycap depth (SPEC §14) */
+  --keycap-shadow: 0 2px 0 rgba(0, 0, 0, 0.08), 0 4px 8px rgba(44, 44, 44, 0.12);
+  --keycap-shadow-pressed: 0 1px 0 rgba(0, 0, 0, 0.06);
+  --press-translate: 4px;
+
+  /* Motion (SPEC §15) */
+  --t-fast: 120ms;
+  --t-micro: 150ms;
+  --t-tab: 150ms;
+  --t-modal: 200ms;
+
+  /* Typography (SPEC §13) */
+  --font-heading: "JetBrains Mono", monospace;
+  --font-body: "Poppins", "DM Sans", sans-serif;
+  --font-price: "JetBrains Mono", monospace;
+
+  /* Focus */
+  --focus-ring: var(--accent);
+}
