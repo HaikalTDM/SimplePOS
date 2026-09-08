@@ -1,0 +1,119 @@
+/* ============================================================
+   Settings (Task 12) — grouped sections, §96 calm and simple.
+   ============================================================ */
+
+.settings-page {
+  padding-bottom: 76px;
+}
+
+@media (min-width: 769px) {
+  .settings-page {
+    padding-bottom: 0;
+  }
+}
+
+.settings-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 720px;
+  margin: 8px auto 0;
+  width: 100%;
+}
+
+.settings-card__title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 420px;
+}
+
+.settings-pay-card {
+  margin: 0;
+  padding: 4px 20px;
+}
+
+.settings-alerts {
+  margin-top: -4px;
+}
+
+.settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.settings-actions .keycap-btn {
+  min-height: 44px;
+}
+
+.settings-import-summary {
+  margin-top: 14px;
+  font-family: var(--font-price);
+  font-size: 13px;
+  color: var(--success-deep);
+}
+
+.settings-import-errors {
+  margin: 12px 0 0;
+  padding-left: 20px;
+  list-style: disc;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.settings-danger {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid rgba(231, 76, 60, 0.45);
+  border-radius: var(--radius-keycap);
+  background: var(--error-tint);
+}
+
+.settings-danger__title {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--error-deep);
+  margin-bottom: 4px;
+}
+
+.settings-danger__note {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.settings-delete-warning {
+  font-size: 14px;
+  color: var(--error-deep);
+  font-weight: 500;
+}
+
+.settings-delete-note {
+  margin: 10px 0 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.settings-about__line {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.settings-about__line + .settings-about__line {
+  margin-top: 8px;
+}
+
+.settings-about__muted {
+  font-size: 13px;
+  color: var(--text-muted);
+}

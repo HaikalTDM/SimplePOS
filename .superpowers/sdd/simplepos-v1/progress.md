@@ -50,3 +50,5 @@ Task 9: complete (commits 77b4e82 + 13f8557, 125/125 tests. Minor (deferred): Pa
 Task 10: complete (commit 79bffba, 144/144 tests. Minor (deferred): dashboard keeps inline today-profit; shared profit helpers are additive)
 
 Task 10: complete (commits 79bffba + cc19fcc, 144/144 tests. Minor (deferred): dashboard keeps inline today-profit; expense date displayed raw to avoid TZ shift)
+
+Task 11: complete (commit 17ae945, 172/172 tests. Deferred to Task 12/14: safety snapshots accumulate in backupDb — add pruning UI; pos.test.tsx had a pre-existing flaky toast assertion hardened (no app change))

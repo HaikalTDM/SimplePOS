@@ -81,6 +81,9 @@ export interface Stall {
     card: boolean;
   };
   lowStockThreshold: number;
+  /** §52 stock "alert preference". Optional: records from before Task 12
+   *  (and older backups) lack it — undefined means alerts ON. */
+  lowStockAlertsEnabled?: boolean;
   onboardingCompletedAt: string;
   createdAt: string;
   updatedAt: string;

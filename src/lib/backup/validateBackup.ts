@@ -76,6 +76,7 @@ function checkStall(value: unknown, errors: string[]): void {
   errorIf(errors, isCurrency(value.currency), "stall.currency must be one of MYR, SGD, PHP, THB, IDR, VND.");
   errorIf(errors, typeof value.businessType === "string", "stall.businessType must be a string.");
   errorIf(errors, isPosInt(value.lowStockThreshold), "stall.lowStockThreshold must be a positive integer.");
+  errorIf(errors, value.lowStockAlertsEnabled === undefined || typeof value.lowStockAlertsEnabled === "boolean", "stall.lowStockAlertsEnabled must be a boolean when present.");
   errorIf(errors, isIso(value.onboardingCompletedAt), "stall.onboardingCompletedAt must be a valid ISO date string.");
   errorIf(errors, isIso(value.createdAt), "stall.createdAt must be a valid ISO date string.");
   errorIf(errors, isIso(value.updatedAt), "stall.updatedAt must be a valid ISO date string.");
