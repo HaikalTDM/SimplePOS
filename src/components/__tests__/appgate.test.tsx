@@ -4,6 +4,9 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { IDBFactory } from "fake-indexeddb";
 import { ToastProvider } from "../../components";
+import AppGate from "../AppGate";
+import { StallProvider } from "../../contexts/StallContext";
+import { ProductsProvider } from "../../contexts/ProductsContext";
 import { closeDatabase, openDatabase, stallDb } from "../../lib/db";
 import type { Stall } from "../../types";
 import App from "../../App";
@@ -24,7 +27,13 @@ function renderApp(entry: string) {
   return render(
     <ToastProvider>
       <MemoryRouter initialEntries={[entry]}>
-        <App />
+        <AppGate>
+          <StallProvider>
+            <ProductsProvider>
+              <App />
+            </ProductsProvider>
+          </StallProvider>
+        </AppGate>
       </MemoryRouter>
     </ToastProvider>
   );

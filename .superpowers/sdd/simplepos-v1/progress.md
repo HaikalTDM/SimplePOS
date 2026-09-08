@@ -32,3 +32,5 @@ Task 1: complete (commit 75e7096, controller-verified: manifest matches SPEC §64
 Task 2: complete (commit a2be799, 28/28 tests, controller-verified contract surface. Minor (deferred): backup store keyed by exportedAt; single cached db connection)
 
 Task 3: complete (commit 47720fb, 42/42 tests re-run by controller. Minor (deferred): shade tokens local to components.css; RTL cleanup added to setup.ts)
+
+Task 4: complete (commit 4df3620, 56/56 tests re-run by controller. Minor (deferred): Blob-in-test workaround uses node:buffer getBuiltinModule; report files swept into commits)

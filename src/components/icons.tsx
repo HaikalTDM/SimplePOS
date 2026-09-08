@@ -206,6 +206,28 @@ export const IconCard = (props: IconProps) => (
   </Svg>
 );
 
+export const IconEdit = (props: IconProps) => (
+  <Svg {...props}>
+    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+  </Svg>
+);
+
+export const IconAdjust = (props: IconProps) => (
+  <Svg {...props}>
+    <path d="m21 16-4 4-4-4" />
+    <path d="M17 20V4" />
+    <path d="m3 8 4-4 4 4" />
+    <path d="M7 4v16" />
+  </Svg>
+);
+
+export const IconPower = (props: IconProps) => (
+  <Svg {...props}>
+    <path d="M18.36 6.64a9 9 0 1 1-12.72 0" />
+    <path d="M12 2v10" />
+  </Svg>
+);
+
 export const IconCash = (props: IconProps) => (
   <Svg {...props}>
     <rect x="2.5" y="6" width="19" height="12" rx="2" />

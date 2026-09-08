@@ -56,6 +56,11 @@ export function formatMoney(minor: number, code: Currency): string {
   return `${symbol} ${formatted}`;
 }
 
+/** Minor units -> a major-unit input string, e.g. 350 -> "3.50" (MYR), "300" (IDR). Display only. */
+export function minorUnitsToInput(minor: number, code: Currency): string {
+  return fromMinorUnits(minor, code).toFixed(CURRENCIES[code].decimals);
+}
+
 /** Parse user-typed money into minor units, or null when empty/invalid. */
 export function parseMoneyInput(raw: string, code: Currency): number | null {
   const trimmed = raw.trim();

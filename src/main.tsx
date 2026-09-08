@@ -13,14 +13,24 @@ import "./styles/variables.css";
 import "./styles/base.css";
 import "./styles/components.css";
 import "./styles/onboarding.css";
+import "./styles/products.css";
 import { ToastProvider } from "./components";
+import AppGate from "./components/AppGate";
+import { StallProvider } from "./contexts/StallContext";
+import { ProductsProvider } from "./contexts/ProductsContext";
 import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <ToastProvider>
-        <App />
+        <AppGate>
+          <StallProvider>
+            <ProductsProvider>
+              <App />
+            </ProductsProvider>
+          </StallProvider>
+        </AppGate>
       </ToastProvider>
     </BrowserRouter>
   </StrictMode>
