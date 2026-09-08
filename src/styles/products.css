@@ -2,12 +2,6 @@
    Products page styles (Task 5).
    ============================================================ */
 
-.products-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 20px 96px;
-}
-
 .products-header {
   display: flex;
   align-items: center;

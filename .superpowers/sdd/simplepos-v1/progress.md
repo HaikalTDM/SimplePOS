@@ -34,3 +34,5 @@ Task 2: complete (commit a2be799, 28/28 tests, controller-verified contract surf
 Task 3: complete (commit 47720fb, 42/42 tests re-run by controller. Minor (deferred): shade tokens local to components.css; RTL cleanup added to setup.ts)
 
 Task 4: complete (commit 4df3620, 56/56 tests re-run by controller. Minor (deferred): Blob-in-test workaround uses node:buffer getBuiltinModule; report files swept into commits)
+
+Task 5: complete (commit 06f3879, 67/67 tests. Minor (deferred): in-memory sold-check (no productId index, V1 scale); layout/nav wiring missing — added Task 5b)

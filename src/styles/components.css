@@ -922,3 +922,32 @@
     display: none;
   }
 }
+
+/* ---------- App layout ---------- */
+
+.app-layout__main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 16px calc(96px + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 769px) {
+  .app-layout__main {
+    padding: 24px;
+  }
+}
+
+/* ---------- Page placeholders ---------- */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page__title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+}

@@ -154,7 +154,7 @@ export default function ProductsPage() {
   };
 
   return (
-    <main className="products-page">
+    <div className="products-page">
       <div className="products-header">
         <h1 className="products-title">Products</h1>
         <KeycapButton
@@ -316,6 +316,6 @@ export default function ProductsPage() {
           This will permanently remove {deleting?.name}. This can't be undone.
         </p>
       </Modal>
-    </main>
+    </div>
   );
 }

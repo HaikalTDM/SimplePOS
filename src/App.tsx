@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import AppLayout from "./layouts/AppLayout";
 import OnboardingPage from "./pages/OnboardingPage";
 import DashboardPage from "./pages/DashboardPage";
 import PosPage from "./pages/PosPage";
@@ -13,13 +14,16 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/pos" replace />} />
       <Route path="/onboarding" element={<OnboardingPage />} />
-      <Route path="/dashboard" element={<DashboardPage />} />
-      <Route path="/pos" element={<PosPage />} />
-      <Route path="/products" element={<ProductsPage />} />
-      <Route path="/sales" element={<SalesPage />} />
-      <Route path="/sales/:id" element={<SaleDetailPage />} />
-      <Route path="/expenses" element={<ExpensesPage />} />
-      <Route path="/settings" element={<SettingsPage />} />
+      <Route element={<AppLayout />}>
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/pos" element={<PosPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/sales" element={<SalesPage />} />
+        <Route path="/sales/:id" element={<SaleDetailPage />} />
+        <Route path="/expenses" element={<ExpensesPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/pos" replace />} />
     </Routes>
   );
 }

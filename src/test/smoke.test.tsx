@@ -4,6 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { IDBFactory } from "fake-indexeddb";
 import App from "../App";
 import { ToastProvider } from "../components";
+import { StallProvider } from "../contexts/StallContext";
 import { closeDatabase, openDatabase, stallDb } from "../lib/db";
 import type { Stall } from "../types";
 
@@ -35,7 +36,9 @@ describe("App routing shell", () => {
     render(
       <ToastProvider>
         <MemoryRouter initialEntries={["/pos"]}>
-          <App />
+          <StallProvider>
+            <App />
+          </StallProvider>
         </MemoryRouter>
       </ToastProvider>
     );
@@ -46,7 +49,9 @@ describe("App routing shell", () => {
     render(
       <ToastProvider>
         <MemoryRouter initialEntries={["/"]}>
-          <App />
+          <StallProvider>
+            <App />
+          </StallProvider>
         </MemoryRouter>
       </ToastProvider>
     );
