@@ -15,6 +15,7 @@ import "./styles/components.css";
 import "./styles/onboarding.css";
 import "./styles/products.css";
 import "./styles/sales.css";
+import "./styles/expenses.css";
 import { ToastProvider } from "./components";
 import AppGate from "./components/AppGate";
 import { StallProvider } from "./contexts/StallContext";

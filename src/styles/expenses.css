@@ -1,0 +1,119 @@
+/* ============================================================
+   Expenses (Task 10) — list, summary strip, form modal.
+   ============================================================ */
+
+.expenses-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.expenses-summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: var(--font-price);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.expenses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.expenses-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px 12px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-keycap);
+  box-shadow: var(--shadow-soft);
+}
+
+.expenses-row__left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+}
+
+.expenses-row__name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.expenses-row__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.expenses-row__date {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.expenses-row__right {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.expenses-row__amount {
+  font-family: var(--font-price);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  margin-right: 6px;
+}
+
+.expenses-row__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.expenses-row__action:hover {
+  background: var(--bg-subtle);
+  color: var(--text);
+}
+
+.expenses-row__action--danger:hover {
+  background: var(--error-tint);
+  color: var(--error);
+}
+
+.expenses-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.expenses-confirm {
+  font-size: 14px;
+  color: var(--text);
+}

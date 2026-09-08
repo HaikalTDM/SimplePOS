@@ -44,3 +44,5 @@ Task 6: complete (commits ee45386 + e7707bc, 82/82 tests. Minor (deferred): mobi
 Task 7: complete (commit 2414464, 99/99 tests; controller read checkout.ts — single tx, fresh reads, dup-line merge, snapshots, movements: correct)
 
 Task 8: complete (commit 0418f6e, 119/119 tests. Minor (deferred): low-stock excludes inactive products; dashboard loads all rows in memory — V1 scale)
+
+Task 9: complete (commits 77b4e82 + 13f8557, 125/125 tests. Minor (deferred): PaymentBadge duplicated across pages; slate badge variant)
