@@ -48,3 +48,5 @@ Task 8: complete (commit 0418f6e, 119/119 tests. Minor (deferred): low-stock exc
 Task 9: complete (commits 77b4e82 + 13f8557, 125/125 tests. Minor (deferred): PaymentBadge duplicated across pages; slate badge variant)
 
 Task 10: complete (commit 79bffba, 144/144 tests. Minor (deferred): dashboard keeps inline today-profit; shared profit helpers are additive)
+
+Task 10: complete (commits 79bffba + cc19fcc, 144/144 tests. Minor (deferred): dashboard keeps inline today-profit; expense date displayed raw to avoid TZ shift)
