@@ -27,7 +27,7 @@ Tasks:
 14. Testing â€” full Â§78/Â§79 checklist incl. 15 data-integrity tests.
 15. Production â€” final build, README, final whole-branch review.
 
-Task 1: complete (commit 75e7096, controller-verified: manifest matches SPEC §64, palette/tokens match §12/§14/§15; typecheck+test+build pass. Minor (deferred): --legacy-peer-deps needed on install; @testing-library/dom added as RTL peer; fontsource full-subset bundles)
+Task 1: complete (commit 75e7096, controller-verified: manifest matches SPEC ï¿½64, palette/tokens match ï¿½12/ï¿½14/ï¿½15; typecheck+test+build pass. Minor (deferred): --legacy-peer-deps needed on install; @testing-library/dom added as RTL peer; fontsource full-subset bundles)
 
 Task 2: complete (commit a2be799, 28/28 tests, controller-verified contract surface. Minor (deferred): backup store keyed by exportedAt; single cached db connection)
 
@@ -35,14 +35,16 @@ Task 3: complete (commit 47720fb, 42/42 tests re-run by controller. Minor (defer
 
 Task 4: complete (commit 4df3620, 56/56 tests re-run by controller. Minor (deferred): Blob-in-test workaround uses node:buffer getBuiltinModule; report files swept into commits)
 
-Task 5: complete (commit 06f3879, 67/67 tests. Minor (deferred): in-memory sold-check (no productId index, V1 scale); layout/nav wiring missing — added Task 5b)
+Task 5: complete (commit 06f3879, 67/67 tests. Minor (deferred): in-memory sold-check (no productId index, V1 scale); layout/nav wiring missing ï¿½ added Task 5b)
 
 Task 5b: complete (commit 557f9b0, 72/72 tests)
 
-Task 6: complete (commits ee45386 + e7707bc, 82/82 tests. Minor (deferred): mobile sheet untested in jsdom — manual QA later; onPay stub left for Task 7)
+Task 6: complete (commits ee45386 + e7707bc, 82/82 tests. Minor (deferred): mobile sheet untested in jsdom ï¿½ manual QA later; onPay stub left for Task 7)
 
-Task 7: complete (commit 2414464, 99/99 tests; controller read checkout.ts — single tx, fresh reads, dup-line merge, snapshots, movements: correct)
+Task 7: complete (commit 2414464, 99/99 tests; controller read checkout.ts ï¿½ single tx, fresh reads, dup-line merge, snapshots, movements: correct)
 
-Task 8: complete (commit 0418f6e, 119/119 tests. Minor (deferred): low-stock excludes inactive products; dashboard loads all rows in memory — V1 scale)
+Task 8: complete (commit 0418f6e, 119/119 tests. Minor (deferred): low-stock excludes inactive products; dashboard loads all rows in memory ï¿½ V1 scale)
 
 Task 9: complete (commits 77b4e82 + 13f8557, 125/125 tests. Minor (deferred): PaymentBadge duplicated across pages; slate badge variant)
+
+Task 10: complete (commit 79bffba, 144/144 tests. Minor (deferred): dashboard keeps inline today-profit; shared profit helpers are additive)
