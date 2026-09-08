@@ -591,6 +591,12 @@
   color: var(--accent-deep);
 }
 
+.badge--slate {
+  background: rgba(107, 124, 153, 0.2);
+  border: 1px solid rgba(107, 124, 153, 0.35);
+  color: var(--accent-deep);
+}
+
 .badge--gold {
   background: var(--gold-tint);
   color: var(--gold-deep);

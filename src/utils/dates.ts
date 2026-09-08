@@ -8,9 +8,14 @@ function localDateString(d: Date): string {
   return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
 }
 
+/** ISO -> local "YYYY-MM-DD" (date part of the timestamp). */
+export function localDateOf(iso: string): string {
+  return localDateString(new Date(iso));
+}
+
 /** ISO -> local "YYYY-MM-DD". */
 export function formatDate(iso: string): string {
-  return localDateString(new Date(iso));
+  return localDateOf(iso);
 }
 
 /** ISO -> local "HH:mm". */

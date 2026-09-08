@@ -67,3 +67,8 @@ export function parseMoneyInput(raw: string, code: Currency): number | null {
   if (trimmed === "" || !/^\d+(\.\d+)?$/.test(trimmed)) return null;
   return toMinorUnits(trimmed, code);
 }
+
+/** Guard for stored currency codes (Sale.currency is a plain string) — MYR fallback. */
+export function asCurrency(code: string): Currency {
+  return code in CURRENCIES ? (code as Currency) : "MYR";
+}

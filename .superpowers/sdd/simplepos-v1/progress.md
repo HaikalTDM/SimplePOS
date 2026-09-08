@@ -42,3 +42,5 @@ Task 5b: complete (commit 557f9b0, 72/72 tests)
 Task 6: complete (commits ee45386 + e7707bc, 82/82 tests. Minor (deferred): mobile sheet untested in jsdom — manual QA later; onPay stub left for Task 7)
 
 Task 7: complete (commit 2414464, 99/99 tests; controller read checkout.ts — single tx, fresh reads, dup-line merge, snapshots, movements: correct)
+
+Task 8: complete (commit 0418f6e, 119/119 tests. Minor (deferred): low-stock excludes inactive products; dashboard loads all rows in memory — V1 scale)
