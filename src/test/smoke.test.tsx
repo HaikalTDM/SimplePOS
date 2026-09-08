@@ -5,6 +5,8 @@ import { IDBFactory } from "fake-indexeddb";
 import App from "../App";
 import { ToastProvider } from "../components";
 import { StallProvider } from "../contexts/StallContext";
+import { ProductsProvider } from "../contexts/ProductsContext";
+import { CartProvider } from "../contexts/CartContext";
 import { closeDatabase, openDatabase, stallDb } from "../lib/db";
 import type { Stall } from "../types";
 
@@ -37,7 +39,11 @@ describe("App routing shell", () => {
       <ToastProvider>
         <MemoryRouter initialEntries={["/pos"]}>
           <StallProvider>
-            <App />
+            <ProductsProvider>
+              <CartProvider>
+                <App />
+              </CartProvider>
+            </ProductsProvider>
           </StallProvider>
         </MemoryRouter>
       </ToastProvider>
@@ -50,7 +56,11 @@ describe("App routing shell", () => {
       <ToastProvider>
         <MemoryRouter initialEntries={["/"]}>
           <StallProvider>
-            <App />
+            <ProductsProvider>
+              <CartProvider>
+                <App />
+              </CartProvider>
+            </ProductsProvider>
           </StallProvider>
         </MemoryRouter>
       </ToastProvider>

@@ -18,6 +18,7 @@ import { ToastProvider } from "./components";
 import AppGate from "./components/AppGate";
 import { StallProvider } from "./contexts/StallContext";
 import { ProductsProvider } from "./contexts/ProductsContext";
+import { CartProvider } from "./contexts/CartContext";
 import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
@@ -27,7 +28,9 @@ createRoot(document.getElementById("root")!).render(
         <AppGate>
           <StallProvider>
             <ProductsProvider>
-              <App />
+              <CartProvider>
+                <App />
+              </CartProvider>
             </ProductsProvider>
           </StallProvider>
         </AppGate>

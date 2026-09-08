@@ -36,3 +36,5 @@ Task 3: complete (commit 47720fb, 42/42 tests re-run by controller. Minor (defer
 Task 4: complete (commit 4df3620, 56/56 tests re-run by controller. Minor (deferred): Blob-in-test workaround uses node:buffer getBuiltinModule; report files swept into commits)
 
 Task 5: complete (commit 06f3879, 67/67 tests. Minor (deferred): in-memory sold-check (no productId index, V1 scale); layout/nav wiring missing — added Task 5b)
+
+Task 5b: complete (commit 557f9b0, 72/72 tests)

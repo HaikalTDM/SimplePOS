@@ -7,6 +7,7 @@ import { ToastProvider } from "../../components";
 import AppGate from "../AppGate";
 import { StallProvider } from "../../contexts/StallContext";
 import { ProductsProvider } from "../../contexts/ProductsContext";
+import { CartProvider } from "../../contexts/CartContext";
 import { closeDatabase, openDatabase, stallDb } from "../../lib/db";
 import type { Stall } from "../../types";
 import App from "../../App";
@@ -30,7 +31,9 @@ function renderApp(entry: string) {
         <AppGate>
           <StallProvider>
             <ProductsProvider>
-              <App />
+              <CartProvider>
+                <App />
+              </CartProvider>
             </ProductsProvider>
           </StallProvider>
         </AppGate>

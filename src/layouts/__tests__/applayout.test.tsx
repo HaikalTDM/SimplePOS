@@ -5,6 +5,7 @@ import { IDBFactory } from "fake-indexeddb";
 import { ToastProvider } from "../../components";
 import { StallProvider } from "../../contexts/StallContext";
 import { ProductsProvider } from "../../contexts/ProductsContext";
+import { CartProvider } from "../../contexts/CartContext";
 import { closeDatabase, openDatabase, stallDb } from "../../lib/db";
 import type { Stall } from "../../types";
 import AppLayout from "../AppLayout";
@@ -22,17 +23,19 @@ function renderLayout(entry = "/pos") {
       <MemoryRouter initialEntries={[entry]}>
         <StallProvider>
           <ProductsProvider>
-            <Routes>
-              <Route element={<AppLayout />}>
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/pos" element={<PosPage />} />
-                <Route path="/products" element={<ProductsPage />} />
-                <Route path="/sales" element={<SalesPage />} />
-                <Route path="/sales/:id" element={<SaleDetailPage />} />
-                <Route path="/expenses" element={<ExpensesPage />} />
-                <Route path="/settings" element={<SettingsPage />} />
-              </Route>
-            </Routes>
+            <CartProvider>
+              <Routes>
+                <Route element={<AppLayout />}>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/pos" element={<PosPage />} />
+                  <Route path="/products" element={<ProductsPage />} />
+                  <Route path="/sales" element={<SalesPage />} />
+                  <Route path="/sales/:id" element={<SaleDetailPage />} />
+                  <Route path="/expenses" element={<ExpensesPage />} />
+                  <Route path="/settings" element={<SettingsPage />} />
+                </Route>
+              </Routes>
+            </CartProvider>
           </ProductsProvider>
         </StallProvider>
       </MemoryRouter>

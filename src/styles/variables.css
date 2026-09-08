@@ -35,4 +35,7 @@
 
   /* Focus */
   --focus-ring: var(--accent);
+
+  /* Layout (shared with components.css/POS — keep in sync with MobileNav) */
+  --nav-height: 56px;
 }

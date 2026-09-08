@@ -18,4 +18,7 @@ export { ToastHost, ToastProvider, useToast } from "./Toast";
 export type { ToastItem, ToastOptions, ToastVariant } from "./Toast";
 export { HeaderNav, MobileNav } from "./Navigation";
 export type { NavProps } from "./Navigation";
+export { default as ProductCard } from "./ProductCard";
+export { default as PosCart } from "./PosCart";
+export { default as CategoryBar } from "./CategoryBar";
 export * from "./icons";
