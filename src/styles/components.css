@@ -1690,3 +1690,233 @@
   color: var(--text-muted);
 }
 
+/* ============================================================
+   Dashboard (Task 8) — visual priority per §95: hero, start
+   selling, quick stats, top sellers, low stock, walkthrough.
+   ============================================================ */
+
+.dash-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.dash-date {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.dash-hero__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.dash-hero__amount {
+  margin-top: 4px;
+  font-family: var(--font-price);
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--gold-deep);
+}
+
+.dash-hero__meta {
+  margin-top: 8px;
+  font-family: var(--font-price);
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.dash-start {
+  width: 100%;
+  min-height: 56px;
+  font-size: 17px;
+  letter-spacing: 1px;
+}
+
+@media (min-width: 769px) {
+  .dash-start {
+    width: auto;
+    align-self: flex-start;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+.dash-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 769px) {
+  .dash-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.dash-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+}
+
+.dash-stat__value {
+  font-family: var(--font-price);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.dash-stat__hint {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.dash-stat__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.dash-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-list__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 36px;
+  padding: 6px 2px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dash-list__row:last-child {
+  border-bottom: none;
+}
+
+.dash-list__name {
+  font-family: var(--font-price);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.dash-list__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  font-family: var(--font-price);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.dash-error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.dash-error__text {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.dash-walkthrough__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dash-walkthrough__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 4px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.dash-walkthrough__close:hover {
+  background: var(--bg-subtle);
+  color: var(--text);
+}
+
+.dash-walkthrough__steps {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+}
+
+@media (min-width: 769px) {
+  .dash-walkthrough__steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.dash-walkthrough__step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.dash-walkthrough__step svg {
+  flex-shrink: 0;
+  color: var(--accent-gold);
+}
+
+.dash-walkthrough__hints {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+  font-size: 13px;
+  color: var(--text);
+}
+
+.dash-walkthrough__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+

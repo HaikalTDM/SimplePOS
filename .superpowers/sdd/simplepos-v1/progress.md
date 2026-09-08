@@ -40,3 +40,5 @@ Task 5: complete (commit 06f3879, 67/67 tests. Minor (deferred): in-memory sold-
 Task 5b: complete (commit 557f9b0, 72/72 tests)
 
 Task 6: complete (commits ee45386 + e7707bc, 82/82 tests. Minor (deferred): mobile sheet untested in jsdom — manual QA later; onPay stub left for Task 7)
+
+Task 7: complete (commit 2414464, 99/99 tests; controller read checkout.ts — single tx, fresh reads, dup-line merge, snapshots, movements: correct)
