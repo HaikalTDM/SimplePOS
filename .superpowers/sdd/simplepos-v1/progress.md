@@ -26,3 +26,5 @@ Tasks:
 13. PWA/offline + responsive + a11y polish pass.
 14. Testing โ€” full ยง78/ยง79 checklist incl. 15 data-integrity tests.
 15. Production โ€” final build, README, final whole-branch review.
+
+Task 1: complete (commit 75e7096, controller-verified: manifest matches SPEC ง64, palette/tokens match ง12/ง14/ง15; typecheck+test+build pass. Minor (deferred): --legacy-peer-deps needed on install; @testing-library/dom added as RTL peer; fontsource full-subset bundles)
