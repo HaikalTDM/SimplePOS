@@ -1,7 +1,7 @@
 import type { Currency, Product } from "../types";
 import { formatMoney } from "../utils/currency";
 import Badge from "./Badge";
-import { iconForKey } from "./categoryIcons";
+// import { iconForKey } from "./categoryIcons"; // re-enable with the icon UI
 
 interface ProductCardProps {
   product: Product;
@@ -23,13 +23,15 @@ export default function ProductCard({
   currency,
   qty,
   lowStockThreshold,
-  categoryIcon,
+  categoryIcon: _categoryIcon, // disabled while icon UI is paused
   onAdd,
 }: ProductCardProps) {
   const soldOut = product.stock <= 0;
   const veryLow = !soldOut && product.stock < 5;
   const low = !soldOut && !veryLow && product.stock <= lowStockThreshold;
-  const Glyph = iconForKey(categoryIcon);
+  // Icon disabled for now (overflow rework in progress). Keep resolution
+  // commented so re-enabling is one step.
+  // const Glyph = iconForKey(categoryIcon);
 
   return (
     <button
@@ -45,12 +47,14 @@ export default function ProductCard({
           {qty}
         </Badge>
       )}
-      <span className={`product-card__name${Glyph ? " product-card__name--with-icon" : ""}`}>
+      <span className="product-card__name">
+        {/* Category icon disabled for now.
         {Glyph && (
           <span className="product-card__glyph" aria-hidden="true">
             <Glyph size={16} />
           </span>
         )}
+        */}
         <span className="product-card__name-text">{product.name}</span>
       </span>
       <span className="product-card__price">{formatMoney(product.sellingPrice, currency)}</span>
