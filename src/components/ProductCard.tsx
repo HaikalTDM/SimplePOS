@@ -42,11 +42,6 @@ export default function ProductCard({
       aria-label={`Add ${product.name}, ${formatMoney(product.sellingPrice, currency)}`}
       onClick={() => onAdd(product)}
     >
-      {qty > 0 && (
-        <Badge key={qty} variant="accent" className="product-card__qty" srOnly={`${qty} in cart`}>
-          {qty}
-        </Badge>
-      )}
       <span className="product-card__name">
         {/* Category icon disabled for now.
         {Glyph && (
@@ -58,15 +53,22 @@ export default function ProductCard({
         <span className="product-card__name-text">{product.name}</span>
       </span>
       <span className="product-card__price">{formatMoney(product.sellingPrice, currency)}</span>
-      {soldOut ? (
-        <span className="product-card__soldout">OUT OF STOCK</span>
-      ) : (
-        <span className="product-card__stock">
-          Stock: {product.stock}
-          {veryLow && <Badge variant="accent">Very low</Badge>}
-          {low && <Badge variant="neutral">Low</Badge>}
-        </span>
-      )}
+      <span className="product-card__bottom">
+        {soldOut ? (
+          <span className="product-card__soldout">OUT OF STOCK</span>
+        ) : (
+          <span className="product-card__stock">
+            Stock: {product.stock}
+            {veryLow && <Badge variant="accent">Very low</Badge>}
+            {low && <Badge variant="neutral">Low</Badge>}
+          </span>
+        )}
+        {qty > 0 && !soldOut && (
+          <Badge key={qty} variant="accent" className="product-card__qty" srOnly={`${qty} in cart`}>
+            {qty}
+          </Badge>
+        )}
+      </span>
     </button>
   );
 }

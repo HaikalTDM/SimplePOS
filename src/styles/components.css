@@ -1233,25 +1233,34 @@
   color: var(--text);
 }
 
+.product-card__bottom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 22px; /* reserve badge height so cards don't jump when qty appears */
+}
+
 .product-card__stock {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 6px;
+  flex: 1;
+  min-width: 0;
   font-size: 12px;
   color: var(--text-muted);
 }
 
 .product-card__soldout {
+  flex: 1;
   font-size: 12px;
   font-weight: 600;
   color: var(--error-deep);
 }
 
 .product-card__qty {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  flex-shrink: 0;
+  margin-left: auto;
   animation: badge-pop var(--t-fast) ease-out;
 }
 
