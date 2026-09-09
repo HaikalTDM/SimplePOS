@@ -16,6 +16,14 @@ export type StockMovementType =
 
 export type Currency = "MYR" | "SGD" | "PHP" | "THB" | "IDR" | "VND";
 
+/** User-chosen POS theme: three hex colors. Background & text are the two
+ *  poles of the palette; accent drives buttons, toggles and highlights. */
+export interface ThemeColors {
+  bg: string;
+  text: string;
+  accent: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -93,6 +101,8 @@ export interface Stall {
   /** §52 stock "alert preference". Optional: records from before Task 12
    *  (and older backups) lack it — undefined means alerts ON. */
   lowStockAlertsEnabled?: boolean;
+  /** Optional: when undefined the built-in Cream theme is used. */
+  theme?: ThemeColors;
   onboardingCompletedAt: string;
   createdAt: string;
   updatedAt: string;

@@ -19,6 +19,7 @@ import "./styles/expenses.css";
 import "./styles/settings.css";
 import { ToastProvider } from "./components";
 import AppGate from "./components/AppGate";
+import ThemeApplier from "./components/ThemeApplier";
 import { StallProvider } from "./contexts/StallContext";
 import { ProductsProvider } from "./contexts/ProductsContext";
 import { CartProvider } from "./contexts/CartContext";
@@ -30,6 +31,7 @@ createRoot(document.getElementById("root")!).render(
       <ToastProvider>
         <AppGate>
           <StallProvider>
+            <ThemeApplier />
             <ProductsProvider>
               <CartProvider>
                 <App />

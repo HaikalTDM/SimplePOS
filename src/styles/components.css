@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    SimplePOS component styles.
    All palette/radius/timing values come from variables.css.
    The tokens below are component-derived SHADES of the palette
@@ -14,10 +14,12 @@
   --toggle-off: #c9c7c0;
   --accent-tint: rgba(107, 124, 153, 0.1);
   --accent-tint-soft: rgba(107, 124, 153, 0.12);
+  --accent-line: rgba(107, 124, 153, 0.35);
   --gold-tint: rgba(201, 154, 74, 0.15);
   --success-tint: rgba(76, 175, 80, 0.12);
   --error-tint: rgba(231, 76, 60, 0.12);
   --accent-deep: #55657f;
+  --accent-ink: #55657f;
   --gold-deep: #7d5f2a;
   --success-deep: #2e7d32;
   --error-deep: #b3342b;
@@ -92,7 +94,8 @@
 
 .keycap-btn--gold {
   background: var(--accent-gold);
-  color: var(--text);
+  /* Gold stays amber in every theme, so its label stays fixed charcoal for AA. */
+  color: #2c2c2c;
   border-bottom-color: var(--keycap-gold-side);
 }
 
@@ -589,13 +592,13 @@
 
 .badge--accent {
   background: var(--accent-tint-soft);
-  color: var(--accent-deep);
+  color: var(--accent-ink);
 }
 
 .badge--slate {
-  background: rgba(107, 124, 153, 0.2);
-  border: 1px solid rgba(107, 124, 153, 0.35);
-  color: var(--accent-deep);
+  background: var(--accent-tint-soft);
+  border: 1px solid var(--accent-line);
+  color: var(--accent-ink);
 }
 
 .badge--gold {
@@ -880,7 +883,7 @@
 }
 
 .mobile-nav__link--active {
-  color: var(--accent-deep);
+  color: var(--accent-ink);
   font-weight: 600;
 }
 
@@ -964,7 +967,7 @@
 }
 
 /* ============================================================
-   POS (Task 6) — layout, search, categories, product cards,
+   POS (Task 6) â€” layout, search, categories, product cards,
    cart bar/sheet/panel.
    ============================================================ */
 
@@ -1701,7 +1704,7 @@
 }
 
 /* ============================================================
-   Dashboard (Task 8) — visual priority per §95: hero, start
+   Dashboard (Task 8) â€” visual priority per Â§95: hero, start
    selling, quick stats, top sellers, low stock, walkthrough.
    ============================================================ */
 

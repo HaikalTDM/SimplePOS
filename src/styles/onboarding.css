@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    Onboarding + app gate styles.
    ============================================================ */
 
@@ -72,7 +72,7 @@
 .onboarding__dot--done {
   border-color: var(--accent);
   background: var(--accent-tint-soft);
-  color: var(--accent-deep);
+  color: var(--accent-ink);
 }
 
 .onboarding__title {
@@ -110,7 +110,7 @@
 .onboarding__added {
   font-size: 13px;
   font-weight: 500;
-  color: var(--accent-deep);
+  color: var(--accent-ink);
 }
 
 /* ---------- Payment method rows ---------- */
@@ -140,7 +140,7 @@
   height: 40px;
   border-radius: var(--radius-sm);
   background: var(--accent-tint);
-  color: var(--accent-deep);
+  color: var(--accent-ink);
 }
 
 .pay-card__main {

@@ -441,3 +441,48 @@ describe("SettingsPage — about", () => {
     expect(screen.getByText("SimplePOS by Captura")).toBeInTheDocument();
   });
 });
+
+describe("SettingsPage — appearance theme", () => {
+  it("applies a preset and persists the colors", async () => {
+    await seedStall();
+    renderSettings();
+    const user = userEvent.setup();
+    await screen.findByText("Appearance");
+
+    await user.click(screen.getByRole("button", { name: "Mint" }));
+    expect(await screen.findByText("Theme saved", {}, { timeout: 3000 })).toBeInTheDocument();
+
+    const root = document.documentElement;
+    expect(root.style.getPropertyValue("--bg")).toBe("#edf3ea");
+    await waitFor(async () => {
+      const stall = await readStall();
+      expect(stall?.theme).toEqual({ bg: "#edf3ea", text: "#2e3a2c", accent: "#4e7b5c" });
+    }, { timeout: 3000 });
+  });
+
+  it("custom colors apply live and restore Cream clears the theme", async () => {
+    await seedStall();
+    renderSettings();
+    const user = userEvent.setup();
+    await screen.findByText("Appearance");
+
+    const bgInput = screen.getByLabelText("Background");
+    fireEvent.change(bgInput, { target: { value: "#111111" } });
+    expect(document.documentElement.style.getPropertyValue("--bg")).toBe("#111111");
+    // persist after debounce
+    await waitFor(
+      async () => {
+        const stall = await readStall();
+        expect(stall?.theme?.bg.toLowerCase()).toBe("#111111");
+      },
+      { timeout: 3000 },
+    );
+
+    await user.click(screen.getByRole("button", { name: "Cream" }));
+    expect(await screen.findByText("Theme saved", {}, { timeout: 3000 })).toBeInTheDocument();
+    await waitFor(async () => {
+      const stall = await readStall();
+      expect(stall?.theme).toBeUndefined();
+    }, { timeout: 3000 });
+  });
+});

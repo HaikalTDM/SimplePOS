@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import pkg from "../../package.json";
-import type { Currency, Stall } from "../types";
+import type { Currency, Stall, ThemeColors } from "../types";
 import {
   openDatabase,
   resetAllData,
@@ -16,6 +16,7 @@ import { triggerDownload } from "../lib/backup/download";
 import { exportSalesCsv } from "../lib/csv/salesCsv";
 import { CURRENCIES } from "../utils/currency";
 import { useStall } from "../contexts/StallContext";
+import { DEFAULT_PRESET_ID, THEME_PRESETS, applyTheme } from "../theme/theme";
 import {
   Badge,
   Card,
@@ -72,6 +73,7 @@ export default function SettingsPage() {
       <h1 className="page__title">Settings</h1>
       <div className="settings-stack">
         <StallSettingsSection stall={stall} />
+        <AppearanceSection stall={stall} />
         <PaymentMethodsSection stall={stall} />
         <StockSettingsSection stall={stall} />
         <DataBackupSection stall={stall} />
@@ -163,6 +165,152 @@ function StallSettingsSection({ stall }: { stall: Stall }) {
           </KeycapButton>
         </div>
       </form>
+    </Card>
+  );
+}
+
+/* ---------- Appearance / theme ---------- */
+
+const CREAM_BASE: ThemeColors = { bg: "#f5f1e8", text: "#2c2c2c", accent: "#6b7c99" };
+
+function normalizeTheme(c: ThemeColors): ThemeColors {
+  return { bg: c.bg.toLowerCase(), text: c.text.toLowerCase(), accent: c.accent.toLowerCase() };
+}
+
+function AppearanceSection({ stall }: { stall: Stall }) {
+  const { reload } = useStall();
+  const { toast } = useToast();
+  // Current theme (null = built-in Cream). Optimistically applied, persisted
+  // after a short debounce so dragging a color picker isn't a write per tick.
+  const [theme, setTheme] = useState<ThemeColors | null>(stall.theme ?? null);
+  const persistTimer = useRef<number | undefined>(undefined);
+  const themeKey = stall.theme
+    ? `${stall.theme.bg}|${stall.theme.text}|${stall.theme.accent}`
+    : "";
+  const currentKey = theme ? `${theme.bg}|${theme.text}|${theme.accent}` : "";
+
+  useEffect(() => {
+    // Resync after an external change (e.g. a restored backup reloads the page).
+    if (currentKey !== themeKey) setTheme(stall.theme ?? null);
+    return () => window.clearTimeout(persistTimer.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [themeKey]);
+
+  const persist = async (next: ThemeColors | null) => {
+    try {
+      const db = await openDatabase();
+      const current = (await stallDb.getAll(db))[0];
+      if (!current) throw new Error("No stall record");
+      const updated: Stall = { ...current, updatedAt: new Date().toISOString() };
+      if (next) updated.theme = next;
+      else delete updated.theme;
+      await stallDb.put(db, updated);
+      await reload();
+      toast({ message: "Theme saved", variant: "success" });
+    } catch {
+      toast({ message: SAVE_ERROR, variant: "error" });
+      await reload();
+    }
+  };
+
+  const queuePersist = (next: ThemeColors | null) => {
+    const c = next ? normalizeTheme(next) : null;
+    setTheme(c);
+    applyTheme(c); // live preview, no waiting for the debounce/reload
+    window.clearTimeout(persistTimer.current);
+    persistTimer.current = window.setTimeout(() => {
+      void persist(c);
+    }, 400);
+  };
+
+  const changeColor = (field: keyof ThemeColors, value: string) => {
+    queuePersist({ ...(theme ?? CREAM_BASE), [field]: value });
+  };
+
+  const display = theme ?? CREAM_BASE;
+  const activePresetId =
+    theme === null
+      ? DEFAULT_PRESET_ID
+      : THEME_PRESETS.find((p) => {
+          if (!p.colors) return false;
+          const c = normalizeTheme(p.colors);
+          return c.bg === theme.bg && c.text === theme.text && c.accent === theme.accent;
+        })?.id ?? "custom";
+
+  return (
+    <Card className="settings-card">
+      <h2 className="settings-card__title">Appearance</h2>
+      <p className="appearance__intro">
+        Pick a ready-made theme or build your own. Colors apply to the whole
+        POS — background, text, and the accent that colors buttons and
+        highlights.
+      </p>
+
+      <div className="appearance__presets">
+        {THEME_PRESETS.map((preset) => {
+          const c = preset.colors ?? CREAM_BASE;
+          const active = activePresetId === preset.id;
+          return (
+            <button
+              key={preset.id}
+              type="button"
+              className={[
+                "appearance__preset",
+                active ? "appearance__preset--active" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              aria-pressed={active}
+              onClick={() => queuePersist(preset.colors)}
+            >
+              <span
+                className="appearance__preset__swatch"
+                style={{
+                  backgroundColor: c.bg,
+                  color: c.text,
+                  border: `1px solid ${c.bg === "#ffffff" ? "#d8d5ce" : "rgba(0,0,0,0.12)"}`,
+                }}
+                aria-hidden="true"
+              >
+                <span style={{ width: 14, height: 14, borderRadius: "50%", background: c.text, display: "inline-block" }} />
+                <span style={{ width: 14, height: 14, borderRadius: "50%", background: c.accent, display: "inline-block" }} />
+                <span style={{ flex: 1, fontFamily: "var(--font-heading)", fontSize: 11 }}>Aa</span>
+              </span>
+              <span className="appearance__preset__name">{preset.name}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <hr className="appearance__divider" />
+
+      <div className="appearance__custom">
+        {(["bg", "text", "accent"] as const).map((field) => {
+          const label = field === "bg" ? "Background" : field === "text" ? "Text" : "Accent";
+          const id = `theme-${field}`;
+          return (
+            <div key={field} className="appearance__field">
+              <label className="appearance__field__label" htmlFor={id}>
+                {label}
+              </label>
+              <span className="appearance__field__code">{display[field]}</span>
+              <input
+                id={id}
+                type="color"
+                className="appearance__color"
+                value={display[field]}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  changeColor(field, e.target.value)
+                }
+              />
+            </div>
+          );
+        })}
+      </div>
+      <p className="appearance__hint">
+        Choosing “Cream” restores the original colors. Changes save
+        automatically.
+      </p>
     </Card>
   );
 }

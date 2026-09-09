@@ -53,6 +53,10 @@ function isBase64DataUrl(v: unknown): v is string {
   );
 }
 
+function isHexColor(v: unknown): v is string {
+  return typeof v === "string" && /^#[0-9a-f]{6}$/i.test(v);
+}
+
 function errorIf(errors: string[], ok: boolean, message: string): void {
   if (!ok) errors.push(message);
 }
@@ -80,6 +84,17 @@ function checkStall(value: unknown, errors: string[]): void {
   errorIf(errors, isIso(value.onboardingCompletedAt), "stall.onboardingCompletedAt must be a valid ISO date string.");
   errorIf(errors, isIso(value.createdAt), "stall.createdAt must be a valid ISO date string.");
   errorIf(errors, isIso(value.updatedAt), "stall.updatedAt must be a valid ISO date string.");
+
+  const theme = value.theme;
+  if (theme !== undefined) {
+    if (!isRecord(theme)) {
+      errors.push("stall.theme must be an object.");
+    } else {
+      errorIf(errors, isHexColor(theme.bg), "stall.theme.bg must be a #rrggbb hex color.");
+      errorIf(errors, isHexColor(theme.text), "stall.theme.text must be a #rrggbb hex color.");
+      errorIf(errors, isHexColor(theme.accent), "stall.theme.accent must be a #rrggbb hex color.");
+    }
+  }
 
   const pm = value.paymentMethods;
   if (!isRecord(pm)) {

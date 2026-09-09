@@ -15,6 +15,7 @@ stock updates. The checkout flow targets a 5-item sale in under 30 seconds.
 - Checkout — cash (with change calculation), QR (locally stored merchant QR image), and card payment, all confirmed by the cashier
 - Products & stock — create/edit/deactivate products, cost price, manual stock adjustments with recorded movements, low-stock alerts
 - Categories — pre-add categories, assign them from a dropdown in the product form, or add a brand-new category inline while adding a product
+- Themes — pick a ready-made preset or set your own background, text, and accent colors; applied instantly and saved on-device
 - Dashboard — today's sales, transactions, items sold, top sellers, low stock, estimated profit
 - Sales — history with date filter, per-sale detail with historical product snapshots (name/price/cost frozen at sale time)
 - Expenses — simple tracking with categories (Stock, Delivery, Packaging, Other)
