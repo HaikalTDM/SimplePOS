@@ -14,6 +14,12 @@ body,
   height: 100%;
 }
 
+html {
+  /* Prevent double-tap-to-zoom and delay on POS taps (POS machine context).
+     Pinch zoom is also capped via the viewport meta in index.html. */
+  touch-action: manipulation;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
