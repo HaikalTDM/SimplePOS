@@ -52,3 +52,5 @@ Task 10: complete (commit 79bffba, 144/144 tests. Minor (deferred): dashboard ke
 Task 10: complete (commits 79bffba + cc19fcc, 144/144 tests. Minor (deferred): dashboard keeps inline today-profit; expense date displayed raw to avoid TZ shift)
 
 Task 11: complete (commit 17ae945, 172/172 tests. Deferred to Task 12/14: safety snapshots accumulate in backupDb — add pruning UI; pos.test.tsx had a pre-existing flaky toast assertion hardened (no app change))
+
+Task 12: complete (commits 30a7f4e + 2f245f2, 185/185 tests twice. Minor (deferred): lowStockAlertsEnabled optional field on Stall; controlled-input test races — Task 14 to harden)

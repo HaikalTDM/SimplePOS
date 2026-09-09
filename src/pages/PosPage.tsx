@@ -199,7 +199,7 @@ export default function PosPage() {
             onClick={() => setSheetOpen(true)}
           >
             <IconCart size={20} />
-            <span className="pos-cartbar__count">
+            <span className="pos-cartbar__count" aria-live="polite">
               {totalQty} items | {formatMoney(totalMinor, currency)}
             </span>
           </button>

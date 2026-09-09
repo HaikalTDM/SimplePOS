@@ -9,6 +9,9 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       devOptions: { enabled: true },
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,svg,png,ico,woff,woff2,webmanifest,json}"],
+      },
       manifest: {
         name: "SimplePOS",
         short_name: "SimplePOS",

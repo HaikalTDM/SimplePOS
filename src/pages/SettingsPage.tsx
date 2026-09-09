@@ -361,9 +361,8 @@ function StockSettingsSection({ stall }: { stall: Stall }) {
           onChange={(e) => setThreshold(e.target.value)}
           error={error}
         />
-        <div className="toggle-row settings-alerts">
-          <Toggle checked={alertsOn} onChange={setAlertsOn} />
-          <span className="toggle__label">Low stock alerts</span>
+        <div className="settings-alerts">
+          <Toggle checked={alertsOn} onChange={setAlertsOn} label="Low stock alerts" />
         </div>
         <div>
           <KeycapButton type="submit" loading={saving}>

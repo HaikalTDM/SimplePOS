@@ -88,6 +88,7 @@ export default function DashboardPage() {
 
   return (
     <div className="dash-page">
+      <h1 className="sr-only">Dashboard</h1>
       <p className="dash-date">
         Today, {month} {now.getDate()}
       </p>

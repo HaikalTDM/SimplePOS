@@ -7,7 +7,7 @@
    ============================================================ */
 
 :root {
-  --keycap-primary-side: #55657f;
+  --keycap-primary-side: #46536a;
   --keycap-gold-side: #a67c35;
   --keycap-danger-side: #b3342b;
   --keycap-neutral-side: #d8d5ce;
@@ -18,7 +18,7 @@
   --success-tint: rgba(76, 175, 80, 0.12);
   --error-tint: rgba(231, 76, 60, 0.12);
   --accent-deep: #55657f;
-  --gold-deep: #8a6a2f;
+  --gold-deep: #7d5f2a;
   --success-deep: #2e7d32;
   --error-deep: #b3342b;
   --ring-soft: 0 0 0 3px rgba(107, 124, 153, 0.18);
@@ -85,14 +85,14 @@
 }
 
 .keycap-btn--primary {
-  background: var(--accent);
+  background: var(--accent-deep);
   color: #ffffff;
   border-bottom-color: var(--keycap-primary-side);
 }
 
 .keycap-btn--gold {
   background: var(--accent-gold);
-  color: #ffffff;
+  color: var(--text);
   border-bottom-color: var(--keycap-gold-side);
 }
 
@@ -316,7 +316,8 @@
 }
 
 .select__option:focus-visible {
-  outline: none;
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
 }
 
 .select__option[aria-selected="true"] {
@@ -430,8 +431,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 36px;
-  min-height: 36px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 4px;
   border: none;
   border-radius: var(--radius-sm);
@@ -730,8 +731,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  min-width: 32px;
-  min-height: 32px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 4px;
   border: none;
   border-radius: var(--radius-sm);
@@ -803,6 +804,9 @@
   color: var(--text);
   text-decoration: none;
   white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header-nav__links {
@@ -876,7 +880,7 @@
 }
 
 .mobile-nav__link--active {
-  color: var(--accent);
+  color: var(--accent-deep);
   font-weight: 600;
 }
 
@@ -1033,8 +1037,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 36px;
-  min-height: 36px;
+  min-width: 44px;
+  min-height: 44px;
   border: none;
   border-radius: var(--radius-sm);
   background: transparent;
@@ -1538,8 +1542,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 36px;
-  min-height: 36px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 4px;
   border: none;
   border-radius: var(--radius-sm);
@@ -1857,8 +1861,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  min-width: 36px;
-  min-height: 36px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 4px;
   border: none;
   border-radius: var(--radius-sm);
