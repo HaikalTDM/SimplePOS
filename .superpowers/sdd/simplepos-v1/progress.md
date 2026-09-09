@@ -56,3 +56,5 @@ Task 11: complete (commit 17ae945, 172/172 tests. Deferred to Task 12/14: safety
 Task 12: complete (commits 30a7f4e + 2f245f2, 185/185 tests twice. Minor (deferred): lowStockAlertsEnabled optional field on Stall; controlled-input test races — Task 14 to harden)
 
 Task 13: complete (commit aac0966 — finished by controller after subagent interruption: iOS meta, 44px targets, h1/a11y fixes, contrast fixes, verify:pwa script all PASS; 185/185 with one known flake — Task 14)
+
+Task 14: complete (commit 294ce8b, 187 tests, 3/3 clean runs)
