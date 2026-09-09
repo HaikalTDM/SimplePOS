@@ -1464,6 +1464,7 @@
   gap: 12px;
   max-height: calc(100vh - 92px);
   padding: 16px;
+  overflow: hidden; /* keep the item list's own scrollbar inside the card */
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-keycap);
@@ -1478,8 +1479,16 @@
   color: var(--text);
 }
 
+/* Let the cart body shrink inside the capped panel: the item list scrolls,
+   and the total + PAY stay pinned at the bottom instead of overflowing the
+   card (matters on short/landscape viewports). */
+.pos-cartpanel .pos-cart {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
 .pos-cartpanel .pos-cart__items {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
 }
