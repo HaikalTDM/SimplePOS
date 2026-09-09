@@ -447,7 +447,7 @@ describe("SettingsPage — appearance theme", () => {
     await seedStall();
     renderSettings();
     const user = userEvent.setup();
-    await screen.findByText("Appearance");
+    await screen.findByRole("heading", { name: "Appearance" });
 
     await user.click(screen.getByRole("button", { name: "Mint" }));
     expect(await screen.findByText("Theme saved", {}, { timeout: 3000 })).toBeInTheDocument();
@@ -464,7 +464,7 @@ describe("SettingsPage — appearance theme", () => {
     await seedStall();
     renderSettings();
     const user = userEvent.setup();
-    await screen.findByText("Appearance");
+    await screen.findByRole("heading", { name: "Appearance" });
 
     const bgInput = screen.getByLabelText("Background");
     fireEvent.change(bgInput, { target: { value: "#111111" } });
@@ -484,5 +484,28 @@ describe("SettingsPage — appearance theme", () => {
       const stall = await readStall();
       expect(stall?.theme).toBeUndefined();
     }, { timeout: 3000 });
+  });
+
+  it("collapses and expands the section from its keycap toggle", async () => {
+    await seedStall();
+    renderSettings();
+    const user = userEvent.setup();
+    await screen.findByRole("heading", { name: "Appearance" });
+
+    const toggle = screen.getByRole("button", { name: /Appearance/i });
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    const panel = screen.getByRole("region", { name: /Appearance/i });
+    expect(panel).not.toHaveAttribute("inert");
+    expect(screen.getByRole("button", { name: "Mint" })).toBeVisible();
+
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(panel).toHaveAttribute("inert");
+    expect(panel).toHaveAttribute("aria-hidden", "true");
+    expect(screen.queryByRole("button", { name: "Mint" })).not.toBeInTheDocument();
+
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("button", { name: "Mint" })).toBeVisible();
   });
 });

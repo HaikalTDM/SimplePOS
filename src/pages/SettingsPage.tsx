@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import pkg from "../../package.json";
@@ -22,6 +22,7 @@ import {
   Card,
   IconCard,
   IconCash,
+  IconChevronDown,
   IconClose,
   IconDownload,
   IconExpenses,
@@ -183,6 +184,8 @@ function AppearanceSection({ stall }: { stall: Stall }) {
   // Current theme (null = built-in Cream). Optimistically applied, persisted
   // after a short debounce so dragging a color picker isn't a write per tick.
   const [theme, setTheme] = useState<ThemeColors | null>(stall.theme ?? null);
+  const [open, setOpen] = useState(true);
+  const toggleId = useId();
   const persistTimer = useRef<number | undefined>(undefined);
   const themeKey = stall.theme
     ? `${stall.theme.bg}|${stall.theme.text}|${stall.theme.accent}`
@@ -238,79 +241,115 @@ function AppearanceSection({ stall }: { stall: Stall }) {
         })?.id ?? "custom";
 
   return (
-    <Card className="settings-card">
-      <h2 className="settings-card__title">Appearance</h2>
-      <p className="appearance__intro">
-        Pick a ready-made theme or build your own. Colors apply to the whole
-        POS — background, text, and the accent that colors buttons and
-        highlights.
-      </p>
+    <Card className="settings-card settings-collapse">
+      <h2 className="sr-only">Appearance</h2>
+      <button
+        type="button"
+        id={toggleId}
+        className="settings-collapse__toggle"
+        aria-expanded={open}
+        aria-controls="appearance-panel"
+        onClick={() => setOpen((o) => !o)}
+      >
+        <span
+          className="settings-collapse__keycap"
+          aria-hidden="true"
+        >
+          <span
+            className="settings-collapse__led"
+            style={{ backgroundColor: display.accent }}
+          />
+        </span>
+        <span className="settings-collapse__label">Appearance</span>
+        <IconChevronDown
+          size={20}
+          className={`settings-collapse__chev${open ? " settings-collapse__chev--open" : ""}`}
+          aria-hidden="true"
+        />
+      </button>
 
-      <div className="appearance__presets">
-        {THEME_PRESETS.map((preset) => {
-          const c = preset.colors ?? CREAM_BASE;
-          const active = activePresetId === preset.id;
-          return (
-            <button
-              key={preset.id}
-              type="button"
-              className={[
-                "appearance__preset",
-                active ? "appearance__preset--active" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              aria-pressed={active}
-              onClick={() => queuePersist(preset.colors)}
-            >
-              <span
-                className="appearance__preset__swatch"
-                style={{
-                  backgroundColor: c.bg,
-                  color: c.text,
-                  border: `1px solid ${c.bg === "#ffffff" ? "#d8d5ce" : "rgba(0,0,0,0.12)"}`,
-                }}
-                aria-hidden="true"
-              >
-                <span style={{ width: 14, height: 14, borderRadius: "50%", background: c.text, display: "inline-block" }} />
-                <span style={{ width: 14, height: 14, borderRadius: "50%", background: c.accent, display: "inline-block" }} />
-                <span style={{ flex: 1, fontFamily: "var(--font-heading)", fontSize: 11 }}>Aa</span>
-              </span>
-              <span className="appearance__preset__name">{preset.name}</span>
-            </button>
-          );
-        })}
+      <div
+        id="appearance-panel"
+        role="region"
+        aria-labelledby={toggleId}
+        aria-hidden={!open}
+        className={`settings-collapse__body${open ? "" : " settings-collapse__body--closed"}`}
+        inert={!open}
+      >
+        <div className="settings-collapse__inner">
+          <p className="appearance__intro">
+            Pick a ready-made theme or build your own. Colors apply to the
+            whole POS — background, text, and the accent that colors buttons
+            and highlights.
+          </p>
+
+          <div className="appearance__presets">
+            {THEME_PRESETS.map((preset) => {
+              const c = preset.colors ?? CREAM_BASE;
+              const active = activePresetId === preset.id;
+              return (
+                <button
+                  key={preset.id}
+                  type="button"
+                  className={[
+                    "appearance__preset",
+                    active ? "appearance__preset--active" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  aria-pressed={active}
+                  onClick={() => queuePersist(preset.colors)}
+                >
+                  <span
+                    className="appearance__preset__swatch"
+                    style={{
+                      backgroundColor: c.bg,
+                      color: c.text,
+                      border: `1px solid ${c.bg === "#ffffff" ? "#d8d5ce" : "rgba(0,0,0,0.12)"}`,
+                    }}
+                    aria-hidden="true"
+                  >
+                    <span style={{ width: 14, height: 14, borderRadius: "50%", background: c.text, display: "inline-block" }} />
+                    <span style={{ width: 14, height: 14, borderRadius: "50%", background: c.accent, display: "inline-block" }} />
+                    <span style={{ flex: 1, fontFamily: "var(--font-heading)", fontSize: 11 }}>Aa</span>
+                  </span>
+                  <span className="appearance__preset__name">{preset.name}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <hr className="appearance__divider" />
+
+          <div className="appearance__custom">
+            {(["bg", "text", "accent"] as const).map((field) => {
+              const label = field === "bg" ? "Background" : field === "text" ? "Text" : "Accent";
+              const id = `theme-${field}`;
+              return (
+                <div key={field} className="appearance__field">
+                  <label className="appearance__field__label" htmlFor={id}>
+                    {label}
+                  </label>
+                  <span className="appearance__field__code">{display[field]}</span>
+                  <input
+                    id={id}
+                    type="color"
+                    className="appearance__color"
+                    value={display[field]}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      changeColor(field, e.target.value)
+                    }
+                  />
+                </div>
+              );
+            })}
+          </div>
+          <p className="appearance__hint">
+            Choosing “Cream” restores the original colors. Changes save
+            automatically.
+          </p>
+        </div>
       </div>
-
-      <hr className="appearance__divider" />
-
-      <div className="appearance__custom">
-        {(["bg", "text", "accent"] as const).map((field) => {
-          const label = field === "bg" ? "Background" : field === "text" ? "Text" : "Accent";
-          const id = `theme-${field}`;
-          return (
-            <div key={field} className="appearance__field">
-              <label className="appearance__field__label" htmlFor={id}>
-                {label}
-              </label>
-              <span className="appearance__field__code">{display[field]}</span>
-              <input
-                id={id}
-                type="color"
-                className="appearance__color"
-                value={display[field]}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  changeColor(field, e.target.value)
-                }
-              />
-            </div>
-          );
-        })}
-      </div>
-      <p className="appearance__hint">
-        Choosing “Cream” restores the original colors. Changes save
-        automatically.
-      </p>
     </Card>
   );
 }
