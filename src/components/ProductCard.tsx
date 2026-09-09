@@ -45,7 +45,7 @@ export default function ProductCard({
           {qty}
         </Badge>
       )}
-      <span className="product-card__name">
+      <span className={`product-card__name${Glyph ? " product-card__name--with-icon" : ""}`}>
         {Glyph && (
           <span className="product-card__glyph" aria-hidden="true">
             <Glyph size={16} />
