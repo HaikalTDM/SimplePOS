@@ -333,4 +333,23 @@
   margin-top: 18px;
   padding-top: 14px;
   border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.appearance__sound__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.appearance__sound__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.appearance__sound .appearance__hint {
+  margin-top: 0;
 }

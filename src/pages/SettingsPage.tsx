@@ -15,7 +15,8 @@ import { ImportError, importBackup } from "../lib/backup/importBackup";
 import { triggerDownload } from "../lib/backup/download";
 import { exportSalesCsv } from "../lib/csv/salesCsv";
 import { CURRENCIES } from "../utils/currency";
-import { setSoundEnabled, soundEnabled } from "../lib/sound";
+import { playClick, setSoundProfile, soundProfile } from "../lib/sound";
+import type { SoundProfile } from "../lib/sound";
 import { useStall } from "../contexts/StallContext";
 import { DEFAULT_PRESET_ID, THEME_PRESETS, applyTheme } from "../theme/theme";
 import {
@@ -55,6 +56,12 @@ const CURRENCY_OPTIONS = (Object.keys(CURRENCIES) as Currency[]).map((code) => (
   value: code,
   label: code,
 }));
+
+const SOUND_OPTIONS = [
+  { value: "brown", label: "Brown" },
+  { value: "blue", label: "Blue" },
+  { value: "off", label: "Mute" },
+] as const;
 
 const BUSINESS_OPTIONS = BUSINESS_TYPES.map((t) => ({ value: t, label: t }));
 
@@ -186,7 +193,7 @@ function AppearanceSection({ stall }: { stall: Stall }) {
   // after a short debounce so dragging a color picker isn't a write per tick.
   const [theme, setTheme] = useState<ThemeColors | null>(stall.theme ?? null);
   const [open, setOpen] = useState(true);
-  const [keySounds, setKeySounds] = useState<boolean>(() => soundEnabled());
+  const [keySounds, setKeySounds] = useState<SoundProfile>(() => soundProfile());
   const toggleId = useId();
   const persistTimer = useRef<number | undefined>(undefined);
   const themeKey = stall.theme
@@ -351,14 +358,28 @@ function AppearanceSection({ stall }: { stall: Stall }) {
             automatically.
           </p>
           <div className="appearance__sound">
-            <Toggle
-              checked={keySounds}
-              onChange={(v) => {
-                setKeySounds(v);
-                setSoundEnabled(v);
-              }}
-              label="Key sounds"
-            />
+            <span className="appearance__sound__label">Key sounds</span>
+            <div className="appearance__sound__options" role="group" aria-label="Key sounds">
+              {SOUND_OPTIONS.map((o) => (
+                <KeycapButton
+                  key={o.value}
+                  size="sm"
+                  variant={keySounds === o.value ? "primary" : "neutral"}
+                  aria-pressed={keySounds === o.value}
+                  onClick={() => {
+                    setKeySounds(o.value);
+                    setSoundProfile(o.value);
+                    if (o.value !== "off") playClick();
+                  }}
+                >
+                  {o.label}
+                </KeycapButton>
+              ))}
+            </div>
+            <p className="appearance__hint">
+              Brown = soft thock · Blue = crisp click · Mute = silent. Tap a
+              profile to hear it.
+            </p>
           </div>
         </div>
       </div>

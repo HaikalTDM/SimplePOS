@@ -24,7 +24,7 @@ import { StallProvider } from "./contexts/StallContext";
 import { ProductsProvider } from "./contexts/ProductsContext";
 import { CartProvider } from "./contexts/CartContext";
 import App from "./App";
-import { playClick, playPop, soundEnabled } from "./lib/sound";
+import { playClick, playPop } from "./lib/sound";
 
 // Mechanical keycap feedback: every tactile control "clicks"; tapping a
 // product card gives a softer satisfying "pop". Sound is opt-out via
@@ -32,7 +32,7 @@ import { playClick, playPop, soundEnabled } from "./lib/sound";
 function initKeySounds() {
   if (typeof document === "undefined") return;
   const soundFor = (el: Element | null): "click" | "pop" | null => {
-    if (!el || !soundEnabled()) return null;
+    if (!el) return null;
     if (el.closest(".product-card")) return "pop";
     if (el.closest("button, a.keycap-btn, [role='button']")) return "click";
     return null;
