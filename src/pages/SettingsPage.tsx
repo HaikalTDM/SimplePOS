@@ -15,6 +15,7 @@ import { ImportError, importBackup } from "../lib/backup/importBackup";
 import { triggerDownload } from "../lib/backup/download";
 import { exportSalesCsv } from "../lib/csv/salesCsv";
 import { CURRENCIES } from "../utils/currency";
+import { setSoundEnabled, soundEnabled } from "../lib/sound";
 import { useStall } from "../contexts/StallContext";
 import { DEFAULT_PRESET_ID, THEME_PRESETS, applyTheme } from "../theme/theme";
 import {
@@ -185,6 +186,7 @@ function AppearanceSection({ stall }: { stall: Stall }) {
   // after a short debounce so dragging a color picker isn't a write per tick.
   const [theme, setTheme] = useState<ThemeColors | null>(stall.theme ?? null);
   const [open, setOpen] = useState(true);
+  const [keySounds, setKeySounds] = useState<boolean>(() => soundEnabled());
   const toggleId = useId();
   const persistTimer = useRef<number | undefined>(undefined);
   const themeKey = stall.theme
@@ -348,6 +350,16 @@ function AppearanceSection({ stall }: { stall: Stall }) {
             Choosing “Cream” restores the original colors. Changes save
             automatically.
           </p>
+          <div className="appearance__sound">
+            <Toggle
+              checked={keySounds}
+              onChange={(v) => {
+                setKeySounds(v);
+                setSoundEnabled(v);
+              }}
+              label="Key sounds"
+            />
+          </div>
         </div>
       </div>
     </Card>
