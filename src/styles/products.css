@@ -104,6 +104,17 @@
   gap: 8px;
 }
 
+.products-card__glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  color: var(--accent-ink);
+  background: var(--accent-tint-soft);
+}
+
 .products-card__name {
   font-family: var(--font-heading);
   font-size: 16px;
@@ -248,6 +259,85 @@
   font-weight: 500;
   color: var(--text);
   word-break: break-word;
+}
+
+.categories-manage__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  border-bottom: 3px solid var(--keycap-neutral-side);
+  color: var(--accent-ink);
+  cursor: pointer;
+}
+
+.categories-manage__icon:hover {
+  background: var(--bg-subtle);
+}
+
+.categories-manage__icon:active {
+  transform: translateY(1px);
+  border-bottom-width: 2px;
+}
+
+.categories-manage__icon:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.category-icons__none {
+  margin-bottom: 12px;
+}
+
+.category-icons__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 8px;
+  max-height: 46vh;
+  overflow-y: auto;
+}
+
+.category-icons__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    transform var(--t-fast) ease-out,
+    border-color var(--t-fast) ease-out,
+    color var(--t-fast) ease-out,
+    background var(--t-fast) ease-out;
+}
+
+.category-icons__item:hover {
+  border-color: var(--accent-line);
+  color: var(--accent-ink);
+  transform: translateY(-1px);
+}
+
+.category-icons__item:active {
+  transform: translateY(1px);
+}
+
+.category-icons__item[aria-pressed="true"] {
+  background: var(--accent-tint-soft);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.category-icons__item:disabled {
+  opacity: 0.5;
+  cursor: wait;
 }
 
 .categories-manage__usage {

@@ -239,6 +239,11 @@ function checkCategories(value: unknown, errors: string[]): void {
     errorIf(errors, nonEmptyString(item.id), `${path}.id must be a non-empty string.`);
     errorIf(errors, nonEmptyString(item.name), `${path}.name must be a non-empty string.`);
     errorIf(errors, isIso(item.createdAt), `${path}.createdAt must be a valid ISO date string.`);
+    errorIf(
+      errors,
+      item.icon === undefined || (typeof item.icon === "string" && item.icon.trim() !== ""),
+      `${path}.icon must be a non-empty string when present.`,
+    );
     if (nonEmptyString(item.name)) {
       const key = item.name.trim().toLowerCase();
       if (names.has(key)) errors.push(`${path}.name is duplicated (case-insensitive).`);

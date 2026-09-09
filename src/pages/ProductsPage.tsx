@@ -22,6 +22,7 @@ import {
 } from "../components";
 import { useStall } from "../contexts/StallContext";
 import { soldProductIdSet, useProducts } from "../contexts/ProductsContext";
+import { iconForKey } from "../components/categoryIcons";
 import ProductFormModal from "../components/ProductFormModal";
 import StockAdjustModal from "../components/StockAdjustModal";
 
@@ -79,6 +80,12 @@ export default function ProductsPage() {
     if (p.stock <= threshold) return <Badge variant="neutral">Low</Badge>;
     return null;
   };
+
+  const iconByCategory = useMemo(() => {
+    const map = new Map<string, string | null>();
+    for (const c of categories) map.set(c.name, c.icon ?? null);
+    return map;
+  }, [categories]);
 
   const handleAdd = async (input: ProductInput) => {
     setSaving(true);
@@ -233,12 +240,20 @@ export default function ProductsPage() {
 
       {visible.length > 0 && (
         <div className="products-grid">
-          {visible.map((p) => (
+          {visible.map((p) => {
+            const iconKey = p.category ? iconByCategory.get(p.category) ?? null : null;
+            const Glyph = iconForKey(iconKey);
+            return (
             <article
               key={p.id}
               className={p.active ? "products-card" : "products-card products-card--inactive"}
             >
               <div className="products-card__top">
+                {Glyph && (
+                  <span className="products-card__glyph" aria-hidden="true">
+                    <Glyph size={18} />
+                  </span>
+                )}
                 <h2 className="products-card__name">{p.name}</h2>
                 {p.category && <Badge variant="neutral">{p.category}</Badge>}
                 {!p.active && <Badge variant="neutral">Inactive</Badge>}
@@ -288,7 +303,8 @@ export default function ProductsPage() {
                 )}
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       )}
 

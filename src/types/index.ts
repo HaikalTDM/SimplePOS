@@ -45,6 +45,8 @@ export interface Category {
   id: string;
   name: string;
   createdAt: string;
+  /** Optional lucide icon key shown on product cards / the POS grid. */
+  icon?: string;
 }
 
 export interface Sale {

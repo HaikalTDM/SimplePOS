@@ -38,7 +38,7 @@ export default function PosPage() {
   const { stall } = useStall();
   const currency = stall?.currency ?? "MYR";
   const threshold = stall?.lowStockThreshold ?? 10;
-  const { products, loading, refresh } = useProducts();
+  const { products, categories: categoryRecords, loading, refresh } = useProducts();
   const { items, entries, totalQty, totalMinor, invalid, addItem, setQty, removeItem, getQty, clear } =
     useCart();
   const { toast } = useToast();
@@ -76,6 +76,12 @@ export default function PosPage() {
       ].sort((a, b) => a.localeCompare(b)),
     [active]
   );
+
+  const iconByName = useMemo(() => {
+    const map = new Map<string, string | null>();
+    for (const c of categoryRecords) map.set(c.name, c.icon ?? null);
+    return map;
+  }, [categoryRecords]);
 
   const visible = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -176,6 +182,7 @@ export default function PosPage() {
                   currency={currency}
                   qty={getQty(p.id)}
                   lowStockThreshold={threshold}
+                  categoryIcon={p.category ? iconByName.get(p.category) ?? null : null}
                   onAdd={handleAdd}
                 />
               ))}

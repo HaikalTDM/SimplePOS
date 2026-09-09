@@ -1,6 +1,7 @@
 import type { Currency, Product } from "../types";
 import { formatMoney } from "../utils/currency";
 import Badge from "./Badge";
+import { iconForKey } from "./categoryIcons";
 
 interface ProductCardProps {
   product: Product;
@@ -8,6 +9,8 @@ interface ProductCardProps {
   /** Current qty of this product in the cart (drives the badge). */
   qty: number;
   lowStockThreshold: number;
+  /** Lucide icon key of the product's category (optional). */
+  categoryIcon?: string | null;
   onAdd: (product: Product) => void;
 }
 
@@ -20,11 +23,13 @@ export default function ProductCard({
   currency,
   qty,
   lowStockThreshold,
+  categoryIcon,
   onAdd,
 }: ProductCardProps) {
   const soldOut = product.stock <= 0;
   const veryLow = !soldOut && product.stock < 5;
   const low = !soldOut && !veryLow && product.stock <= lowStockThreshold;
+  const Glyph = iconForKey(categoryIcon);
 
   return (
     <button
@@ -40,7 +45,14 @@ export default function ProductCard({
           {qty}
         </Badge>
       )}
-      <span className="product-card__name">{product.name}</span>
+      <span className="product-card__name">
+        {Glyph && (
+          <span className="product-card__glyph" aria-hidden="true">
+            <Glyph size={16} />
+          </span>
+        )}
+        <span className="product-card__name-text">{product.name}</span>
+      </span>
       <span className="product-card__price">{formatMoney(product.sellingPrice, currency)}</span>
       {soldOut ? (
         <span className="product-card__soldout">OUT OF STOCK</span>

@@ -58,7 +58,8 @@ interface ProductsContextValue {
   deactivateProduct: (id: string) => Promise<void>;
   reactivateProduct: (id: string) => Promise<void>;
   deleteProduct: (id: string) => Promise<void>;
-  addCategory: (name: string) => Promise<Category>;
+  addCategory: (name: string, icon?: string) => Promise<Category>;
+  updateCategory: (id: string, patch: { name?: string; icon?: string | null }) => Promise<void>;
   deleteCategory: (id: string) => Promise<void>;
 }
 
@@ -214,7 +215,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
   );
 
   const addCategory = useCallback(
-    async (name: string): Promise<Category> => {
+    async (name: string, icon?: string): Promise<Category> => {
       const trimmed = name.trim();
       if (!trimmed) throw new Error("Category name is required");
       const known = new Set(categories.map((c) => c.name.toLowerCase()));
@@ -226,10 +227,36 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
         id: newId(),
         name: trimmed,
         createdAt: new Date().toISOString(),
+        ...(icon ? { icon } : {}),
       };
       await categoriesDb.put(db, category);
       await refresh();
       return category;
+    },
+    [categories, refresh]
+  );
+
+  const updateCategory = useCallback(
+    async (id: string, patch: { name?: string; icon?: string | null }): Promise<void> => {
+      const db = await openDatabase();
+      const current = await categoriesDb.get(db, id);
+      if (!current) throw new Error("Category not found");
+      const next: Category = { ...current };
+      if (patch.name !== undefined) {
+        const trimmed = patch.name.trim();
+        if (!trimmed) throw new Error("Category name is required");
+        const dupe = categories.some(
+          (c) => c.id !== id && c.name.toLowerCase() === trimmed.toLowerCase(),
+        );
+        if (dupe) throw new Error("That category already exists");
+        next.name = trimmed;
+      }
+      if (patch.icon !== undefined) {
+        if (patch.icon === null) delete next.icon;
+        else next.icon = patch.icon;
+      }
+      await categoriesDb.put(db, next);
+      await refresh();
     },
     [categories, refresh]
   );
@@ -264,9 +291,10 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       reactivateProduct,
       deleteProduct,
       addCategory,
+      updateCategory,
       deleteCategory,
     }),
-    [products, categories, loading, refresh, addProduct, updateProduct, adjustStock, deleteProduct, addCategory, deleteCategory]
+    [products, categories, loading, refresh, addProduct, updateProduct, adjustStock, deleteProduct, addCategory, updateCategory, deleteCategory]
   );
 
   return <ProductsContext.Provider value={value}>{children}</ProductsContext.Provider>;
