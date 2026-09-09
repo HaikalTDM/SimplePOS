@@ -1,10 +1,9 @@
 // Tiny synthesized mechanical-keyboard sounds (Web Audio, no audio files).
 //
-// "click": the sharp key press — a fast high transient over a low "thock".
-// "pop":  the softer, lower confirm pop used when adding an item to the cart.
-//
-// Volumes are deliberately subtle; the AudioContext is created lazily on the
-// first real user gesture so browser autoplay policies are satisfied.
+// Tuned like a tactile "brown" switch: a soft, round "thock" with a warm
+// bump — no bright audible click.
+// "click": the key press thock (buttons, toggles, nav).
+// "pop":   the softer, lower confirm pop when adding an item to the cart.
 
 const SOUND_KEY = "simplepos:sound"; // "on" | "off"
 
@@ -81,13 +80,15 @@ function play(kind: "click" | "pop"): void {
   lastAt[kind] = now;
 
   if (kind === "click") {
-    // Sharp keycap press: bright transient + low "thock" bottom-out.
-    tone(ac, "triangle", 1800, 700, 0.012, 0.05);
-    tone(ac, "sine", 300, 120, 0.06, 0.16, 0.002);
+    // Brown switch: a soft, round "thock" — no bright click, just a warm
+    // tactile bump and a low weighted bottom-out.
+    tone(ac, "triangle", 240, 115, 0.055, 0.2);
+    tone(ac, "sine", 150, 72, 0.075, 0.11, 0.003);
+    tone(ac, "sine", 70, 45, 0.05, 0.07, 0.008);
   } else {
     // Satisfying add-to-cart pop: pitch falls, rounded and soft.
-    tone(ac, "triangle", 520, 260, 0.07, 0.14);
-    tone(ac, "sine", 900, 520, 0.04, 0.045, 0.006);
+    tone(ac, "triangle", 400, 205, 0.07, 0.13);
+    tone(ac, "sine", 720, 430, 0.04, 0.04, 0.006);
   }
 }
 
