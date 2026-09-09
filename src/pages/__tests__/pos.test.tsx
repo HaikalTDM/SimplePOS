@@ -105,9 +105,7 @@ describe("PosPage", () => {
     await user.click(card); // blocked at cap
 
     expect(within(card).getByText("3")).toBeInTheDocument();
-    // Blocked clicks under load can race into two toast renders (§27 throttle);
-    // assert at least one cap toast exists rather than exactly one.
-    expect((await screen.findAllByText("Only 3 Milo in stock")).length).toBeGreaterThan(0);
+    expect(await screen.findByText("Only 3 Milo in stock")).toBeInTheDocument();
 
     await user.click(card); // still blocked, still capped
     expect(within(card).getByText("3")).toBeInTheDocument();

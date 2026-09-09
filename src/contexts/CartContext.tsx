@@ -83,20 +83,25 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const invalid = useMemo(() => entries.some((e) => e.qty > e.product.stock), [entries]);
 
-  const addItem = useCallback((product: Product): boolean => {
-    let added = false;
-    setItems((prev) => {
-      const current = prev.find((i) => i.productId === product.id);
-      const qty = current?.qty ?? 0;
-      if (qty >= product.stock) return prev;
-      added = true;
-      const nextQty = Math.min(qty + 1, product.stock);
-      return current
-        ? prev.map((i) => (i.productId === product.id ? { ...i, qty: nextQty } : i))
-        : [...prev, { productId: product.id, qty: nextQty }];
-    });
-    return added;
-  }, []);
+  const addItem = useCallback(
+    (product: Product): boolean => {
+      // Decide before setState: updaters may run later/again (React eager eval,
+      // StrictMode), so a flag written inside one is not reliable (§27).
+      const qty = items.find((i) => i.productId === product.id)?.qty ?? 0;
+      if (qty >= product.stock) return false;
+      setItems((prev) => {
+        const current = prev.find((i) => i.productId === product.id);
+        const prevQty = current?.qty ?? 0;
+        if (prevQty >= product.stock) return prev;
+        const nextQty = Math.min(prevQty + 1, product.stock);
+        return current
+          ? prev.map((i) => (i.productId === product.id ? { ...i, qty: nextQty } : i))
+          : [...prev, { productId: product.id, qty: nextQty }];
+      });
+      return true;
+    },
+    [items]
+  );
 
   const setQty = useCallback(
     (productId: string, qty: number) => {
