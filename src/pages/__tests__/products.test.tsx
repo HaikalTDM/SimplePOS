@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { IDBFactory } from "fake-indexeddb";
@@ -132,6 +132,55 @@ describe("ProductsPage", () => {
     expect(saved.sellingPrice).toBe(400);
     expect(saved.stock).toBe(original.stock);
     expect(saved.updatedAt).not.toBe(original.updatedAt);
+  });
+
+  it("adds a product with a category and cost price (§78)", async () => {
+    await seedStall();
+    renderPage();
+    const user = userEvent.setup();
+    await openAddModal(user);
+
+    fireEvent.change(screen.getByLabelText("Product Name"), { target: { value: "Milo" } });
+    fireEvent.change(screen.getByLabelText("Selling Price"), { target: { value: "3.00" } });
+    fireEvent.change(screen.getByLabelText("Cost Price (optional)"), {
+      target: { value: "1.80" },
+    });
+    fireEvent.change(screen.getByLabelText("Category (optional)"), {
+      target: { value: "Drinks" },
+    });
+    await user.click(screen.getByRole("button", { name: "Save" }));
+
+    expect(await screen.findByText("Product added")).toBeInTheDocument();
+    expect(screen.getByText("Milo")).toBeInTheDocument();
+    expect(screen.getByText("Drinks")).toBeInTheDocument();
+    const db = await openDatabase();
+    const products = await productsDb.getAll(db);
+    expect(products).toHaveLength(1);
+    expect(products[0].costPrice).toBe(180);
+    expect(products[0].category).toBe("Drinks");
+  });
+
+  it("edits a product's category and cost price (§78)", async () => {
+    await seedStall();
+    await seedProduct({ costPrice: 150, category: "Drinks" });
+    renderPage();
+    const user = userEvent.setup();
+
+    await user.click(await screen.findByRole("button", { name: "Edit Milo" }));
+    fireEvent.change(screen.getByLabelText("Cost Price (optional)"), {
+      target: { value: "2.25" },
+    });
+    fireEvent.change(screen.getByLabelText("Category (optional)"), {
+      target: { value: "Food" },
+    });
+    await user.click(screen.getByRole("button", { name: "Save" }));
+
+    expect(await screen.findByText("Product updated")).toBeInTheDocument();
+    expect(screen.getByText("Food")).toBeInTheDocument();
+    const db = await openDatabase();
+    const saved = (await productsDb.getAll(db))[0];
+    expect(saved.costPrice).toBe(225);
+    expect(saved.category).toBe("Food");
   });
 
   it("blocks an empty name and an invalid price", async () => {

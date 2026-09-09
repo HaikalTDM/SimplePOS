@@ -161,9 +161,15 @@ describe("SettingsPage — stall settings", () => {
     await user.click(within(stallSection).getByRole("button", { name: "Save" }));
 
     expect(await screen.findByText("Settings saved", {}, { timeout: 3000 })).toBeInTheDocument();
-    const stall = await readStall();
-    expect(stall?.name).toBe("Rein's Boutique");
-    expect(stall?.currency).toBe("SGD");
+    // The toast only fires after stallDb.put + reload complete, but under
+    // full-suite parallel load the follow-up read can still land before the
+    // write is visible — poll the db instead of reading it once (same
+    // pattern as the threshold test below).
+    await waitFor(async () => {
+      const stall = await readStall();
+      expect(stall?.name).toBe("Rein's Boutique");
+      expect(stall?.currency).toBe("SGD");
+    }, { timeout: 3000 });
     expect(
       await screen.findByText("Rein's Boutique POS by Captura")
     ).toBeInTheDocument();

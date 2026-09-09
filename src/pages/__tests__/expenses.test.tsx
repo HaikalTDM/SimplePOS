@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { IDBFactory } from "fake-indexeddb";
@@ -109,8 +109,7 @@ describe("ExpensesPage", () => {
     await user.click(screen.getByRole("button", { name: "Save" }));
     expect(screen.getByText("Enter a valid amount")).toBeInTheDocument();
 
-    await user.clear(screen.getByLabelText("Amount"));
-    await user.type(screen.getByLabelText("Amount"), "-5");
+    fireEvent.change(screen.getByLabelText("Amount"), { target: { value: "-5" } });
     await user.click(screen.getByRole("button", { name: "Save" }));
     expect(screen.getByText("Enter a valid amount")).toBeInTheDocument();
 
@@ -125,12 +124,14 @@ describe("ExpensesPage", () => {
     const user = userEvent.setup();
 
     await user.click(await screen.findByRole("button", { name: "Edit Sugar" }));
-    const descriptionInput = screen.getByLabelText("Description");
-    await user.clear(descriptionInput);
-    await user.type(descriptionInput, "Sugar Refined");
-    const amountInput = screen.getByLabelText("Amount");
-    await user.clear(amountInput);
-    await user.type(amountInput, "15.00");
+    // Whole-value replacement via fireEvent.change: under full-suite load,
+    // user.clear + user.type can lag and append instead of replace.
+    fireEvent.change(screen.getByLabelText("Description"), {
+      target: { value: "Sugar Refined" },
+    });
+    fireEvent.change(screen.getByLabelText("Amount"), {
+      target: { value: "15.00" },
+    });
     await user.click(screen.getByRole("button", { name: "Save" }));
 
     expect(await screen.findByText("Expense updated")).toBeInTheDocument();

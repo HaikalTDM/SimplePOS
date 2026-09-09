@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { IDBFactory } from "fake-indexeddb";
 import { PaymentModal, ToastProvider } from "..";
 import type { StockChange } from "../../lib/checkout/checkout";
-import { closeDatabase, openDatabase, productsDb, salesDb, stallDb } from "../../lib/db";
+import { closeDatabase, openDatabase, productsDb, salesDb, stallDb, stockMovementsDb } from "../../lib/db";
 import type { Product, Stall } from "../../types";
 import { CartProvider, useCart } from "../../contexts/CartContext";
 type CartContextValue = ReturnType<typeof useCart>;
@@ -276,6 +276,10 @@ describe("PaymentModal", () => {
       { productId: "p1", qty: 2 },
     ]);
     expect(await salesDb.count(db)).toBe(0);
+    // §79.3: the failed payment changed nothing — stock stays at the
+    // pre-payment value, no sale rows, no movements.
+    expect((await productsDb.get(db, "p1"))?.stock).toBe(1);
+    expect(await stockMovementsDb.count(db)).toBe(0);
   });
 
   it("success path calls onSuccess and clears the cart", async () => {
