@@ -1,0 +1,92 @@
+﻿
+> simplepos@0.1.0 test
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90mC:/Users/haika/OneDrive/Desktop/Kael/SimplePos[39m
+
+ [32mΓ£ô[39m src/components/__tests__/appgate.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 611[2mms[22m[39m
+   [32mΓ£ô[39m AppGate [2m(4)[22m
+     [33m[2mΓ£ô[22m[39m shows the error screen when the db fails to open, and retries[33m 305[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/__tests__/sales.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 877[2mms[22m[39m
+   [32mΓ£ô[39m SalesPage [2m(3)[22m
+     [33m[2mΓ£ô[22m[39m lists sales newest first with qty-sum item counts, totals, and payment badges[33m 445[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/__tests__/dashboard.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 1024[2mms[22m[39m
+ [32mΓ£ô[39m src/layouts/__tests__/applayout.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 1119[2mms[22m[39m
+   [32mΓ£ô[39m AppLayout [2m(5)[22m
+     [33m[2mΓ£ô[22m[39m shows the stall brand in the header when a stall exists[33m 607[2mms[22m[39m
+ [32mΓ£ô[39m src/components/__tests__/components.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 1647[2mms[22m[39m
+   [32mΓ£ô[39m Modal [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m renders title, sets aria-modal, traps focus, and restores it on close[33m 313[2mms[22m[39m
+node.exe : Not implemented: navigation to another Document
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Not implemented...nother Document:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ [32mΓ£ô[39m src/pages/__tests__/expenses.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 2436[2mms[22m[39m
+   [32mΓ£ô[39m ExpensesPage [2m(7)[22m
+     [33m[2mΓ£ô[22m[39m adds an expense with minor-unit amount and local date[33m 975[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m blocks an empty description and non-positive amounts[33m 624[2mms[22m[39m
+Not implemented: navigation to another Document
+ [32mΓ£ô[39m src/pages/__tests__/settings.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[33m 3121[2mms[22m[39m
+   [32mΓ£ô[39m SettingsPage ΓÇö stall settings [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m edits stall name and currency, persists, and reloads the header brand[33m 801[2mms[22m[39m
+   [32mΓ£ô[39m SettingsPage ΓÇö stock settings [2m(1)[22m
+     [33m[2mΓ£ô[22m[39m saves a valid threshold and blocks invalid ones[33m 406[2mms[22m[39m
+   [32mΓ£ô[39m SettingsPage ΓÇö payment methods [2m(3)[22m
+     [33m[2mΓ£ô[22m[39m enables QR, uploads a PNG as a Blob, then removes it[33m 419[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/__tests__/pos.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 3659[2mms[22m[39m
+   [32mΓ£ô[39m PosPage [2m(10)[22m
+     [33m[2mΓ£ô[22m[39m adds a product with one tap: badge 1 and formatted total[33m 668[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m increments on repeat taps and blocks at the stock cap with a toast[33m 497[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m decrements with minus, removes the row at 1, and deletes directly[33m 608[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m edits quantity inline and clamps to available stock[33m 358[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m never touches stock: add, edit, decrement and remove leave the db unchanged[33m 651[2mms[22m[39m
+ [32mΓ£ô[39m src/components/__tests__/payment.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 3779[2mms[22m[39m
+   [32mΓ£ô[39m PaymentModal [2m(9)[22m
+     [33m[2mΓ£ô[22m[39m lists only the enabled payment methods[33m 350[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m cash: empty received + CONFIRM PAID completes the sale and shows the success state[33m 323[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m cash: received above the total shows the change and records the sale[33m 379[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m success path calls onSuccess and clears the cart[33m 1769[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/backup/backup.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 171[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/checkout/checkout.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32mΓ£ô[39m src/test/smoke.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 250[2mms[22m[39m
+ [32mΓ£ô[39m src/utils/currency.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 47[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/db/database.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/__tests__/onboarding.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 5510[2mms[22m[39m
+   [32mΓ£ô[39m OnboardingPage [2m(9)[22m
+     [33m[2mΓ£ô[22m[39m shows required error on empty name and does not advance[33m 306[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m advances to step 2 with a valid stall[33m 440[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m Skip for now goes straight to payment methods[33m 548[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m adds products with minor-unit prices and default stock 10[33m 1162[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m rejects invalid price and stays on step 2[33m 725[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m accepts a PNG QR image and shows a preview; rejects bad types[33m 1269[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m Let's go! creates the stall, stores the QR blob, and navigates to POS[33m 859[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/csv/salesCsv.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/calculations/dashboard.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/validation/product.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/calculations/profit.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mΓ£ô[39m src/utils/dates.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/calculations/money.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/__tests__/products.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[33m 7477[2mms[22m[39m
+   [32mΓ£ô[39m ProductsPage [2m(17)[22m
+     [33m[2mΓ£ô[22m[39m adds a product with minor-unit price and stock[33m 923[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m edits a product and persists the changes[33m 763[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m adds a product with a new inline category and cost price (┬º78)[33m 1263[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m edits a product's category from the dropdown and cost price (┬º78)[33m 579[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m blocks an empty name and an invalid price[33m 924[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m adjusts stock up atomically with a manual_add movement[33m 528[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m records a manual_reduce movement with a positive quantity[33m 504[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m pre-adds a category in the manager and offers it in the product form[33m 848[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m22 passed[39m[22m[90m (22)[39m
+[2m      Tests [22m [1m[32m191 passed[39m[22m[90m (191)[39m
+[2m   Start at [22m 10:07:42
+[2m   Duration [22m 12.22s[2m (environment 47%, tests 29%, setup 14%, transform 5%, import 4%)[22m
+
+[2mEnvironment [22m [33mjsdom was created 22 times[39m[2m ┬╖ 51.06s total, 47% of tracked time[22m
+[2m            [22m [2mcreate it once per worker with [22m[33mpool: 'vmThreads'[39m[2m (keeps per-file isolation) or [22m[33misolate: false[39m[2m (shares it across files)[22m
+[2m            [22m [2mlearn more: https://vitest.dev/guide/improving-performance#test-environments[22m
+

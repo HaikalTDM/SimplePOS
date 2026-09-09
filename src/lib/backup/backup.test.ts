@@ -9,6 +9,7 @@ import { buildBackupFile, triggerDownload } from "./download";
 import { localDateOf } from "../../utils/dates";
 import {
   backupDb,
+  categoriesDb,
   closeDatabase,
   expensesDb,
   openDatabase,
@@ -20,6 +21,7 @@ import {
   stockMovementsDb,
 } from "../db";
 import type {
+  Category,
   Expense,
   Product,
   Sale,
@@ -77,6 +79,11 @@ const EXPENSES: Expense[] = [
   { id: "e2", description: "Fuel", amount: 1000, category: "Delivery", date: "2026-09-07", currency: "MYR" },
 ];
 
+const CATEGORIES: Category[] = [
+  { id: "cat-drinks", name: "Drinks", createdAt: "2026-09-01T00:00:00.000Z" },
+  { id: "cat-food", name: "Food", createdAt: "2026-09-01T00:00:00.000Z" },
+];
+
 beforeEach(() => {
   closeDatabase();
   globalThis.indexedDB = new IDBFactory();
@@ -94,6 +101,7 @@ async function seedFull(): Promise<void> {
     paymentMethods: { cash: true, qr: { enabled: true, image: qrBlob() }, card: false },
   });
   await productsDb.bulkPut(db, PRODUCTS);
+  await categoriesDb.bulkPut(db, CATEGORIES);
   await salesDb.bulkPut(db, SALES);
   await saleItemsDb.bulkPut(db, SALE_ITEMS);
   await stockMovementsDb.bulkPut(db, MOVEMENTS);
@@ -102,10 +110,11 @@ async function seedFull(): Promise<void> {
 
 async function readState() {
   const db = await openDatabase();
-  const [stalls, products, sales, saleItems, stockMovements, expenses] =
+  const [stalls, products, categories, sales, saleItems, stockMovements, expenses] =
     await Promise.all([
       stallDb.getAll(db),
       productsDb.getAll(db),
+      categoriesDb.getAll(db),
       salesDb.getAll(db),
       saleItemsDb.getAll(db),
       stockMovementsDb.getAll(db),
@@ -117,6 +126,7 @@ async function readState() {
     stall: stall ? { id: stall.id, name: stall.name, currency: stall.currency } : null,
     qr: qr ? { type: qr.type, size: qr.size } : null,
     products,
+    categories,
     sales,
     saleItems,
     stockMovements,
@@ -137,6 +147,7 @@ describe("exportBackup", () => {
     expect(backup.saleItems).toHaveLength(3);
     expect(backup.stockMovements).toHaveLength(2);
     expect(backup.expenses).toHaveLength(2);
+    expect(backup.categories).toHaveLength(2);
     expect(backup.stall?.paymentMethods.qr.image).toMatch(/^data:image\/png;base64,/);
     // Fully JSON-serializable: no Blobs left anywhere.
     expect(JSON.parse(JSON.stringify(backup))).toEqual(backup);
@@ -197,12 +208,32 @@ describe("importBackup round trip", () => {
     const byId = <T extends { id: string }>(arr: T[]): T[] =>
       [...arr].sort((a, b) => a.id.localeCompare(b.id));
     expect(state.products).toEqual(byId(PRODUCTS));
+    expect(state.categories).toEqual(byId(CATEGORIES));
     expect(state.sales).toEqual(byId(SALES));
     expect(state.saleItems).toEqual(byId(SALE_ITEMS));
     expect(state.stockMovements).toEqual(byId(MOVEMENTS));
     expect(state.expenses).toEqual(byId(EXPENSES));
     expect(state.stall).toEqual({ id: "stall-1", name: "YayaCake", currency: "MYR" });
     expect(state.qr).toEqual({ type: "image/png", size: 6 });
+  });
+
+  it("imports a legacy backup (no categories field) and clears stale categories", async () => {
+    await seedFull();
+    const json = JSON.stringify(await exportBackup());
+    const raw = JSON.parse(json) as Record<string, unknown>;
+    delete raw.categories; // simulate a backup made before the categories store
+
+    const db = await openDatabase();
+    await resetAllData(db);
+    await seedFull(); // current data has 2 categories (Drinks, Food)
+
+    await importBackup(JSON.stringify(raw));
+
+    const state = await readState();
+    // Legacy backups replace everything, so the pre-existing categories are gone.
+    expect(state.categories).toEqual([]);
+    expect(state.products).toHaveLength(3);
+    expect(state.stall?.name).toBe("YayaCake");
   });
 
   it("stores a safety snapshot of current data before replacing it", async () => {
@@ -242,6 +273,7 @@ describe("importBackup validation failures never touch existing data", () => {
     await expect(importBackup(JSON.stringify(raw))).rejects.toBeInstanceOf(ImportError);
     const after = await readState();
     expect(after.products).toEqual(before.products);
+    expect(after.categories).toEqual(before.categories);
     expect(after.sales).toEqual(before.sales);
     expect(after.saleItems).toEqual(before.saleItems);
     expect(after.stockMovements).toEqual(before.stockMovements);
@@ -321,6 +353,21 @@ describe("importBackup validation failures never touch existing data", () => {
     });
   });
 
+  it("rejects duplicate category ids or names", async () => {
+    await expectRejectedUnchanged((raw) => {
+      (raw.categories as Category[])[1] = {
+        ...(raw.categories as Category[])[0],
+        id: "cat-drinks-dup",
+      };
+    });
+    await expectRejectedUnchanged((raw) => {
+      (raw.categories as Category[])[1] = {
+        ...(raw.categories as Category[])[0],
+        id: "cat-other",
+      };
+    });
+  });
+
   it("collects multiple errors at once", async () => {
     const minimal: Record<string, unknown> = {
       app: "WrongApp",
@@ -346,5 +393,13 @@ describe("importBackup validation failures never touch existing data", () => {
     const result = validateBackup(JSON.stringify(backup));
     expect(result.ok).toBe(true);
     if (result.ok) expect(result.backup.products).toHaveLength(3);
+  });
+
+  it("accepts a legacy backup without a categories field", async () => {
+    await seedFull();
+    const backup = JSON.parse(JSON.stringify(await exportBackup())) as Record<string, unknown>;
+    delete backup.categories;
+    const result = validateBackup(backup);
+    expect(result.ok).toBe(true);
   });
 });

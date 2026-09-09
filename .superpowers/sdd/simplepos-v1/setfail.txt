@@ -1,0 +1,57 @@
+﻿
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90mC:/Users/haika/OneDrive/Desktop/Kael/SimplePos[39m
+
+node.exe : Not implemented: navigation to another Document
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Not implemented...nother Document:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Not implemented: navigation to another Document
+ [31mΓ¥»[39m src/pages/__tests__/settings.test.tsx [2m([22m[2m13 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 2033[2mms[22m[39m
+   [31mΓ¥»[39m SettingsPage ΓÇö stall settings [2m(2)[22m
+[31m     [31m├ù[31m edits stall name and currency, persists, and reloads the header brand[39m[33m 597[2mms[22m[39m
+     [32mΓ£ô[39m blocks an empty stall name with an inline error[32m 107[2mms[22m[39m
+   [32mΓ£ô[39m SettingsPage ΓÇö stock settings [2m(1)[22m
+     [32mΓ£ô[39m saves a valid threshold and blocks invalid ones[32m 264[2mms[22m[39m
+   [32mΓ£ô[39m SettingsPage ΓÇö payment methods [2m(3)[22m
+     [32mΓ£ô[39m enables QR, uploads a PNG as a Blob, then removes it[32m 237[2mms[22m[39m
+     [32mΓ£ô[39m rejects a non-image QR upload with a toast[32m 108[2mms[22m[39m
+     [32mΓ£ô[39m persists card off, keeps cash on, and shows the Always available badge[32m 100[2mms[22m[39m
+   [32mΓ£ô[39m SettingsPage ΓÇö data & backup [2m(6)[22m
+     [32mΓ£ô[39m exports a backup with the SimplePOS-Backup filename and toasts[32m 79[2mms[22m[39m
+     [32mΓ£ô[39m imports a valid backup, restores stores, and shows the summary[32m 111[2mms[22m[39m
+     [32mΓ£ô[39m rejects garbage import with the verbatim error and keeps existing data[32m 83[2mms[22m[39m
+     [32mΓ£ô[39m exports sales CSV with the SimplePOS-Sales filename[32m 74[2mms[22m[39m
+     [32mΓ£ô[39m toasts when there are no sales to export[32m 94[2mms[22m[39m
+     [32mΓ£ô[39m delete all: type-to-confirm then wipes every store[32m 143[2mms[22m[39m
+   [32mΓ£ô[39m SettingsPage ΓÇö about [2m(1)[22m
+     [32mΓ£ô[39m shows version, the local-data warning, and the brand line[32m 33[2mms[22m[39m
+
+[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m[1m[41m Failed Tests 1 [49m[22m[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m
+
+[41m[1m FAIL [22m[49m src/pages/__tests__/settings.test.tsx[2m > [22mSettingsPage ΓÇö stall settings[2m > 
+[22medits stall name and currency, persists, and reloads the header brand
+[31m[1mError[22m: [2mexpect([22m[31melement[31m[2m).toHaveValue([22m[32mRein's Boutique[31m[2m)[22m
+
+Expected the element to have value:
+[32m  Rein's Boutique[31m
+Received:
+[31m  YayaCakeRein's Boutique[31m[39m
+[36m [2mΓ¥»[22m src/pages/__tests__/settings.test.tsx:[2m162:23[22m[39m
+    [90m160|[39m     await user.click(within(stallSection).getByRole("option", { name: ΓÇª
+    [90m161|[39m     // Guard: the controlled inputs must have committed before Save reΓÇª
+    [90m162|[39m     expect(nameInput).toHaveValue("Rein's Boutique");
+    [90m   |[39m                       [31m^[39m
+    [90m163|[39m     await user.click(within(stallSection).getByRole("button", { name: ΓÇª
+    [90m164|[39m
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m12 passed[39m[22m[90m (13)[39m
+[2m   Start at [22m 10:12:05
+[2m   Duration [22m 3.86s[2m (tests 55%, environment 25%, transform 9%, setup 7%, import 4%)[22m
+

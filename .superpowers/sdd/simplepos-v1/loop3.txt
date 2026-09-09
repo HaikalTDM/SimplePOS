@@ -1,0 +1,333 @@
+﻿
+> simplepos@0.1.0 test
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90mC:/Users/haika/OneDrive/Desktop/Kael/SimplePos[39m
+
+ [32mΓ£ô[39m src/components/__tests__/appgate.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 559[2mms[22m[39m
+   [32mΓ£ô[39m AppGate [2m(4)[22m
+     [33m[2mΓ£ô[22m[39m shows the error screen when the db fails to open, and retries[33m 311[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/__tests__/sales.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 826[2mms[22m[39m
+   [32mΓ£ô[39m SalesPage [2m(3)[22m
+     [33m[2mΓ£ô[22m[39m lists sales newest first with qty-sum item counts, totals, and payment badges[33m 360[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/__tests__/dashboard.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 995[2mms[22m[39m
+ [32mΓ£ô[39m src/layouts/__tests__/applayout.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 1043[2mms[22m[39m
+   [32mΓ£ô[39m AppLayout [2m(5)[22m
+     [33m[2mΓ£ô[22m[39m shows the stall brand in the header when a stall exists[33m 630[2mms[22m[39m
+ [32mΓ£ô[39m src/components/__tests__/components.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[33m 1672[2mms[22m[39m
+   [32mΓ£ô[39m Modal [2m(2)[22m
+     [33m[2mΓ£ô[22m[39m renders title, sets aria-modal, traps focus, and restores it on close[33m 306[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/__tests__/expenses.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 2309[2mms[22m[39m
+   [32mΓ£ô[39m ExpensesPage [2m(7)[22m
+     [33m[2mΓ£ô[22m[39m adds an expense with minor-unit amount and local date[33m 1053[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m blocks an empty description and non-positive amounts[33m 665[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/__tests__/pos.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 3191[2mms[22m[39m
+   [32mΓ£ô[39m PosPage [2m(10)[22m
+     [33m[2mΓ£ô[22m[39m adds a product with one tap: badge 1 and formatted total[33m 550[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m increments on repeat taps and blocks at the stock cap with a toast[33m 459[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m decrements with minus, removes the row at 1, and deletes directly[33m 522[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m edits quantity inline and clamps to available stock[33m 310[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m never touches stock: add, edit, decrement and remove leave the db unchanged[33m 602[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/backup/backup.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 138[2mms[22m[39m
+ [32mΓ£ô[39m src/test/smoke.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 204[2mms[22m[39m
+ [32mΓ£ô[39m src/utils/currency.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32mΓ£ô[39m src/components/__tests__/payment.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 3783[2mms[22m[39m
+   [32mΓ£ô[39m PaymentModal [2m(9)[22m
+     [33m[2mΓ£ô[22m[39m cash: empty received + CONFIRM PAID completes the sale and shows the success state[33m 392[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m cash: received below the total shows an error and disables confirm[33m 302[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m cash: received above the total shows the change and records the sale[33m 409[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m success path calls onSuccess and clears the cart[33m 1754[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/db/database.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/checkout/checkout.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/__tests__/onboarding.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 4675[2mms[22m[39m
+   [32mΓ£ô[39m OnboardingPage [2m(9)[22m
+     [33m[2mΓ£ô[22m[39m shows required error on empty name and does not advance[33m 313[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m advances to step 2 with a valid stall[33m 453[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m Skip for now goes straight to payment methods[33m 571[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m adds products with minor-unit prices and default stock 10[33m 1091[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m rejects invalid price and stays on step 2[33m 682[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m accepts a PNG QR image and shows a preview; rejects bad types[33m 682[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m Let's go! creates the stall, stores the QR blob, and navigates to POS[33m 632[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/csv/salesCsv.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+node.exe : Not implemented: navigation to another Document
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Not implemented...nother Document:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Not implemented: navigation to another Document
+ [32mΓ£ô[39m src/lib/calculations/dashboard.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/validation/product.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32mΓ£ô[39m src/utils/dates.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/calculations/profit.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [31mΓ¥»[39m src/pages/__tests__/settings.test.tsx [2m([22m[2m13 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 5766[2mms[22m[39m
+   [31mΓ¥»[39m SettingsPage ΓÇö stall settings [2m(2)[22m
+[31m     [31m├ù[31m edits stall name and currency, persists, and reloads the header brand[39m[33m 3818[2mms[22m[39m
+     [32mΓ£ô[39m blocks an empty stall name with an inline error[32m 160[2mms[22m[39m
+   [32mΓ£ô[39m SettingsPage ΓÇö stock settings [2m(1)[22m
+     [33m[2mΓ£ô[22m[39m saves a valid threshold and blocks invalid ones[33m 313[2mms[22m[39m
+   [32mΓ£ô[39m SettingsPage ΓÇö payment methods [2m(3)[22m
+     [33m[2mΓ£ô[22m[39m enables QR, uploads a PNG as a Blob, then removes it[33m 361[2mms[22m[39m
+     [32mΓ£ô[39m rejects a non-image QR upload with a toast[32m 147[2mms[22m[39m
+     [32mΓ£ô[39m persists card off, keeps cash on, and shows the Always available badge[32m 134[2mms[22m[39m
+   [32mΓ£ô[39m SettingsPage ΓÇö data & backup [2m(6)[22m
+     [32mΓ£ô[39m exports a backup with the SimplePOS-Backup filename and toasts[32m 158[2mms[22m[39m
+     [32mΓ£ô[39m imports a valid backup, restores stores, and shows the summary[32m 138[2mms[22m[39m
+     [32mΓ£ô[39m rejects garbage import with the verbatim error and keeps existing data[32m 90[2mms[22m[39m
+     [32mΓ£ô[39m exports sales CSV with the SimplePOS-Sales filename[32m 113[2mms[22m[39m
+     [32mΓ£ô[39m toasts when there are no sales to export[32m 108[2mms[22m[39m
+     [32mΓ£ô[39m delete all: type-to-confirm then wipes every store[32m 188[2mms[22m[39m
+   [32mΓ£ô[39m SettingsPage ΓÇö about [2m(1)[22m
+     [32mΓ£ô[39m shows version, the local-data warning, and the brand line[32m 33[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/calculations/money.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/__tests__/products.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[33m 6642[2mms[22m[39m
+   [32mΓ£ô[39m ProductsPage [2m(17)[22m
+     [33m[2mΓ£ô[22m[39m adds a product with minor-unit price and stock[33m 1006[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m edits a product and persists the changes[33m 713[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m adds a product with a new inline category and cost price (┬º78)[33m 1096[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m edits a product's category from the dropdown and cost price (┬º78)[33m 564[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m blocks an empty name and an invalid price[33m 443[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m adjusts stock up atomically with a manual_add movement[33m 447[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m records a manual_reduce movement with a positive quantity[33m 413[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m pre-adds a category in the manager and offers it in the product form[33m 818[2mms[22m[39m
+
+[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m[1m[41m Failed Tests 1 [49m[22m[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m
+
+[41m[1m FAIL [22m[49m src/pages/__tests__/settings.test.tsx[2m > [22mSettingsPage ΓÇö stall settings[2m > 
+[22medits stall name and currency, persists, and reloads the header brand
+[31m[1mAssertionError[22m[39m: expected 'YayaCake' to be 'Rein\'s Boutique' // Object.is equality
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"header-nav"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-nav__inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"header-nav__brand"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/dashboard"[39m
+          [36m>[39m
+            [0mYayaCake POS by Captura[0m
+          [36m</a>[39m
+          [36m<nav[39m
+            [33maria-label[39m=[32m"Main navigation"[39m
+            [33mclass[39m=[32m"header-nav__links"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"header-nav__link"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/dashboard"[39m
+            [36m>[39m
+              [0mDashboard[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"header-nav__link"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/pos"[39m
+            [36m>[39m
+              [0mSell[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"header-nav__link"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/products"[39m
+            [36m>[39m
+              [0mProducts[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"header-nav__link"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/sales"[39m
+            [36m>[39m
+              [0mSales[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"header-nav__link"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/expenses"[39m
+            [36m>[39m
+              [0mExpenses[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33maria-current[39m=[32m"page"[39m
+              [33mclass[39m=[32m"header-nav__link header-nav__link--active"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/settings"[39m
+            [36m>[39m
+              [0mSettings[0m
+            [36m</a>[39m
+          [36m</nav>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"app-layout__main"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"page settings-page"[39m
+        [36m>[39m
+          [36m<h1[39m
+            [33mclass[39m=[32m"page__title"[39m
+          [36m>[39m
+            [0mSettings[0m
+          [36m</h1>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"settings-stack"[39m
+          [36m>[39m
+            [36m<section[39m
+              [33mclass[39m=[32m"card settings-card"[39m
+            [36m>[39m
+              [36m<h2[39m
+                [33mclass[39m=[32m"settings-card__title"[39m
+              [36m>[39m
+                [0mStall Settings[0m
+              [36m</h2>[39m
+              [36m<form[39m
+                [33mclass[39m=[32m"settings-form"[39m
+                [33mnovalidate[39m=[32m""[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"input-group"[39m
+                [36m>[39m
+                  [36m<label[39m
+                    [33mclass[39m=[32m"input-label"[39m
+                    [33mfor[39m=[32m"_r_1_"[39m
+                  [36m>[39m
+                    [0mStall Name[0m
+                  [36m</label>[39m
+                  [36m<input[39m
+                    [33mautocomplete[39m=[32m"organization"[39m
+                    [33mclass[39m=[32m"input"[39m
+                    [33mid[39m=[32m"_r_1_"[39m
+                    [33mmaxlength[39m=[32m"50"[39m
+                    [33mplaceholder[39m=[32m"e.g., YayaCake, Local Coffee, Rein's Boutique"[39m
+                    [33mvalue[39m=[32m"YayaCake"[39m
+                  [36m/>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"select"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"input-label"[39m
+                    [33mid[39m=[32m"_r_3_"[39m
+                  [36m>[39m
+                    [0mCurrency[0m
+                  [36m</span>[39m
+                  [36m<button[39m
+                    [33maria-controls[39m=[32m"_r_2_"[39m
+                    [33maria-expanded[39m=[32m"false"[39m
+                    [33maria-haspopup[39m=[32m"listbox"[39m
+                    [33maria-labelledby[39m=[32m"_r_3_"[39m
+                    [33mclass[39m=[32m"select__trigger"[39m
+                    [33mrole[39m=[32m"combobox"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"select__value"[39m
+                    [36m>[39m
+                      [0mSGD[0m
+                    [36m</span>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"select__chevron"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"18"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"18"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"m6 9 6 6 6-6"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"select"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"input-label"[39m
+                    [33mid[39m=[32m"_r_6_"[39m
+                  [36m>[39m
+                    [0mBusiness Type[0m
+                  [36m</span>[39m
+                  [36m<button[39m
+                    [33maria-controls[39m=[32m"_r_5_"[39m
+                    [33maria-expanded[39m=[32m"false"[39m
+                    [33maria-haspopup[39m=[32m"listbox"[39m
+                    [33maria-labelledby[39m=[32m"_r_6_"[39m
+                    [33mclass[39m=[32m"select__trigger"[39m
+                    [33mrole[39m=[32m"combobox"[39m
+      ...
+
+Expected: [32m"[7mRein's Boutiqu[27me"[39m
+Received: [31m"[7mYayaCak[27me"[39m
+
+[36m [2mΓ¥»[22m waitFor.timeout src/pages/__tests__/settings.test.tsx:[2m170:27[22m[39m
+    [90m168|[39m     await waitFor(async () => {
+    [90m169|[39m       const stall = await readStall();
+    [90m170|[39m       expect(stall?.name).toBe("Rein's Boutique");
+    [90m   |[39m                           [31m^[39m
+    [90m171|[39m       expect(stall?.currency).toBe("SGD");
+    [90m172|[39m     }, { timeout: 3000 });
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»[22m[39m
+
+[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m[1m[41m Unhandled Errors [49m[22m[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m
+[31m[1m
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.[22m[39m
+
+[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m[1m[41m Unhandled Rejection [49m[22m[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m
+[31m[1mInvalidStateError[22m: An operation was called on an object on which it is not allowed or at a time when it 
+is not allowed. Also occurs if a request is made on a source object that has been deleted or removed. Use 
+TransactionInactiveError or ReadOnlyError when possible, as they are more specific variations of 
+InvalidStateError.[39m
+[90m [2mΓ¥»[22m FDBDatabase.transaction node_modules/fake-indexeddb/build/esm/FDBDatabase.js:[2m136:13[22m[39m
+[36m [2mΓ¥»[22m bulkPut src/lib/db/stores.ts:[2m64:17[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m21 passed[39m[22m[90m (22)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m190 passed[39m[22m[90m (191)[39m
+[2m     Errors [22m [1m[31m1 error[39m[22m
+[2m   Start at [22m 10:07:55
+[2m   Duration [22m 10.41s[2m (environment 45%, tests 34%, setup 13%, transform 4%, import 4%, worker 1%)[22m
+
+[2mEnvironment [22m [33mjsdom was created 22 times[39m[2m ┬╖ 41.96s total, 45% of tracked time[22m
+[2m            [22m [2mcreate it once per worker with [22m[33mpool: 'vmThreads'[39m[2m (keeps per-file isolation) or [22m[33misolate: false[39m[2m (shares it across files)[22m
+[2m            [22m [2mlearn more: https://vitest.dev/guide/improving-performance#test-environments[22m
+
+    [90m 62|[39m ): Promise<void> {
+    [90m 63|[39m   if (values.length === 0) return;
+    [90m 64|[39m   const tx = db.transaction(store, "readwrite");
+    [90m   |[39m                 [31m^[39m
+    [90m 65|[39m   const done = txDone(tx);
+    [90m 66|[39m   const os = tx.objectStore(store);
+[90m [2mΓ¥»[22m Object.bulkPut src/lib/db/stores.ts:[2m142:30[22m[39m
+[90m [2mΓ¥»[22m src/contexts/ProductsContext.tsx:[2m89:26[22m[39m
+[90m [2mΓ¥»[22m runNextTicks node:internal/process/task_queues:[2m64:5[22m[39m
+[90m [2mΓ¥»[22m processImmediate node:internal/timers:[2m472:9[22m[39m
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[22m[39m
+[31m[1mSerialized Error:[22m[39m [90m{ code: 11, INDEX_SIZE_ERR: 1, DOMSTRING_SIZE_ERR: 2, HIERARCHY_REQUEST_ERR: 
+3, WRONG_DOCUMENT_ERR: 4, INVALID_CHARACTER_ERR: 5, NO_DATA_ALLOWED_ERR: 6, NO_MODIFICATION_ALLOWED_ERR: 7, 
+NOT_FOUND_ERR: 8, NOT_SUPPORTED_ERR: 9, INUSE_ATTRIBUTE_ERR: 10, INVALID_STATE_ERR: 11, SYNTAX_ERR: 12, 
+INVALID_MODIFICATION_ERR: 13, NAMESPACE_ERR: 14, INVALID_ACCESS_ERR: 15, VALIDATION_ERR: 16, TYPE_MISMATCH_ERR: 17, 
+SECURITY_ERR: 18, NETWORK_ERR: 19, ABORT_ERR: 20, URL_MISMATCH_ERR: 21, QUOTA_EXCEEDED_ERR: 22, TIMEOUT_ERR: 23, 
+INVALID_NODE_TYPE_ERR: 24, DATA_CLONE_ERR: 25 }[39m
+[31mThis error originated in "[1msrc/pages/__tests__/dashboard.test.tsx[22m" test file. It doesn't mean the error 
+was thrown inside the file itself, but while it was running.[39m
+[31mThe last test to run before this error was "[1mSTART SELLING navigates to the POS[22m". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.[39m
+[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m
+

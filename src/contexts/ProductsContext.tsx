@@ -1,9 +1,10 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import type { Product, StockMovement } from "../types";
+import type { Category, Product, StockMovement } from "../types";
 import {
   STORE_PRODUCTS,
   STORE_STOCK_MOVEMENTS,
+  categoriesDb,
   openDatabase,
   productsDb,
   requestToPromise,
@@ -32,8 +33,23 @@ export async function productHasSales(productId: string): Promise<boolean> {
   return (await soldProductIdSet()).has(productId);
 }
 
+/** Distinct non-null category names on products that aren't registered yet. */
+export function missingCategoryNames(
+  products: Product[],
+  categories: Category[],
+): string[] {
+  const known = new Set(categories.map((c) => c.name.toLowerCase()));
+  const missing = new Set<string>();
+  for (const p of products) {
+    const name = p.category?.trim();
+    if (name && !known.has(name.toLowerCase())) missing.add(name);
+  }
+  return [...missing];
+}
+
 interface ProductsContextValue {
   products: Product[];
+  categories: Category[];
   loading: boolean;
   refresh: () => Promise<void>;
   addProduct: (input: ProductInput) => Promise<Product>;
@@ -42,17 +58,47 @@ interface ProductsContextValue {
   deactivateProduct: (id: string) => Promise<void>;
   reactivateProduct: (id: string) => Promise<void>;
   deleteProduct: (id: string) => Promise<void>;
+  addCategory: (name: string) => Promise<Category>;
+  deleteCategory: (id: string) => Promise<void>;
 }
 
 const ProductsContext = createContext<ProductsContextValue | null>(null);
 
 export function ProductsProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
     const db = await openDatabase();
-    setProducts(await productsDb.getAll(db));
+    const [nextProducts, nextCategories] = await Promise.all([
+      productsDb.getAll(db),
+      categoriesDb.getAll(db),
+    ]);
+    // Backfill legacy/orphaned product categories (from before the categories
+    // store existed, or old imports). Products reference categories by name,
+    // so the dropdown must always contain every name in use.
+    const missing = missingCategoryNames(nextProducts, nextCategories);
+    if (missing.length > 0) {
+      const now = new Date().toISOString();
+      const added: Category[] = missing.map((name) => ({
+        id: newId(),
+        name,
+        createdAt: now,
+      }));
+      // The reads above already succeeded; if the write fails the connection
+      // is closing (component unmounted / tests tearing down). Still update
+      // local state from the fresh reads — the next mount reloads from the db.
+      try {
+        await categoriesDb.bulkPut(db, added);
+      } catch {
+        // Ignore: DB closing under us. No state corruption either way.
+      }
+      nextCategories.push(...added);
+      nextCategories.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    setProducts(nextProducts);
+    setCategories(nextCategories);
   }, []);
 
   useEffect(() => {
@@ -167,9 +213,48 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
     [refresh]
   );
 
+  const addCategory = useCallback(
+    async (name: string): Promise<Category> => {
+      const trimmed = name.trim();
+      if (!trimmed) throw new Error("Category name is required");
+      const known = new Set(categories.map((c) => c.name.toLowerCase()));
+      if (known.has(trimmed.toLowerCase())) {
+        throw new Error("That category already exists");
+      }
+      const db = await openDatabase();
+      const category: Category = {
+        id: newId(),
+        name: trimmed,
+        createdAt: new Date().toISOString(),
+      };
+      await categoriesDb.put(db, category);
+      await refresh();
+      return category;
+    },
+    [categories, refresh]
+  );
+
+  const deleteCategory = useCallback(
+    async (id: string) => {
+      const category = categories.find((c) => c.id === id);
+      if (!category) return;
+      const inUse = products.some((p) => p.category === category.name);
+      if (inUse) {
+        throw new Error(
+          `"${category.name}" is used by products. Remove it from those products first.`
+        );
+      }
+      const db = await openDatabase();
+      await categoriesDb.del(db, id);
+      await refresh();
+    },
+    [categories, products, refresh]
+  );
+
   const value = useMemo<ProductsContextValue>(
     () => ({
       products,
+      categories,
       loading,
       refresh,
       addProduct,
@@ -178,8 +263,10 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       deactivateProduct,
       reactivateProduct,
       deleteProduct,
+      addCategory,
+      deleteCategory,
     }),
-    [products, loading, refresh, addProduct, updateProduct, adjustStock, deleteProduct]
+    [products, categories, loading, refresh, addProduct, updateProduct, adjustStock, deleteProduct, addCategory, deleteCategory]
   );
 
   return <ProductsContext.Provider value={value}>{children}</ProductsContext.Provider>;

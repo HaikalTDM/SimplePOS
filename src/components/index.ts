@@ -23,4 +23,6 @@ export { default as PosCart } from "./PosCart";
 export { default as CategoryBar } from "./CategoryBar";
 export { default as PaymentModal } from "./PaymentModal";
 export type { PaymentModalProps } from "./PaymentModal";
+export { default as ManageCategoriesModal } from "./ManageCategoriesModal";
+export type { ManageCategoriesModalProps } from "./ManageCategoriesModal";
 export * from "./icons";

@@ -1,0 +1,580 @@
+﻿
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.0 [39m[90mC:/Users/haika/OneDrive/Desktop/Kael/SimplePos[39m
+
+ [31mΓ¥»[39m src/pages/__tests__/products.test.tsx [2m([22m[2m17 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m16 skipped[39m[2m)[22m[33m 974[2mms[22m[39m
+   [31mΓ¥»[39m ProductsPage [2m(17)[22m
+     [2m[90mΓåô[39m[22m renders the empty state when there are no products
+     [2m[90mΓåô[39m[22m adds a product with minor-unit price and stock
+     [2m[90mΓåô[39m[22m edits a product and persists the changes
+[31m     [31m├ù[31m adds a product with a new inline category and cost price (┬º78)[39m[33m 973[2mms[22m[39m
+     [2m[90mΓåô[39m[22m edits a product's category from the dropdown and cost price (┬º78)
+     [2m[90mΓåô[39m[22m blocks an empty name and an invalid price
+     [2m[90mΓåô[39m[22m adjusts stock up atomically with a manual_add movement
+     [2m[90mΓåô[39m[22m records a manual_reduce movement with a positive quantity
+     [2m[90mΓåô[39m[22m deletes a never-sold product after confirmation
+     [2m[90mΓåô[39m[22m hides Delete for products with sales but keeps Deactivate
+     [2m[90mΓåô[39m[22m deactivates a product and shows the Inactive badge
+     [2m[90mΓåô[39m[22m reactivates a deactivated product
+     [2m[90mΓåô[39m[22m filters case-insensitively and restores with the clear button
+     [2m[90mΓåô[39m[22m pre-adds a category in the manager and offers it in the product form
+     [2m[90mΓåô[39m[22m shows category usage and disables deleting an in-use category
+     [2m[90mΓåô[39m[22m deletes an unused category
+     [2m[90mΓåô[39m[22m rejects a duplicate category name
+node.exe : 
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m[1m[41m Failed Tests 1 [49m[22m[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m
+
+[41m[1m FAIL [22m[49m src/pages/__tests__/products.test.tsx[2m > [22mProductsPage[2m > [22madds a product with 
+a new inline category and cost price (┬º78)
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the text: Drinks
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<span[39m
+  [33mclass[39m=[32m"badge badge--neutral"[39m
+[36m>[39m
+  [0mDrinks[0m
+[36m</span>[39m
+
+Ignored nodes: comments, script, style
+[36m<span[39m
+  [33mclass[39m=[32m"select__value"[39m
+[36m>[39m
+  [0mDrinks[0m
+[36m</span>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or 
+`findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"overflow: hidden;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"products-page"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"products-header"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"products-title"[39m
+        [36m>[39m
+          [0mProducts[0m
+        [36m</h1>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"products-header__actions"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"keycap-btn keycap-btn--neutral keycap-btn--md"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"18"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"18"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20.59 13.41 12 22 2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"[39m
+              [36m/>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"7"[39m
+                [33mcy[39m=[32m"7"[39m
+                [33mr[39m=[32m"1.5"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0mCategories[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"keycap-btn keycap-btn--gold keycap-btn--md"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"18"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"18"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M12 5v14"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M5 12h14"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0mAdd Product[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"products-search"[39m
+      [36m>[39m
+        [36m<svg[39m
+          [33maria-hidden[39m=[32m"true"[39m
+          [33mclass[39m=[32m"products-search__icon"[39m
+          [33mfill[39m=[32m"none"[39m
+          [33mheight[39m=[32m"18"[39m
+          [33mstroke[39m=[32m"currentColor"[39m
+          [33mstroke-linecap[39m=[32m"round"[39m
+          [33mstroke-linejoin[39m=[32m"round"[39m
+          [33mstroke-width[39m=[32m"2"[39m
+          [33mviewBox[39m=[32m"0 0 24 24"[39m
+          [33mwidth[39m=[32m"18"[39m
+        [36m>[39m
+          [36m<circle[39m
+            [33mcx[39m=[32m"11"[39m
+            [33mcy[39m=[32m"11"[39m
+            [33mr[39m=[32m"7"[39m
+          [36m/>[39m
+          [36m<path[39m
+            [33md[39m=[32m"m20 20-3.5-3.5"[39m
+          [36m/>[39m
+        [36m</svg>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"input-group"[39m
+        [36m>[39m
+          [36m<input[39m
+            [33maria-label[39m=[32m"Search products"[39m
+            [33mclass[39m=[32m"input products-search__input"[39m
+            [33mid[39m=[32m"_r_0_"[39m
+            [33mplaceholder[39m=[32m"Search products..."[39m
+            [33mvalue[39m=[32m""[39m
+          [36m/>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"products-grid"[39m
+      [36m>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"products-card"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"products-card__top"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"products-card__name"[39m
+            [36m>[39m
+              [0mMilo[0m
+            [36m</h2>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge badge--neutral"[39m
+            [36m>[39m
+              [0mDrinks[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"products-card__price"[39m
+          [36m>[39m
+            [0mRM 3.00[0m
+          [36m</p>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"products-card__stock"[39m
+          [36m>[39m
+            [0mStock: [0m
+            [0m10[0m
+            [36m<span[39m
+              [33mclass[39m=[32m"badge badge--neutral"[39m
+            [36m>[39m
+              [0mLow[0m
+            [36m</span>[39m
+          [36m</p>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"products-card__actions"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Edit Milo"[39m
+              [33mclass[39m=[32m"products-card__action"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"18"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"18"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Adjust stock for Milo"[39m
+              [33mclass[39m=[32m"products-card__action"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"18"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"18"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m21 16-4 4-4-4"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M17 20V4"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m3 8 4-4 4 4"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M7 4v16"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Deactivate Milo"[39m
+              [33mclass[39m=[32m"products-card__action"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"18"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"18"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M18.36 6.64a9 9 0 1 1-12.72 0"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 2v10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Delete Milo"[39m
+              [33mclass[39m=[32m"products-card__action products-card__action--danger"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"18"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"18"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M4 7h16"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M10 11v6"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M14 11v6"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m6 7 1 13a1.5 1.5 0 0 0 1.5 1.3h7A1.5 1.5 0 0 0 17 20l1-13"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M9 7V5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5v2"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</article>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"modal-overlay modal-overlay--closing"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33maria-labelledby[39m=[32m"_r_1_"[39m
+          [33maria-modal[39m=[32m"true"[39m
+          [33mclass[39m=[32m"modal-panel"[39m
+          [33mrole[39m=[32m"dialog"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"modal-panel__header"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"modal-panel__title"[39m
+              [33mid[39m=[32m"_r_1_"[39m
+            [36m>[39m
+              [0mAdd Product[0m
+            [36m</h2>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Close dialog"[39m
+              [33mclass[39m=[32m"modal-panel__close"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"18"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"18"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"9"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m9 9 6 6"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m15 9-6 6"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"modal-panel__body"[39m
+          [36m>[39m
+            [36m<form[39m
+              [33mclass[39m=[32m"products-form"[39m
+              [33mnovalidate[39m=[32m""[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"input-group"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"input-label"[39m
+                  [33mfor[39m=[32m"_r_5_"[39m
+                [36m>[39m
+                  [0mProduct Name[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"input"[39m
+                  [33mid[39m=[32m"_r_5_"[39m
+                  [33mvalue[39m=[32m"Milo"[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"input-group"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"input-label"[39m
+                  [33mfor[39m=[32m"_r_6_"[39m
+                [36m>[39m
+                  [0mSelling Price[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"input"[39m
+                  [33mid[39m=[32m"_r_6_"[39m
+                  [33minputmode[39m=[32m"decimal"[39m
+                  [33mvalue[39m=[32m"3.00"[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"input-group"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"input-label"[39m
+                  [33mfor[39m=[32m"_r_7_"[39m
+                [36m>[39m
+                  [0mCost Price (optional)[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"input"[39m
+                  [33mid[39m=[32m"_r_7_"[39m
+                  [33minputmode[39m=[32m"decimal"[39m
+                  [33mvalue[39m=[32m"1.80"[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"select"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"input-label"[39m
+                  [33mid[39m=[32m"_r_9_"[39m
+                [36m>[39m
+                  [0mCategory[0m
+                [36m</span>[39m
+                [36m<button[39m
+                  [33maria-controls[39m=[32m"_r_8_"[39m
+                  [33maria-expanded[39m=[32m"false"[39m
+                  [33maria-haspopup[39m=[32m"listbox"[39m
+                  [33maria-labelledby[39m=[32m"_r_9_"[39m
+                  [33mclass[39m=[32m"select__trigger"[39m
+                  [33mrole[39m=[32m"combobox"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"select__value"[39m
+                  [36m>[39m
+                    [0mDrinks[0m
+                  [36m</span>[39m
+                  [36m<svg[39m
+                    [33maria-hidden[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"select__chevron"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mheight[39m=[32m"18"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mwidth[39m=[32m"18"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"m6 9 6 6 6-6"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                [36m</button>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"input-group"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"input-label"[39m
+                  [33mfor[39m=[32m"_r_b_"[39m
+                [36m>[39m
+                  [0mInitial Stock[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"input"[39m
+                  [33mid[39m=[32m"_r_b_"[39m
+                  [33minputmode[39m=[32m"numeric"[39m
+                  [33mvalue[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</div>[39m
+            [36m</form>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"modal-panel__footer"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"keycap-btn keycap-btn--neutral keycap-btn--md"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mCancel[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"keycap-btn keycap-btn--primary keycap-btn--md"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mSave[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+    [36m<div[39m
+      [33maria-live[39m=[32m"polite"[39m
+      [33mclass[39m=[32m"toast-host"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"toast toast--success"[39m
+        [33mrole[39m=[32m"status"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+          [33mclass[39m=[32m"toast__icon"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"18"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-linecap[39m=[32m"round"[39m
+            [33mstroke-linejoin[39m=[32m"round"[39m
+            [33mstroke-width[39m=[32m"2"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"18"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m5 12.5 4.5 4.5L19 7"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"toast__message"[39m
+        [36m>[39m
+          [0mProduct added[0m
+        [36m</span>[39m
+        [36m<button[39m
+          [33maria-label[39m=[32m"Dismiss notification"[39m
+          [33mclass[39m=[32m"toast__close"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m16 skipped[39m[90m (17)[39m
+[2m   Start at [22m 10:05:14
+[2m   Duration [22m 2.67s[2m (tests 39%, environment 36%, setup 10%, transform 10%, import 5%)[22m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"16"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-linecap[39m=[32m"round"[39m
+            [33mstroke-linejoin[39m=[32m"round"[39m
+            [33mstroke-width[39m=[32m"2"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"16"[39m
+          [36m>[39m
+            [36m<circle[39m
+              [33mcx[39m=[32m"12"[39m
+              [33mcy[39m=[32m"12"[39m
+              [33mr[39m=[32m"9"[39m
+            [36m/>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m9 9 6 6"[39m
+            [36m/>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m15 9-6 6"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2mΓ¥»[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2mΓ¥»[22m getElementError node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
+[90m [2mΓ¥»[22m getMultipleElementsFoundError 
+node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2mΓ¥»[22m src/pages/__tests__/products.test.tsx:[2m162:19[22m[39m
+    [90m160|[39m
+    [90m161|[39m     expect(await screen.findByText("Product added")).toBeInTheDocumentΓÇª
+    [90m162|[39m     expect(screen.getByText("Drinks")).toBeInTheDocument();
+    [90m   |[39m                   [31m^[39m
+    [90m163|[39m     const db = await openDatabase();
+    [90m164|[39m     const products = await productsDb.getAll(db);
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»[22m[39m
+
+

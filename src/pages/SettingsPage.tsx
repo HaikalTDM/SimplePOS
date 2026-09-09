@@ -41,6 +41,13 @@ const MAX_QR_BYTES = 2 * 1024 * 1024;
 const QR_TYPES = ["image/png", "image/jpeg", "image/webp"];
 const BUSINESS_TYPES = ["Food & Beverage", "Retail", "Services", "Other"];
 
+/** §62/§85 — full page reload to re-run AppGate after a destructive change.
+ *  Skipped under vitest: jsdom has no navigation and just logs a warning. */
+function reloadAppAfterMs(ms = 1200): void {
+  if (import.meta.env.MODE === "test") return;
+  setTimeout(() => window.location.reload(), ms);
+}
+
 const CURRENCY_OPTIONS = (Object.keys(CURRENCIES) as Currency[]).map((code) => ({
   value: code,
   label: code,
@@ -416,13 +423,7 @@ function DataBackupSection({ stall }: { stall: Stall }) {
       );
       toast({ message: "Import successful.", variant: "success" });
       // §62: reload application state safely.
-      setTimeout(() => {
-        try {
-          window.location.reload();
-        } catch {
-          // No reload surface (tests): state above is already shown.
-        }
-      }, 1200);
+      reloadAppAfterMs();
     } catch (err) {
       toast({ message: IMPORT_FAILED, variant: "error" });
       if (err instanceof ImportError) {
@@ -458,13 +459,7 @@ function DataBackupSection({ stall }: { stall: Stall }) {
       setDeleteOpen(false);
       toast({ message: "All data deleted", variant: "success" });
       // §85: land back on onboarding — AppGate handles the redirect.
-      setTimeout(() => {
-        try {
-          window.location.reload();
-        } catch {
-          // No reload surface (tests).
-        }
-      }, 1200);
+      reloadAppAfterMs();
     } catch {
       toast({ message: "We couldn't delete your data.", variant: "error" });
     } finally {

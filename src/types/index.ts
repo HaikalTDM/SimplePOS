@@ -30,6 +30,15 @@ export interface Product {
   updatedAt: string;
 }
 
+/** A pre-added category a user can assign products to. Products reference
+ *  categories by NAME (Product.category is the name string), so deleting a
+ *  category is only allowed while no product uses it. */
+export interface Category {
+  id: string;
+  name: string;
+  createdAt: string;
+}
+
 export interface Sale {
   id: string;
   timestamp: string;
@@ -111,4 +120,6 @@ export interface Backup {
   saleItems: SaleItem[];
   stockMovements: StockMovement[];
   expenses: Expense[];
+  /** Present from backup format 1.0+ on; optional so older backups import. */
+  categories?: Category[];
 }

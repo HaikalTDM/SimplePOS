@@ -12,9 +12,11 @@ import {
   IconPower,
   IconProducts,
   IconSearch,
+  IconTag,
   IconTrash,
   Input,
   KeycapButton,
+  ManageCategoriesModal,
   Modal,
   useToast,
 } from "../components";
@@ -31,6 +33,7 @@ export default function ProductsPage() {
   const threshold = stall?.lowStockThreshold ?? 10;
   const {
     products,
+    categories,
     loading,
     addProduct,
     updateProduct,
@@ -38,6 +41,7 @@ export default function ProductsPage() {
     deactivateProduct,
     reactivateProduct,
     deleteProduct,
+    addCategory,
   } = useProducts();
   const { toast } = useToast();
 
@@ -46,6 +50,7 @@ export default function ProductsPage() {
   const [editing, setEditing] = useState<Product | null>(null);
   const [adjusting, setAdjusting] = useState<Product | null>(null);
   const [deleting, setDeleting] = useState<Product | null>(null);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [soldIds, setSoldIds] = useState<Set<string>>(new Set());
 
@@ -157,16 +162,25 @@ export default function ProductsPage() {
     <div className="products-page">
       <div className="products-header">
         <h1 className="products-title">Products</h1>
-        <KeycapButton
-          variant="gold"
-          onClick={() => {
-            setEditing(null);
-            setFormOpen(true);
-          }}
-        >
-          <IconPlus size={18} />
-          Add Product
-        </KeycapButton>
+        <div className="products-header__actions">
+          <KeycapButton
+            variant="neutral"
+            onClick={() => setCategoriesOpen(true)}
+          >
+            <IconTag size={18} />
+            Categories
+          </KeycapButton>
+          <KeycapButton
+            variant="gold"
+            onClick={() => {
+              setEditing(null);
+              setFormOpen(true);
+            }}
+          >
+            <IconPlus size={18} />
+            Add Product
+          </KeycapButton>
+        </div>
       </div>
 
       <div className="products-search">
@@ -282,11 +296,20 @@ export default function ProductsPage() {
         open={formOpen}
         product={editing}
         currency={currency}
+        categories={categories.map((c) => c.name)}
         saving={saving}
         onClose={() => setFormOpen(false)}
         onSave={(input) =>
           editing ? handleEdit(editing.id, input) : handleAdd(input)
         }
+        onAddCategory={async (name) => {
+          await addCategory(name);
+        }}
+      />
+
+      <ManageCategoriesModal
+        open={categoriesOpen}
+        onClose={() => setCategoriesOpen(false)}
       />
 
       <StockAdjustModal

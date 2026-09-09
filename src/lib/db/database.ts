@@ -5,10 +5,11 @@
 // NEVER call indexedDB.deleteDatabase — schema changes must migrate, never wipe.
 
 export const DB_NAME = "simplepos";
-export const DB_VERSION = 1;
+export const DB_VERSION = 2;
 
 export const STORE_STALL = "stall";
 export const STORE_PRODUCTS = "products";
+export const STORE_CATEGORIES = "categories";
 export const STORE_SALES = "sales";
 export const STORE_SALE_ITEMS = "saleItems";
 export const STORE_STOCK_MOVEMENTS = "stockMovements";
@@ -18,6 +19,7 @@ export const STORE_BACKUP = "backup";
 export const ALL_STORES = [
   STORE_STALL,
   STORE_PRODUCTS,
+  STORE_CATEGORIES,
   STORE_SALES,
   STORE_SALE_ITEMS,
   STORE_STOCK_MOVEMENTS,
@@ -31,6 +33,11 @@ export const ALL_STORES = [
  *
  * - v1: initial schema — all stores with keyPath "id", except "backup" which
  *   uses keyPath "exportedAt" (Backup records have no id field).
+ * - v2: new "categories" store for pre-added product categories. Backfilling
+ *   existing free-text product categories into it happens lazily in the
+ *   products context (on load/refresh), not inside the migration — a store
+ *   read + write during an upgrade transaction is brittle. This migration
+ *   only creates the empty store; user data is preserved.
  *
  * To add a schema change: bump DB_VERSION, add MIGRATIONS[<newVersion>].
  */
@@ -57,6 +64,9 @@ export const MIGRATIONS: Record<number, (db: IDBDatabase) => void> = {
     expenses.createIndex("date", "date", { unique: false });
 
     db.createObjectStore(STORE_BACKUP, { keyPath: "exportedAt" });
+  },
+  2: (db) => {
+    db.createObjectStore(STORE_CATEGORIES, { keyPath: "id" });
   },
 };
 

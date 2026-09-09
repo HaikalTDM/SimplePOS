@@ -14,6 +14,7 @@ stock updates. The checkout flow targets a 5-item sale in under 30 seconds.
 - POS — product grid with real-time search and category filter, keycap-tactile UI, stock-aware cart, fast checkout
 - Checkout — cash (with change calculation), QR (locally stored merchant QR image), and card payment, all confirmed by the cashier
 - Products & stock — create/edit/deactivate products, cost price, manual stock adjustments with recorded movements, low-stock alerts
+- Categories — pre-add categories, assign them from a dropdown in the product form, or add a brand-new category inline while adding a product
 - Dashboard — today's sales, transactions, items sold, top sellers, low stock, estimated profit
 - Sales — history with date filter, per-sale detail with historical product snapshots (name/price/cost frozen at sale time)
 - Expenses — simple tracking with categories (Stock, Delivery, Packaging, Other)
@@ -37,9 +38,10 @@ stock updates. The checkout flow targets a 5-item sale in under 30 seconds.
 
 All data lives in the browser's IndexedDB. Nothing is ever sent to a server;
 there is no cloud sync, no analytics, no auth. The database (`simplepos`) has
-seven object stores: `stall`, `products`, `sales`, `saleItems`,
+eight object stores: `stall`, `products`, `categories`, `sales`, `saleItems`,
 `stockMovements`, `expenses`, and `backup` (automatic pre-import safety
-snapshots).
+snapshots). Products reference a category by name; the `categories` store holds
+the pre-added list shown in the product form dropdown.
 
 Money is stored as integer minor units per currency: MYR/SGD/PHP/THB use 2
 decimals, IDR/VND use 0. Display formatting is locale-aware per currency.
@@ -50,8 +52,10 @@ The UI never touches IndexedDB directly. A small db layer in
 
 ## How IndexedDB works here
 
-The database is versioned (currently version 1) with an explicit migration
-registry (`MIGRATIONS` in `src/lib/db/database.ts`). The database and its
+The database is versioned (currently version 2) with an explicit migration
+registry (`MIGRATIONS` in `src/lib/db/database.ts`). Version 2 added the
+`categories` store; category names already in use by existing products are
+backfilled automatically the next time the app loads. The database and its
 stores are created automatically on first open; schema changes must bump the
 version and add a migration — user data is never wiped on update. Checkout is
 the critical write: the sale, sale items, stock decreases, and stock movements

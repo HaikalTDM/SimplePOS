@@ -3,6 +3,7 @@ import {
   backupDb,
   openDatabase,
   runInTransaction,
+  STORE_CATEGORIES,
   STORE_EXPENSES,
   STORE_PRODUCTS,
   STORE_SALES,
@@ -25,6 +26,7 @@ export class ImportError extends Error {
 const DATA_STORES = [
   STORE_STALL,
   STORE_PRODUCTS,
+  STORE_CATEGORIES,
   STORE_SALES,
   STORE_SALE_ITEMS,
   STORE_STOCK_MOVEMENTS,
@@ -83,6 +85,8 @@ export async function importBackup(json: unknown): Promise<ImportSummary> {
     for (const store of DATA_STORES) tx.objectStore(store).clear();
     tx.objectStore(STORE_STALL).put(stall);
     for (const product of backup.products) tx.objectStore(STORE_PRODUCTS).put(product);
+    for (const category of backup.categories ?? [])
+      tx.objectStore(STORE_CATEGORIES).put(category);
     for (const sale of backup.sales) tx.objectStore(STORE_SALES).put(sale);
     for (const item of backup.saleItems) tx.objectStore(STORE_SALE_ITEMS).put(item);
     for (const movement of backup.stockMovements) tx.objectStore(STORE_STOCK_MOVEMENTS).put(movement);

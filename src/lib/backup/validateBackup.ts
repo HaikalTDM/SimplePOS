@@ -208,6 +208,30 @@ function checkExpenses(value: unknown, errors: string[]): void {
   });
 }
 
+function checkCategories(value: unknown, errors: string[]): void {
+  if (!Array.isArray(value)) {
+    errors.push("categories must be an array when present.");
+    return;
+  }
+  checkUniqueIds(value, "categories", errors);
+  const names = new Set<string>();
+  value.forEach((item, i) => {
+    const path = `categories[${i}]`;
+    if (!isRecord(item)) {
+      errors.push(`${path} must be an object.`);
+      return;
+    }
+    errorIf(errors, nonEmptyString(item.id), `${path}.id must be a non-empty string.`);
+    errorIf(errors, nonEmptyString(item.name), `${path}.name must be a non-empty string.`);
+    errorIf(errors, isIso(item.createdAt), `${path}.createdAt must be a valid ISO date string.`);
+    if (nonEmptyString(item.name)) {
+      const key = item.name.trim().toLowerCase();
+      if (names.has(key)) errors.push(`${path}.name is duplicated (case-insensitive).`);
+      names.add(key);
+    }
+  });
+}
+
 function checkRelationships(data: Obj, errors: string[]): void {
   const products = data.products;
   const sales = data.sales;
@@ -266,6 +290,8 @@ export function validateBackup(json: unknown): ValidationResult {
   checkSaleItems(data.saleItems, errors);
   checkStockMovements(data.stockMovements, errors);
   checkExpenses(data.expenses, errors);
+  // Optional — categories predates the categories store, so absent is valid.
+  if (data.categories !== undefined) checkCategories(data.categories, errors);
   checkRelationships(data, errors);
 
   if (errors.length > 0) return { ok: false, errors };

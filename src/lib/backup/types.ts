@@ -1,4 +1,5 @@
 import type {
+  Category,
   Expense,
   Product,
   Sale,
@@ -36,6 +37,8 @@ export interface BackupFile {
   saleItems: SaleItem[];
   stockMovements: StockMovement[];
   expenses: Expense[];
+  /** Optional so backups made before the categories store still import. */
+  categories?: Category[];
 }
 
 export type ValidationResult =

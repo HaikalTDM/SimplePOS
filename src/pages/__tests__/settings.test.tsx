@@ -153,11 +153,13 @@ describe("SettingsPage — stall settings", () => {
     await screen.findByText("Stall Settings");
 
     const stallSection = sectionOf("Stall Settings");
-    fireEvent.change(within(stallSection).getByLabelText("Stall Name"), {
-      target: { value: "Rein's Boutique" },
-    });
+    const nameInput = within(stallSection).getByLabelText("Stall Name");
+    await user.clear(nameInput);
+    await user.type(nameInput, "Rein's Boutique");
     await user.click(within(stallSection).getByRole("combobox", { name: "Currency" }));
     await user.click(within(stallSection).getByRole("option", { name: "SGD" }));
+    // Guard: the controlled inputs must have committed before Save reads state.
+    await waitFor(() => expect(nameInput).toHaveValue("Rein's Boutique"));
     await user.click(within(stallSection).getByRole("button", { name: "Save" }));
 
     expect(await screen.findByText("Settings saved", {}, { timeout: 3000 })).toBeInTheDocument();

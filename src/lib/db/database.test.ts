@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { Product } from "../../types";
+import { IDBFactory } from "fake-indexeddb";
+import type { Category, Product } from "../../types";
 import {
   closeDatabase,
   DB_NAME,
@@ -7,6 +8,7 @@ import {
   MIGRATIONS,
   openDatabase,
   STORE_BACKUP,
+  STORE_CATEGORIES,
   STORE_EXPENSES,
   STORE_PRODUCTS,
   STORE_SALES,
@@ -15,7 +17,7 @@ import {
   STORE_STOCK_MOVEMENTS,
 } from "./database";
 import { requestToPromise, runInTransaction } from "./promise";
-import { productsDb, resetAllData } from "./stores";
+import { categoriesDb, productsDb, resetAllData } from "./stores";
 
 const p1: Product = {
   id: "p1",
@@ -29,9 +31,16 @@ const p1: Product = {
   updatedAt: "2026-09-08T00:00:00.000Z",
 };
 
+const cat1: Category = {
+  id: "c1",
+  name: "Drinks",
+  createdAt: "2026-09-08T00:00:00.000Z",
+};
+
 const ALL_STORE_NAMES = [
   STORE_STALL,
   STORE_PRODUCTS,
+  STORE_CATEGORIES,
   STORE_SALES,
   STORE_SALE_ITEMS,
   STORE_STOCK_MOVEMENTS,
@@ -53,7 +62,7 @@ describe("database", () => {
     closeDatabase();
   });
 
-  it("creates all 7 stores with expected indexes at version 1", async () => {
+  it("creates all 8 stores with expected indexes", async () => {
     const db = await openDatabase();
     expect(db.name).toBe(DB_NAME);
     expect(db.version).toBe(DB_VERSION);
@@ -80,25 +89,36 @@ describe("database", () => {
   it("preserves data across close/reopen at the same version", async () => {
     let db = await openDatabase();
     await productsDb.put(db, p1);
+    await categoriesDb.put(db, cat1);
     closeDatabase();
 
     db = await openDatabase();
     expect(await productsDb.get(db, "p1")).toEqual(p1);
+    expect(await categoriesDb.get(db, "c1")).toEqual(cat1);
   });
 
-  it("runs a registered migration on version bump and preserves data", async () => {
-    const db0 = await openDatabase(dbVersion);
-    await productsDb.put(db0, p1);
-    closeDatabase();
-
-    dbVersion = 2;
-    MIGRATIONS[2] = () => {};
+  it("migrates a v1 database to v2: adds the categories store, keeps data", async () => {
+    const original = globalThis.indexedDB;
     try {
-      const db = await openDatabase(2);
-      expect(db.version).toBe(2);
+      // Simulate a user who has been running the v1 app: a fresh factory
+      // whose database was only ever opened at version 1.
+      globalThis.indexedDB = new IDBFactory();
+      closeDatabase();
+
+      const v1 = await openDatabase(1);
+      await productsDb.put(v1, p1);
+      closeDatabase();
+
+      // App update: opening at DB_VERSION runs MIGRATIONS[2].
+      const db = await openDatabase();
+      expect(db.version).toBe(DB_VERSION);
+      expect(db.objectStoreNames.contains(STORE_CATEGORIES)).toBe(true);
       expect(await productsDb.get(db, "p1")).toEqual(p1);
+      await categoriesDb.put(db, cat1);
+      expect(await categoriesDb.get(db, "c1")).toEqual(cat1);
     } finally {
-      delete MIGRATIONS[2];
+      globalThis.indexedDB = original;
+      closeDatabase();
     }
   });
 

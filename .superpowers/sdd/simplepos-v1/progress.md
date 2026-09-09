@@ -60,3 +60,5 @@ Task 13: complete (commit aac0966 — finished by controller after subagent interr
 Task 14: complete (commit 294ce8b, 187 tests, 3/3 clean runs)
 
 Task 15a: complete (commit c54ce27, all verification green: typecheck, 187 tests, build, verify:pwa 12/12, preview smoke 200/200/200)
+
+Task 15: complete. Final whole-branch review: VERDICT SHIP, 0 critical, 2 important. Important #1 (CartContext cap toast race) fixed in 627cdf4 (187/187 x2). Important #2 = process item: real-device Airplane-mode offline QA before public release. Branch: 22 commits, working tree clean.

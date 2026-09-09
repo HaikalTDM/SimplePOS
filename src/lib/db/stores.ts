@@ -1,5 +1,6 @@
 import type {
   Backup,
+  Category,
   Expense,
   Product,
   Sale,
@@ -10,6 +11,7 @@ import type {
 import {
   ALL_STORES,
   STORE_BACKUP,
+  STORE_CATEGORIES,
   STORE_EXPENSES,
   STORE_PRODUCTS,
   STORE_SALES,
@@ -146,6 +148,7 @@ function makeFacade<T>(storeName: string): StoreFacade<T> {
 
 export const stallDb = makeFacade<Stall>(STORE_STALL);
 export const productsDb = makeFacade<Product>(STORE_PRODUCTS);
+export const categoriesDb = makeFacade<Category>(STORE_CATEGORIES);
 export const salesDb = makeFacade<Sale>(STORE_SALES);
 export const saleItemsDb = makeFacade<SaleItem>(STORE_SALE_ITEMS);
 export const stockMovementsDb = makeFacade<StockMovement>(STORE_STOCK_MOVEMENTS);

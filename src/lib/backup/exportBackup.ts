@@ -1,5 +1,6 @@
 import type { Backup } from "../../types";
 import {
+  categoriesDb,
   expensesDb,
   openDatabase,
   productsDb,
@@ -22,10 +23,11 @@ export class BackupError extends Error {
 
 /** Read every store into a raw Backup (QR image stays a Blob). */
 export async function readAllStores(db: IDBDatabase): Promise<Backup> {
-  const [stalls, products, sales, saleItems, stockMovements, expenses] =
+  const [stalls, products, categories, sales, saleItems, stockMovements, expenses] =
     await Promise.all([
       stallDb.getAll(db),
       productsDb.getAll(db),
+      categoriesDb.getAll(db),
       salesDb.getAll(db),
       saleItemsDb.getAll(db),
       stockMovementsDb.getAll(db),
@@ -41,6 +43,7 @@ export async function readAllStores(db: IDBDatabase): Promise<Backup> {
     saleItems,
     stockMovements,
     expenses,
+    categories,
   };
 }
 

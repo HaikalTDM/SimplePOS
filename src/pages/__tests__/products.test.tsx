@@ -5,6 +5,7 @@ import { MemoryRouter } from "react-router-dom";
 import { IDBFactory } from "fake-indexeddb";
 import { ToastProvider } from "../../components";
 import {
+  categoriesDb,
   closeDatabase,
   openDatabase,
   productsDb,
@@ -12,7 +13,7 @@ import {
   stallDb,
   stockMovementsDb,
 } from "../../lib/db";
-import type { Product, SaleItem, Stall } from "../../types";
+import type { Category, Product, SaleItem, Stall } from "../../types";
 import { StallProvider } from "../../contexts/StallContext";
 import { ProductsProvider } from "../../contexts/ProductsContext";
 import ProductsPage from "../ProductsPage";
@@ -65,6 +66,13 @@ async function seedProduct(overrides: Partial<Product> = {}): Promise<Product> {
   };
   await productsDb.put(db, product);
   return product;
+}
+
+async function seedCategory(name: string, id = `c-${name}`): Promise<Category> {
+  const db = await openDatabase();
+  const category: Category = { id, name, createdAt: new Date().toISOString() };
+  await categoriesDb.put(db, category);
+  return category;
 }
 
 async function openAddModal(user: ReturnType<typeof userEvent.setup>) {
@@ -134,35 +142,41 @@ describe("ProductsPage", () => {
     expect(saved.updatedAt).not.toBe(original.updatedAt);
   });
 
-  it("adds a product with a category and cost price (§78)", async () => {
+  it("adds a product with a new inline category and cost price (§78)", async () => {
     await seedStall();
     renderPage();
     const user = userEvent.setup();
     await openAddModal(user);
 
-    fireEvent.change(screen.getByLabelText("Product Name"), { target: { value: "Milo" } });
-    fireEvent.change(screen.getByLabelText("Selling Price"), { target: { value: "3.00" } });
-    fireEvent.change(screen.getByLabelText("Cost Price (optional)"), {
-      target: { value: "1.80" },
-    });
-    fireEvent.change(screen.getByLabelText("Category (optional)"), {
-      target: { value: "Drinks" },
-    });
+    await user.type(screen.getByLabelText("Product Name"), "Milo");
+    await user.type(screen.getByLabelText("Selling Price"), "3.00");
+    await user.type(screen.getByLabelText("Cost Price (optional)"), "1.80");
+
+    await user.click(screen.getByRole("combobox", { name: "Category" }));
+    await user.click(screen.getByRole("option", { name: "＋ Add new category…" }));
+    await user.type(screen.getByLabelText("New category name"), "Drinks");
+    await user.click(screen.getByRole("button", { name: "Add" }));
     await user.click(screen.getByRole("button", { name: "Save" }));
 
     expect(await screen.findByText("Product added")).toBeInTheDocument();
-    expect(screen.getByText("Milo")).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
+    );
     expect(screen.getByText("Drinks")).toBeInTheDocument();
     const db = await openDatabase();
     const products = await productsDb.getAll(db);
     expect(products).toHaveLength(1);
     expect(products[0].costPrice).toBe(180);
     expect(products[0].category).toBe("Drinks");
+    const categories = await categoriesDb.getAll(db);
+    expect(categories.map((c) => c.name)).toEqual(["Drinks"]);
   });
 
-  it("edits a product's category and cost price (§78)", async () => {
+  it("edits a product's category from the dropdown and cost price (§78)", async () => {
     await seedStall();
     await seedProduct({ costPrice: 150, category: "Drinks" });
+    await seedCategory("Drinks");
+    await seedCategory("Food");
     renderPage();
     const user = userEvent.setup();
 
@@ -170,12 +184,14 @@ describe("ProductsPage", () => {
     fireEvent.change(screen.getByLabelText("Cost Price (optional)"), {
       target: { value: "2.25" },
     });
-    fireEvent.change(screen.getByLabelText("Category (optional)"), {
-      target: { value: "Food" },
-    });
+    await user.click(screen.getByRole("combobox", { name: "Category" }));
+    await user.click(screen.getByRole("option", { name: "Food" }));
     await user.click(screen.getByRole("button", { name: "Save" }));
 
     expect(await screen.findByText("Product updated")).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
+    );
     expect(screen.getByText("Food")).toBeInTheDocument();
     const db = await openDatabase();
     const saved = (await productsDb.getAll(db))[0];
@@ -339,5 +355,91 @@ describe("ProductsPage", () => {
     await user.click(screen.getByRole("button", { name: "Clear search" }));
     expect(screen.getByText("Milo")).toBeInTheDocument();
     expect(screen.getByText("Teh Tarik")).toBeInTheDocument();
+  });
+
+  it("pre-adds a category in the manager and offers it in the product form", async () => {
+    await seedStall();
+    renderPage();
+    const user = userEvent.setup();
+
+    await user.click(await screen.findByRole("button", { name: "Categories" }));
+    await user.type(screen.getByLabelText("New category"), "Snacks");
+    await user.click(screen.getByRole("button", { name: "Add" }));
+    expect(
+      await screen.findByText('Category "Snacks" added')
+    ).toBeInTheDocument();
+    expect(screen.getByText("Snacks")).toBeInTheDocument();
+    await user.keyboard("{Escape}");
+
+    const addButtons = await screen.findAllByRole("button", { name: "Add Product" });
+    await user.click(addButtons[0]);
+    await user.type(screen.getByLabelText("Product Name"), "Chips");
+    await user.type(screen.getByLabelText("Selling Price"), "2.00");
+    await user.click(screen.getByRole("combobox", { name: "Category" }));
+    await user.click(screen.getByRole("option", { name: "Snacks" }));
+    await user.click(screen.getByRole("button", { name: "Save" }));
+
+    expect(await screen.findByText("Product added")).toBeInTheDocument();
+    const db = await openDatabase();
+    const products = await productsDb.getAll(db);
+    expect(products[0].category).toBe("Snacks");
+    const categories = await categoriesDb.getAll(db);
+    expect(categories.map((c) => c.name)).toContain("Snacks");
+  });
+
+  it("shows category usage and disables deleting an in-use category", async () => {
+    await seedStall();
+    await seedProduct();
+    await seedCategory("Drinks");
+    renderPage();
+    const user = userEvent.setup();
+
+    await user.click(await screen.findByRole("button", { name: "Categories" }));
+    expect(screen.getByText("1 in use")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Delete Drinks" })).toBeDisabled();
+  });
+
+  it("deletes an unused category", async () => {
+    await seedStall();
+    await seedProduct({ category: null });
+    await seedCategory("Snacks");
+    renderPage();
+    const user = userEvent.setup();
+
+    await user.click(await screen.findByRole("button", { name: "Categories" }));
+    await user.click(screen.getByRole("button", { name: "Delete Snacks" }));
+    expect(
+      await screen.findByText('Category "Snacks" deleted')
+    ).toBeInTheDocument();
+    const db = await openDatabase();
+    expect(await categoriesDb.getAll(db)).toHaveLength(0);
+  });
+
+  it("rejects a duplicate category name", async () => {
+    await seedStall();
+    await seedCategory("Drinks");
+    renderPage();
+    const user = userEvent.setup();
+
+    await user.click(await screen.findByRole("button", { name: "Categories" }));
+    await user.type(screen.getByLabelText("New category"), "drinks");
+    await user.click(screen.getByRole("button", { name: "Add" }));
+    expect(await screen.findByText("That category already exists")).toBeInTheDocument();
+    const db = await openDatabase();
+    expect(await categoriesDb.getAll(db)).toHaveLength(1);
+  });
+
+  it("backfills a legacy product category into the categories store on load", async () => {
+    await seedStall();
+    // Product carries a category but no categories row exists (pre-feature data).
+    await seedProduct();
+    renderPage();
+
+    await screen.findByText("Milo");
+    const db = await openDatabase();
+    await waitFor(async () => {
+      const categories = await categoriesDb.getAll(db);
+      expect(categories.map((c) => c.name)).toEqual(["Drinks"]);
+    });
   });
 });

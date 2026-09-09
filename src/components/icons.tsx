@@ -236,3 +236,10 @@ export const IconCash = (props: IconProps) => (
     <path d="M18 12h.01" />
   </Svg>
 );
+
+export const IconTag = (props: IconProps) => (
+  <Svg {...props}>
+    <path d="M20.59 13.41 12 22 2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z" />
+    <circle cx="7" cy="7" r="1.5" />
+  </Svg>
+);
