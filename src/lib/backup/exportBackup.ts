@@ -6,6 +6,7 @@ import {
   productsDb,
   saleItemsDb,
   salesDb,
+  sessionsDb,
   stallDb,
   stockMovementsDb,
 } from "../db";
@@ -23,7 +24,7 @@ export class BackupError extends Error {
 
 /** Read every store into a raw Backup (QR image stays a Blob). */
 export async function readAllStores(db: IDBDatabase): Promise<Backup> {
-  const [stalls, products, categories, sales, saleItems, stockMovements, expenses] =
+  const [stalls, products, categories, sales, saleItems, stockMovements, expenses, sessions] =
     await Promise.all([
       stallDb.getAll(db),
       productsDb.getAll(db),
@@ -32,6 +33,7 @@ export async function readAllStores(db: IDBDatabase): Promise<Backup> {
       saleItemsDb.getAll(db),
       stockMovementsDb.getAll(db),
       expensesDb.getAll(db),
+      sessionsDb.getAll(db),
     ]);
   return {
     app: BACKUP_APP,
@@ -44,6 +46,7 @@ export async function readAllStores(db: IDBDatabase): Promise<Backup> {
     stockMovements,
     expenses,
     categories,
+    sessions,
   };
 }
 

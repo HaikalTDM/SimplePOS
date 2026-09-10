@@ -8,6 +8,7 @@ import {
   STORE_PRODUCTS,
   STORE_SALES,
   STORE_SALE_ITEMS,
+  STORE_SESSIONS,
   STORE_STALL,
   STORE_STOCK_MOVEMENTS,
 } from "../db";
@@ -31,6 +32,7 @@ const DATA_STORES = [
   STORE_SALE_ITEMS,
   STORE_STOCK_MOVEMENTS,
   STORE_EXPENSES,
+  STORE_SESSIONS,
 ] as const;
 
 /**
@@ -91,6 +93,8 @@ export async function importBackup(json: unknown): Promise<ImportSummary> {
     for (const item of backup.saleItems) tx.objectStore(STORE_SALE_ITEMS).put(item);
     for (const movement of backup.stockMovements) tx.objectStore(STORE_STOCK_MOVEMENTS).put(movement);
     for (const expense of backup.expenses) tx.objectStore(STORE_EXPENSES).put(expense);
+    for (const session of backup.sessions ?? [])
+      tx.objectStore(STORE_SESSIONS).put(session);
   });
 
   return {

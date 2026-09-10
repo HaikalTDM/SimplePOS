@@ -22,6 +22,7 @@ import AppGate from "./components/AppGate";
 import ThemeApplier from "./components/ThemeApplier";
 import { StallProvider } from "./contexts/StallContext";
 import { ProductsProvider } from "./contexts/ProductsContext";
+import { SessionProvider } from "./contexts/SessionContext";
 import { CartProvider } from "./contexts/CartContext";
 import App from "./App";
 import { playClick, playPop } from "./lib/sound";
@@ -68,9 +69,11 @@ createRoot(document.getElementById("root")!).render(
           <StallProvider>
             <ThemeApplier />
             <ProductsProvider>
-              <CartProvider>
-                <App />
-              </CartProvider>
+              <SessionProvider>
+                <CartProvider>
+                  <App />
+                </CartProvider>
+              </SessionProvider>
             </ProductsProvider>
           </StallProvider>
         </AppGate>

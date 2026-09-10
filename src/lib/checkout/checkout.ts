@@ -33,6 +33,8 @@ export interface CheckoutArgs {
   items: CheckoutItem[];
   paymentMethod: PaymentMethod;
   currency: Currency;
+  /** Register session this sale belongs to, when one is open. */
+  sessionId?: string;
 }
 
 export interface CheckoutResult {
@@ -61,7 +63,7 @@ export class CheckoutError extends Error {
  * it only after this resolves).
  */
 export async function completeCheckout(args: CheckoutArgs): Promise<CheckoutResult> {
-  const { items, paymentMethod, currency } = args;
+  const { items, paymentMethod, currency, sessionId } = args;
   if (items.length === 0) throw new CheckoutError("Cart is empty");
 
   const db = await openDatabase();
@@ -103,6 +105,7 @@ export async function completeCheckout(args: CheckoutArgs): Promise<CheckoutResu
       const timestamp = new Date().toISOString();
       const total = lines.reduce((sum, l) => sum + l.product.sellingPrice * l.qty, 0);
       const sale: Sale = { id: newId(), timestamp, total, paymentMethod, currency };
+      if (sessionId) sale.sessionId = sessionId;
 
       const saleItems: SaleItem[] = lines.map(({ product, qty }) => ({
         id: newId(),

@@ -57,6 +57,8 @@ export interface Sale {
   paymentMethod: PaymentMethod;
   currency: string;
   notes?: string;
+  /** Register session this sale belongs to (undefined for pre-session sales). */
+  sessionId?: string;
 }
 
 export interface SaleItem {
@@ -121,6 +123,35 @@ export interface StockMovement {
   saleId?: string;
 }
 
+/** A register session: "Start Sale" opens it, "Close Sale" ends it with a
+ *  summary + cash reconciliation. Multiple sessions per day are allowed. */
+export interface Session {
+  id: string;
+  openedAt: string;
+  /** null while the session is still open. */
+  closedAt: string | null;
+  /** Integer minor units, optional starting cash in the drawer. */
+  openingFloat: number | null;
+  /** Integer minor units counted at close. */
+  countedCash: number | null;
+  /** Integer minor units: float + cash sales − expenses for the period. */
+  expectedCash: number | null;
+  /** Snapshot captured at close (historical, like sale items). */
+  totals: {
+    sales: number;
+    transactions: number;
+    items: number;
+  };
+  payments: {
+    cash: number;
+    qr: number;
+    card: number;
+  };
+  expenseTotal: number;
+  notes?: string;
+  currency: string;
+}
+
 /** §59 — full-database backup payload. */
 export interface Backup {
   app: "SimplePOS";
@@ -134,4 +165,6 @@ export interface Backup {
   expenses: Expense[];
   /** Present from backup format 1.0+ on; optional so older backups import. */
   categories?: Category[];
+  /** Present from DB v3 on; optional so older backups import. */
+  sessions?: Session[];
 }

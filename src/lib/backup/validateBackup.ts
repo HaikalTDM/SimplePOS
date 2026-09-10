@@ -154,6 +154,11 @@ function checkSales(value: unknown, errors: string[]): void {
     errorIf(errors, typeof item.paymentMethod === "string" && PAYMENT_METHODS.includes(item.paymentMethod), `${path}.paymentMethod must be one of cash, qr, card.`);
     errorIf(errors, isCurrency(item.currency), `${path}.currency must be one of MYR, SGD, PHP, THB, IDR, VND.`);
     errorIf(errors, item.notes === undefined || typeof item.notes === "string", `${path}.notes must be a string when present.`);
+    errorIf(
+      errors,
+      item.sessionId === undefined || nonEmptyString(item.sessionId),
+      `${path}.sessionId must be a non-empty string when present.`,
+    );
   });
 }
 
@@ -252,11 +257,69 @@ function checkCategories(value: unknown, errors: string[]): void {
   });
 }
 
+function checkSessions(value: unknown, errors: string[]): void {
+  if (!Array.isArray(value)) {
+    errors.push("sessions must be an array when present.");
+    return;
+  }
+  checkUniqueIds(value, "sessions", errors);
+  value.forEach((item, i) => {
+    const path = `sessions[${i}]`;
+    if (!isRecord(item)) {
+      errors.push(`${path} must be an object.`);
+      return;
+    }
+    errorIf(errors, nonEmptyString(item.id), `${path}.id must be a non-empty string.`);
+    errorIf(errors, isIso(item.openedAt), `${path}.openedAt must be a valid ISO date string.`);
+    errorIf(
+      errors,
+      item.closedAt === null || isIso(item.closedAt),
+      `${path}.closedAt must be a valid ISO date string or null.`,
+    );
+    errorIf(
+      errors,
+      item.openingFloat === null || isNonNegSafeInt(item.openingFloat),
+      `${path}.openingFloat must be a non-negative integer or null.`,
+    );
+    errorIf(
+      errors,
+      item.countedCash === null || isNonNegSafeInt(item.countedCash),
+      `${path}.countedCash must be a non-negative integer or null.`,
+    );
+    errorIf(
+      errors,
+      item.expectedCash === null || isNonNegSafeInt(item.expectedCash),
+      `${path}.expectedCash must be a non-negative integer or null.`,
+    );
+    errorIf(errors, isNonNegSafeInt(item.expenseTotal), `${path}.expenseTotal must be a non-negative integer.`);
+    errorIf(errors, item.notes === undefined || typeof item.notes === "string", `${path}.notes must be a string when present.`);
+    errorIf(errors, isCurrency(item.currency), `${path}.currency must be one of MYR, SGD, PHP, THB, IDR, VND.`);
+
+    const totals = item.totals;
+    if (!isRecord(totals)) {
+      errors.push(`${path}.totals must be an object.`);
+    } else {
+      errorIf(errors, isNonNegSafeInt(totals.sales), `${path}.totals.sales must be a non-negative integer.`);
+      errorIf(errors, isNonNegSafeInt(totals.transactions), `${path}.totals.transactions must be a non-negative integer.`);
+      errorIf(errors, isNonNegSafeInt(totals.items), `${path}.totals.items must be a non-negative integer.`);
+    }
+    const payments = item.payments;
+    if (!isRecord(payments)) {
+      errors.push(`${path}.payments must be an object.`);
+    } else {
+      errorIf(errors, isNonNegSafeInt(payments.cash), `${path}.payments.cash must be a non-negative integer.`);
+      errorIf(errors, isNonNegSafeInt(payments.qr), `${path}.payments.qr must be a non-negative integer.`);
+      errorIf(errors, isNonNegSafeInt(payments.card), `${path}.payments.card must be a non-negative integer.`);
+    }
+  });
+}
+
 function checkRelationships(data: Obj, errors: string[]): void {
   const products = data.products;
   const sales = data.sales;
   const saleItems = data.saleItems;
   const movements = data.stockMovements;
+  const sessions = data.sessions;
   if (
     !Array.isArray(products) ||
     !Array.isArray(sales) ||
@@ -269,6 +332,20 @@ function checkRelationships(data: Obj, errors: string[]): void {
   for (const p of products) if (isRecord(p) && nonEmptyString(p.id)) productIds.add(p.id);
   const saleIds = new Set<string>();
   for (const s of sales) if (isRecord(s) && nonEmptyString(s.id)) saleIds.add(s.id);
+  const sessionIds = new Set<string>();
+  if (Array.isArray(sessions)) {
+    for (const s of sessions) if (isRecord(s) && nonEmptyString(s.id)) sessionIds.add(s.id);
+  }
+
+  sales.forEach((sale, i) => {
+    if (!isRecord(sale)) return;
+    if (
+      typeof sale.sessionId === "string" &&
+      !sessionIds.has(sale.sessionId)
+    ) {
+      errors.push(`sales[${i}].sessionId references a missing session.`);
+    }
+  });
 
   saleItems.forEach((item, i) => {
     if (!isRecord(item)) return;
@@ -312,6 +389,8 @@ export function validateBackup(json: unknown): ValidationResult {
   checkExpenses(data.expenses, errors);
   // Optional — categories predates the categories store, so absent is valid.
   if (data.categories !== undefined) checkCategories(data.categories, errors);
+  // Optional — sessions predates the sessions store, so absent is valid.
+  if (data.sessions !== undefined) checkSessions(data.sessions, errors);
   checkRelationships(data, errors);
 
   if (errors.length > 0) return { ok: false, errors };

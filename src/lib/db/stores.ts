@@ -5,6 +5,7 @@ import type {
   Product,
   Sale,
   SaleItem,
+  Session,
   Stall,
   StockMovement,
 } from "../../types";
@@ -16,6 +17,7 @@ import {
   STORE_PRODUCTS,
   STORE_SALES,
   STORE_SALE_ITEMS,
+  STORE_SESSIONS,
   STORE_STALL,
   STORE_STOCK_MOVEMENTS,
 } from "./database";
@@ -153,6 +155,7 @@ export const salesDb = makeFacade<Sale>(STORE_SALES);
 export const saleItemsDb = makeFacade<SaleItem>(STORE_SALE_ITEMS);
 export const stockMovementsDb = makeFacade<StockMovement>(STORE_STOCK_MOVEMENTS);
 export const expensesDb = makeFacade<Expense>(STORE_EXPENSES);
+export const sessionsDb = makeFacade<Session>(STORE_SESSIONS);
 export const backupDb = makeFacade<Backup>(STORE_BACKUP);
 
 /** "Delete all data" (§85): clear every store in ONE transaction. */

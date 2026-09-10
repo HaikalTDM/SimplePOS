@@ -5,7 +5,7 @@
 // NEVER call indexedDB.deleteDatabase — schema changes must migrate, never wipe.
 
 export const DB_NAME = "simplepos";
-export const DB_VERSION = 2;
+export const DB_VERSION = 3;
 
 export const STORE_STALL = "stall";
 export const STORE_PRODUCTS = "products";
@@ -14,6 +14,7 @@ export const STORE_SALES = "sales";
 export const STORE_SALE_ITEMS = "saleItems";
 export const STORE_STOCK_MOVEMENTS = "stockMovements";
 export const STORE_EXPENSES = "expenses";
+export const STORE_SESSIONS = "sessions";
 export const STORE_BACKUP = "backup";
 
 export const ALL_STORES = [
@@ -24,6 +25,7 @@ export const ALL_STORES = [
   STORE_SALE_ITEMS,
   STORE_STOCK_MOVEMENTS,
   STORE_EXPENSES,
+  STORE_SESSIONS,
   STORE_BACKUP,
 ] as const;
 
@@ -38,6 +40,7 @@ export const ALL_STORES = [
  *   products context (on load/refresh), not inside the migration — a store
  *   read + write during an upgrade transaction is brittle. This migration
  *   only creates the empty store; user data is preserved.
+ * - v3: new "sessions" store for register day/close sessions. Purely additive.
  *
  * To add a schema change: bump DB_VERSION, add MIGRATIONS[<newVersion>].
  */
@@ -67,6 +70,10 @@ export const MIGRATIONS: Record<number, (db: IDBDatabase) => void> = {
   },
   2: (db) => {
     db.createObjectStore(STORE_CATEGORIES, { keyPath: "id" });
+  },
+  3: (db) => {
+    const sessions = db.createObjectStore(STORE_SESSIONS, { keyPath: "id" });
+    sessions.createIndex("openedAt", "openedAt", { unique: false });
   },
 };
 

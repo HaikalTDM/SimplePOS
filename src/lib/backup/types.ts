@@ -4,6 +4,7 @@ import type {
   Product,
   Sale,
   SaleItem,
+  Session,
   Stall,
   StockMovement,
 } from "../../types";
@@ -39,6 +40,8 @@ export interface BackupFile {
   expenses: Expense[];
   /** Optional so backups made before the categories store still import. */
   categories?: Category[];
+  /** Optional so backups made before the sessions store still import. */
+  sessions?: Session[];
 }
 
 export type ValidationResult =
