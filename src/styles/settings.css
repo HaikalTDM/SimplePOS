@@ -353,3 +353,7 @@
 .appearance__sound .appearance__hint {
   margin-top: 0;
 }
+
+.settings-about__action {
+  margin: 14px 0;
+}

@@ -7,7 +7,11 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "autoUpdate",
+      // "prompt" (not autoUpdate): the app shows a "New version ready" banner
+      // and reloads on the user's tap. Reloading never touches IndexedDB, so
+      // local data survives. autoUpdate would activate the new worker but an
+      // already-open tab would keep running the old code until a manual reload.
+      registerType: "prompt",
       devOptions: { enabled: true },
       workbox: {
         globPatterns: ["**/*.{js,css,html,svg,png,ico,woff,woff2,webmanifest,json}"],

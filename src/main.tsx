@@ -21,6 +21,7 @@ import "./styles/session.css";
 import { ToastProvider } from "./components";
 import AppGate from "./components/AppGate";
 import ThemeApplier from "./components/ThemeApplier";
+import UpdatePrompt from "./components/UpdatePrompt";
 import { StallProvider } from "./contexts/StallContext";
 import { ProductsProvider } from "./contexts/ProductsContext";
 import { SessionProvider } from "./contexts/SessionContext";
@@ -66,6 +67,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <ToastProvider>
+        <UpdatePrompt />
         <AppGate>
           <StallProvider>
             <ThemeApplier />

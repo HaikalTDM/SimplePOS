@@ -808,6 +808,29 @@ function DeleteAllModal({
 /* ---------- §52/§53: About ---------- */
 
 function AboutSection() {
+  const { toast } = useToast();
+  const [checking, setChecking] = useState(false);
+
+  const checkForUpdates = async () => {
+    setChecking(true);
+    try {
+      const reg = await navigator.serviceWorker?.getRegistration();
+      if (!reg) {
+        toast({ message: "Updates aren't available here.", variant: "info" });
+        return;
+      }
+      await reg.update();
+      toast({
+        message: "Checked for updates. If one is ready, a Refresh prompt will appear.",
+        variant: "info",
+      });
+    } catch {
+      toast({ message: "Couldn't check for updates.", variant: "error" });
+    } finally {
+      setChecking(false);
+    }
+  };
+
   return (
     <Card className="settings-card">
       <h2 className="settings-card__title">About</h2>
@@ -819,6 +842,11 @@ function AboutSection() {
         Data can be lost if browser data is cleared, the device is reset, or you
         change devices without restoring a backup.
       </p>
+      <div className="settings-about__action">
+        <KeycapButton variant="neutral" loading={checking} onClick={() => void checkForUpdates()}>
+          Check for updates
+        </KeycapButton>
+      </div>
       <p className="settings-about__line settings-about__muted">SimplePOS by Captura</p>
     </Card>
   );

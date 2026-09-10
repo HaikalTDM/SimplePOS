@@ -30,4 +30,5 @@ export type { StartSessionModalProps } from "./StartSessionModal";
 export { default as CloseSessionModal, SessionSummary } from "./CloseSessionModal";
 export type { CloseSessionModalProps } from "./CloseSessionModal";
 export { default as InstallPrompt } from "./InstallPrompt";
+export { default as UpdatePrompt } from "./UpdatePrompt";
 export * from "./icons";
