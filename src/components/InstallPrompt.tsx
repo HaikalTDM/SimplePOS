@@ -22,6 +22,9 @@ interface PromptEvent extends Event {
 type Status = "hidden" | "available" | "ios";
 
 function isStandalone(): boolean {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return false;
+  }
   return (
     window.matchMedia("(display-mode: standalone)").matches ||
     (navigator as unknown as { standalone?: boolean }).standalone === true

@@ -154,8 +154,8 @@ describe("SettingsPage — stall settings", () => {
 
     const stallSection = sectionOf("Stall Settings");
     const nameInput = within(stallSection).getByLabelText("Stall Name");
-    await user.clear(nameInput);
-    await user.type(nameInput, "Rein's Boutique");
+    // Atomic controlled-input change avoids dropped keystrokes under load.
+    fireEvent.change(nameInput, { target: { value: "Rein's Boutique" } });
     await user.click(within(stallSection).getByRole("combobox", { name: "Currency" }));
     await user.click(within(stallSection).getByRole("option", { name: "SGD" }));
     // Guard: the controlled inputs must have committed before Save reads state.

@@ -13,6 +13,7 @@ import {
   STORE_PRODUCTS,
   STORE_SALES,
   STORE_SALE_ITEMS,
+  STORE_SESSIONS,
   STORE_STALL,
   STORE_STOCK_MOVEMENTS,
 } from "./database";
@@ -45,6 +46,7 @@ const ALL_STORE_NAMES = [
   STORE_SALE_ITEMS,
   STORE_STOCK_MOVEMENTS,
   STORE_EXPENSES,
+  STORE_SESSIONS,
   STORE_BACKUP,
 ];
 
@@ -62,7 +64,7 @@ describe("database", () => {
     closeDatabase();
   });
 
-  it("creates all 8 stores with expected indexes", async () => {
+  it("creates all 9 stores with expected indexes", async () => {
     const db = await openDatabase();
     expect(db.name).toBe(DB_NAME);
     expect(db.version).toBe(DB_VERSION);
@@ -97,7 +99,7 @@ describe("database", () => {
     expect(await categoriesDb.get(db, "c1")).toEqual(cat1);
   });
 
-  it("migrates a v1 database to v2: adds the categories store, keeps data", async () => {
+  it("migrates a v1 database to the current version, adding newer stores, keeping data", async () => {
     const original = globalThis.indexedDB;
     try {
       // Simulate a user who has been running the v1 app: a fresh factory
@@ -109,10 +111,11 @@ describe("database", () => {
       await productsDb.put(v1, p1);
       closeDatabase();
 
-      // App update: opening at DB_VERSION runs MIGRATIONS[2].
+      // App update: opening at DB_VERSION runs every migration in between.
       const db = await openDatabase();
       expect(db.version).toBe(DB_VERSION);
       expect(db.objectStoreNames.contains(STORE_CATEGORIES)).toBe(true);
+      expect(db.objectStoreNames.contains(STORE_SESSIONS)).toBe(true);
       expect(await productsDb.get(db, "p1")).toEqual(p1);
       await categoriesDb.put(db, cat1);
       expect(await categoriesDb.get(db, "c1")).toEqual(cat1);

@@ -107,7 +107,11 @@ function StallSettingsSection({ stall }: { stall: Stall }) {
     setName(stall.name);
     setCurrency(stall.currency);
     setBusinessType(stall.businessType);
-  }, [stall]);
+    // Re-sync only when the record itself changes (id), not on every context
+    // re-render that hands us a new object with identical values — otherwise
+    // in-progress typing can be wiped.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stall.id]);
 
   const save = async () => {
     const trimmed = name.trim();

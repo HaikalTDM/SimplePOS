@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+﻿import { beforeEach, describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { IDBFactory } from "fake-indexeddb";
@@ -6,6 +6,7 @@ import App from "../App";
 import { ToastProvider } from "../components";
 import { StallProvider } from "../contexts/StallContext";
 import { ProductsProvider } from "../contexts/ProductsContext";
+import { SessionProvider } from "../contexts/SessionContext";
 import { CartProvider } from "../contexts/CartContext";
 import { closeDatabase, openDatabase, stallDb } from "../lib/db";
 import type { Stall } from "../types";
@@ -40,10 +41,12 @@ describe("App routing shell", () => {
         <MemoryRouter initialEntries={["/pos"]}>
           <StallProvider>
             <ProductsProvider>
+            <SessionProvider>
               <CartProvider>
                 <App />
               </CartProvider>
-            </ProductsProvider>
+            </SessionProvider>
+          </ProductsProvider>
           </StallProvider>
         </MemoryRouter>
       </ToastProvider>
@@ -57,10 +60,12 @@ describe("App routing shell", () => {
         <MemoryRouter initialEntries={["/"]}>
           <StallProvider>
             <ProductsProvider>
+            <SessionProvider>
               <CartProvider>
                 <App />
               </CartProvider>
-            </ProductsProvider>
+            </SessionProvider>
+          </ProductsProvider>
           </StallProvider>
         </MemoryRouter>
       </ToastProvider>

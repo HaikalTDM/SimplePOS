@@ -8,6 +8,7 @@ import { closeDatabase, openDatabase, productsDb, saleItemsDb, salesDb, stallDb 
 import type { Product, Sale, SaleItem, Stall } from "../../types";
 import { StallProvider } from "../../contexts/StallContext";
 import { ProductsProvider } from "../../contexts/ProductsContext";
+import { SessionProvider } from "../../contexts/SessionContext";
 import { CartProvider } from "../../contexts/CartContext";
 import DashboardPage from "../DashboardPage";
 import PosPage from "../PosPage";
@@ -18,12 +19,14 @@ function renderDashboard() {
       <MemoryRouter initialEntries={["/dashboard"]}>
         <StallProvider>
           <ProductsProvider>
-            <CartProvider>
-              <Routes>
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/pos" element={<PosPage />} />
-              </Routes>
-            </CartProvider>
+            <SessionProvider>
+              <CartProvider>
+                <Routes>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/pos" element={<PosPage />} />
+                </Routes>
+              </CartProvider>
+            </SessionProvider>
           </ProductsProvider>
         </StallProvider>
       </MemoryRouter>

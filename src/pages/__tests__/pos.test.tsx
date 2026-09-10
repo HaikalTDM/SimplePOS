@@ -4,10 +4,11 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { IDBFactory } from "fake-indexeddb";
 import { ToastProvider } from "../../components";
-import { closeDatabase, openDatabase, productsDb, stallDb } from "../../lib/db";
-import type { Product, Stall } from "../../types";
+import { closeDatabase, openDatabase, productsDb, sessionsDb, stallDb } from "../../lib/db";
+import type { Product, Session, Stall } from "../../types";
 import { StallProvider } from "../../contexts/StallContext";
 import { ProductsProvider } from "../../contexts/ProductsContext";
+import { SessionProvider } from "../../contexts/SessionContext";
 import { CartProvider } from "../../contexts/CartContext";
 import PosPage from "../PosPage";
 
@@ -17,9 +18,11 @@ function renderPos() {
       <MemoryRouter initialEntries={["/pos"]}>
         <StallProvider>
           <ProductsProvider>
-            <CartProvider>
-              <PosPage />
-            </CartProvider>
+            <SessionProvider>
+              <CartProvider>
+                <PosPage />
+              </CartProvider>
+            </SessionProvider>
           </ProductsProvider>
         </StallProvider>
       </MemoryRouter>
@@ -42,6 +45,20 @@ async function seedStall() {
     updatedAt: now,
   };
   await stallDb.put(db, stall);
+  // Selling is gated behind an open register session.
+  const session: Session = {
+    id: "sess-1",
+    openedAt: now,
+    closedAt: null,
+    openingFloat: null,
+    countedCash: null,
+    expectedCash: null,
+    totals: { sales: 0, transactions: 0, items: 0 },
+    payments: { cash: 0, qr: 0, card: 0 },
+    expenseTotal: 0,
+    currency: "MYR",
+  };
+  await sessionsDb.put(db, session);
 }
 
 async function seedProduct(overrides: Partial<Product> = {}): Promise<Product> {

@@ -7,8 +7,8 @@ import { formatDateTime, localDateOf } from "../utils/dates";
 import { expensesDb, openDatabase, saleItemsDb, salesDb } from "../lib/db";
 import {
   cashDifference,
+  cashExpensesOnDate,
   expectedCash,
-  expensesOnDate,
   summarizeSales,
 } from "../lib/session";
 import { Input, KeycapButton, Modal, useToast } from "./index";
@@ -69,7 +69,7 @@ export function SessionSummary({
         </span>
       </div>
       <div className="session-summary__row">
-        <span>Expenses</span>
+        <span>Expenses from drawer</span>
         <span className="session-summary__value">
           {formatMoney(session.expenseTotal, currency)}
         </span>
@@ -135,7 +135,7 @@ export default function CloseSessionModal({ open, onClose }: CloseSessionModalPr
       ]);
       const sessionSales = sales.filter((s) => s.sessionId === openSession.id);
       const { totals, payments } = summarizeSales(sessionSales, items);
-      const expenseTotal = expensesOnDate(expenses, localDateOf(openSession.openedAt)).reduce(
+      const expenseTotal = cashExpensesOnDate(expenses, localDateOf(openSession.openedAt)).reduce(
         (sum, e) => sum + e.amount,
         0,
       );
@@ -221,7 +221,7 @@ export default function CloseSessionModal({ open, onClose }: CloseSessionModalPr
               </span>
             </div>
             <div className="session-summary__row">
-              <span>Expenses today</span>
+              <span>Expenses from drawer</span>
               <span className="session-summary__value">
                 {formatMoney(preview.expenseTotal, currency)}
               </span>
@@ -265,7 +265,7 @@ export default function CloseSessionModal({ open, onClose }: CloseSessionModalPr
             onChange={(e) => setNotes(e.target.value)}
           />
           <p className="session-modal__hint">
-            Expected cash = opening cash + cash sales − today&apos;s expenses.
+            Expected cash = opening cash + cash sales − expenses paid from the drawer.
           </p>
         </div>
       ) : (

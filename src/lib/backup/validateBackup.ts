@@ -225,6 +225,11 @@ function checkExpenses(value: unknown, errors: string[]): void {
     errorIf(errors, item.category === null || typeof item.category === "string", `${path}.category must be a string or null.`);
     errorIf(errors, isDateOnly(item.date), `${path}.date must be a valid YYYY-MM-DD date.`);
     errorIf(errors, isCurrency(item.currency), `${path}.currency must be one of MYR, SGD, PHP, THB, IDR, VND.`);
+    errorIf(
+      errors,
+      item.paidFromDrawer === undefined || typeof item.paidFromDrawer === "boolean",
+      `${path}.paidFromDrawer must be a boolean when present.`,
+    );
   });
 }
 

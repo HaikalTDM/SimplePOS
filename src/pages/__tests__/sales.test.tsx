@@ -7,6 +7,7 @@ import { ToastProvider } from "../../components";
 import { closeDatabase, openDatabase, productsDb, saleItemsDb, salesDb, stallDb } from "../../lib/db";
 import type { Product, Sale, SaleItem, Stall } from "../../types";
 import { StallProvider } from "../../contexts/StallContext";
+import { SessionProvider } from "../../contexts/SessionContext";
 import { todayLocalISO } from "../../utils/dates";
 import SalesPage from "../SalesPage";
 import SaleDetailPage from "../SaleDetailPage";
@@ -29,10 +30,12 @@ function renderSales(initialEntry = "/sales") {
     <ToastProvider>
       <MemoryRouter initialEntries={[initialEntry]}>
         <StallProvider>
-          <Routes>
-            <Route path="/sales" element={<SalesPage />} />
-            <Route path="/sales/:id" element={<SaleDetailPage />} />
-          </Routes>
+          <SessionProvider>
+            <Routes>
+              <Route path="/sales" element={<SalesPage />} />
+              <Route path="/sales/:id" element={<SaleDetailPage />} />
+            </Routes>
+          </SessionProvider>
         </StallProvider>
       </MemoryRouter>
     </ToastProvider>

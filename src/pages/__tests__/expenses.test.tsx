@@ -84,7 +84,7 @@ describe("ExpensesPage", () => {
     await user.click(screen.getByRole("button", { name: "Save" }));
 
     expect(await screen.findByText("Expense added")).toBeInTheDocument();
-    expect(screen.getByText("Sugar")).toBeInTheDocument();
+    expect(await screen.findByText("Sugar")).toBeInTheDocument();
     expect(screen.getByText("RM 12.50")).toBeInTheDocument();
     const db = await openDatabase();
     const expenses = await expensesDb.getAll(db);
@@ -183,5 +183,33 @@ describe("ExpensesPage", () => {
 
     const rows = await screen.findAllByText(/Newer|Older/);
     expect(rows.map((r) => r.textContent)).toEqual(["Newer", "Older"]);
+  });
+
+  it("records paidFromDrawer: defaults true, toggles to false (non-cash)", async () => {
+    await seedStall();
+    renderPage();
+    const user = userEvent.setup();
+
+    // Default: cash from drawer.
+    await openAddModal(user);
+    await user.type(screen.getByLabelText("Description"), "Sugar");
+    await user.type(screen.getByLabelText("Amount"), "5.00");
+    await user.click(screen.getByRole("button", { name: "Save" }));
+    await screen.findAllByText("Expense added");
+    let db = await openDatabase();
+    let saved = (await expensesDb.getAll(db)).find((e) => e.description === "Sugar");
+    expect(saved?.paidFromDrawer).toBe(true);
+
+    // Toggle off → non-cash; badge shows in the list.
+    await openAddModal(user);
+    await user.type(screen.getByLabelText("Description"), "Card fee");
+    await user.type(screen.getByLabelText("Amount"), "2.00");
+    await user.click(screen.getByRole("switch", { name: "Paid in cash from drawer" }));
+    await user.click(screen.getByRole("button", { name: "Save" }));
+    await screen.findAllByText("Expense added");
+    db = await openDatabase();
+    saved = (await expensesDb.getAll(db)).find((e) => e.description === "Card fee");
+    expect(saved?.paidFromDrawer).toBe(false);
+    expect(await screen.findByText("Non-cash")).toBeInTheDocument();
   });
 });

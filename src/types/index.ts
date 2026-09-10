@@ -85,6 +85,9 @@ export interface Expense {
   /** Local YYYY-MM-DD. */
   date: string;
   currency: string;
+  /** Whether this was paid in cash from the drawer (affects day-close cash
+   *  reconciliation). Undefined = treated as true (older records). */
+  paidFromDrawer?: boolean;
 }
 
 export interface Stall {

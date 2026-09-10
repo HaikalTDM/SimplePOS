@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import type { Stall } from "../types";
@@ -8,10 +8,10 @@ import { IconWarning } from "./icons";
 
 /**
  * §7 launch gate. Reads the stall record and re-reads it on every route
- * change. While a re-read is in flight it shows the splash instead of
- * redirecting — otherwise completing onboarding (which saves the stall and
- * immediately navigates to /pos) would race the gate's stale "no stall" state
- * and bounce the user back to onboarding.
+ * change. A splash is shown only while a re-read could actually change the
+ * decision (first load, or when we don't yet know of a completed stall and
+ * the user is heading into the app) — otherwise a completed/known state keeps
+ * rendering, so content never flashes away mid-navigation.
  *
  *  - No completed stall, not on /onboarding  -> /onboarding
  *  - Completed stall on /onboarding          -> /pos (already set up)
@@ -21,19 +21,32 @@ export default function AppGate({ children }: { children: ReactNode }) {
   const [stall, setStall] = useState<Stall | undefined>(undefined);
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
-  // True while the very first read is happening AND while re-checking after a
-  // route change, so we never decide with stale state mid-navigation.
   const [pending, setPending] = useState(true);
   const location = useLocation();
+  const stallRef = useRef<Stall | undefined>(undefined);
+
+  const applyStall = (next: Stall | undefined) => {
+    stallRef.current = next;
+    setStall(next);
+  };
 
   useEffect(() => {
     let cancelled = false;
-    setPending(true);
+    // Only blank the screen when the outcome is genuinely unknown: on the
+    // very first read, or when we have no completed stall and the user is
+    // entering the app (e.g. just finished onboarding -> about to read the
+    // freshly-saved stall).
+    const current = stallRef.current;
+    const needsSplash =
+      current === undefined ||
+      (!current.onboardingCompletedAt && location.pathname !== "/onboarding");
+    if (needsSplash) setPending(true);
+
     openDatabase()
       .then(async (db) => {
         const stalls = await stallDb.getAll(db);
         if (!cancelled) {
-          setStall(stalls[0]);
+          applyStall(stalls[0]);
           setError(false);
         }
       })

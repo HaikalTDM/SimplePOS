@@ -47,6 +47,12 @@ export function expensesOnDate(expenses: Expense[], localDate: string): Expense[
   return expenses.filter((e) => e.date === localDate);
 }
 
+/** Expenses on the date that were paid in cash from the drawer (the ones that
+ *  actually move the cash reconciliation). Undefined = treated as cash. */
+export function cashExpensesOnDate(expenses: Expense[], localDate: string): Expense[] {
+  return expenses.filter((e) => e.date === localDate && e.paidFromDrawer !== false);
+}
+
 /**
  * Cash that should be in the drawer: opening float + cash sales − expenses
  * paid during the session. Expenses aren't tagged with a payment method, so

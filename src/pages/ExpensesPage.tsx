@@ -21,6 +21,7 @@ import {
   KeycapButton,
   Modal,
   Select,
+  Toggle,
   useToast,
 } from "../components";
 
@@ -33,6 +34,7 @@ interface ExpenseFormState {
   amount: string;
   date: string;
   category: string;
+  paidFromDrawer: boolean;
 }
 
 export default function ExpensesPage() {
@@ -89,6 +91,7 @@ export default function ExpensesPage() {
         category: form.category,
         date: form.date,
         currency: stall?.currency ?? "MYR",
+        paidFromDrawer: form.paidFromDrawer,
       });
       setFormOpen(false);
       setEditing(null);
@@ -175,6 +178,9 @@ export default function ExpensesPage() {
                 <div className="expenses-row__meta">
                   {expense.category && (
                     <Badge variant="neutral">{expense.category}</Badge>
+                  )}
+                  {expense.paidFromDrawer === false && (
+                    <Badge variant="slate">Non-cash</Badge>
                   )}
                   <span className="expenses-row__date">{expense.date}</span>
                 </div>
@@ -263,6 +269,7 @@ function ExpenseFormModal({
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(todayLocalISO());
   const [category, setCategory] = useState("Other");
+  const [paidFromDrawer, setPaidFromDrawer] = useState(true);
   const [errors, setErrors] = useState<{ description?: string; amount?: string }>({});
 
   useEffect(() => {
@@ -271,6 +278,7 @@ function ExpenseFormModal({
     setAmount(expense ? minorUnitsToInput(expense.amount, currency) : "");
     setDate(expense?.date ?? todayLocalISO());
     setCategory(expense?.category ?? "Other");
+    setPaidFromDrawer(expense?.paidFromDrawer ?? true);
     setErrors({});
   }, [open, expense, currency]);
 
@@ -285,7 +293,7 @@ function ExpenseFormModal({
 
   const submit = async () => {
     if (!validate()) return;
-    await onSave({ description, amount, date, category });
+    await onSave({ description, amount, date, category, paidFromDrawer });
   };
 
   return (
@@ -336,6 +344,11 @@ function ExpenseFormModal({
           options={CATEGORY_OPTIONS}
           value={category}
           onChange={setCategory}
+        />
+        <Toggle
+          checked={paidFromDrawer}
+          onChange={setPaidFromDrawer}
+          label="Paid in cash from drawer"
         />
       </form>
     </Modal>

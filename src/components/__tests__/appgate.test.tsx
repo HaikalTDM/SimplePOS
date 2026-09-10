@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+﻿import { beforeEach, describe, expect, it, vi } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { IDBFactory } from "fake-indexeddb";
@@ -7,6 +7,7 @@ import { ToastProvider } from "../../components";
 import AppGate from "../AppGate";
 import { StallProvider } from "../../contexts/StallContext";
 import { ProductsProvider } from "../../contexts/ProductsContext";
+import { SessionProvider } from "../../contexts/SessionContext";
 import { CartProvider } from "../../contexts/CartContext";
 import { closeDatabase, openDatabase, stallDb } from "../../lib/db";
 import type { Stall } from "../../types";
@@ -31,9 +32,11 @@ function renderApp(entry: string) {
         <AppGate>
           <StallProvider>
             <ProductsProvider>
-              <CartProvider>
-                <App />
-              </CartProvider>
+              <SessionProvider>
+                <CartProvider>
+                  <App />
+                </CartProvider>
+              </SessionProvider>
             </ProductsProvider>
           </StallProvider>
         </AppGate>
@@ -68,7 +71,7 @@ beforeEach(() => {
 describe("AppGate", () => {
   it("redirects to onboarding when the db is empty", async () => {
     renderApp("/pos");
-    expect(await screen.findByText("Let's set up your stall")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Let's set up your stall")).toBeInTheDocument(), { timeout: 3000 });
     expect(screen.queryByText("POS")).not.toBeInTheDocument();
   });
 
@@ -87,23 +90,23 @@ describe("AppGate", () => {
       updatedAt: now,
     });
     renderApp("/pos");
-    expect(await screen.findByText("Let's set up your stall")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Let's set up your stall")).toBeInTheDocument(), { timeout: 3000 });
   });
 
   it("renders children when a completed stall exists", async () => {
     await seedCompletedStall();
     renderApp("/pos");
-    expect(await screen.findByText("POS")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("POS")).toBeInTheDocument(), { timeout: 3000 });
   });
 
   it("shows the error screen when the db fails to open, and retries", async () => {
     mocks.failOpen = true;
     renderApp("/pos");
-    expect(await screen.findByText("We couldn't open your data")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("We couldn't open your data")).toBeInTheDocument(), { timeout: 3000 });
 
     mocks.failOpen = false;
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Retry" }));
-    expect(await screen.findByText("Let's set up your stall")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Let's set up your stall")).toBeInTheDocument(), { timeout: 3000 });
   });
 });

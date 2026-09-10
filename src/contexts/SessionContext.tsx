@@ -9,8 +9,8 @@ import {
   sessionsDb,
 } from "../lib/db";
 import {
+  cashExpensesOnDate,
   expectedCash,
-  expensesOnDate,
   newSession,
   summarizeSales,
 } from "../lib/session";
@@ -105,7 +105,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       const sessionSales = sales.filter((s) => s.sessionId === current.id);
       const { totals, payments } = summarizeSales(sessionSales, saleItems);
       const closedAt = new Date().toISOString();
-      const expenseTotal = expensesOnDate(expenses, localDateOf(closedAt)).reduce(
+      const expenseTotal = cashExpensesOnDate(expenses, localDateOf(closedAt)).reduce(
         (sum, e) => sum + e.amount,
         0,
       );
