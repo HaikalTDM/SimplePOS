@@ -1187,6 +1187,12 @@
   color: var(--text-muted);
 }
 
+.product-card--disabled {
+  opacity: 0.5;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
 .product-card__name {
   position: relative;
   display: block;

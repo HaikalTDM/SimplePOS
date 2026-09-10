@@ -4,8 +4,12 @@ import type { DashboardStats } from "../lib/calculations/dashboard";
 import { todayStats } from "../lib/calculations/dashboard";
 import { expensesDb, openDatabase, productsDb, saleItemsDb, salesDb } from "../lib/db";
 import { formatMoney } from "../utils/currency";
+import { formatTime } from "../utils/dates";
 import { useStall } from "../contexts/StallContext";
 import { useProducts } from "../contexts/ProductsContext";
+import { useSession } from "../contexts/SessionContext";
+import StartSessionModal from "../components/StartSessionModal";
+import CloseSessionModal from "../components/CloseSessionModal";
 import {
   Badge,
   Card,
@@ -46,11 +50,14 @@ export default function DashboardPage() {
   const threshold = stall?.lowStockThreshold ?? 10;
   const stallName = stall?.name;
   const { refresh } = useProducts();
+  const { openSession, loading: sessionLoading, refresh: refreshSession } = useSession();
   const { toast } = useToast();
 
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [startOpen, setStartOpen] = useState(false);
+  const [closeOpen, setCloseOpen] = useState(false);
   // §11 — walkthrough is non-blocking and session-only; never persisted.
   const [showWalkthrough, setShowWalkthrough] = useState(true);
   const [showHints, setShowHints] = useState(false);
@@ -100,6 +107,34 @@ export default function DashboardPage() {
         </p>
         <p className="dash-hero__meta">{metaLine}</p>
       </Card>
+
+      {!sessionLoading && (
+        <Card className="dash-session">
+          <div className="session-status">
+            <div className="session-status__body">
+              <p className="session-status__label">
+                {openSession ? "Day is open" : "Day not started"}
+              </p>
+              <p className="session-status__meta">
+                {openSession
+                  ? `Opened ${formatTime(openSession.openedAt)} · close it to check the cash drawer.`
+                  : "Start a sale to open the register and begin selling."}
+              </p>
+            </div>
+            <div className="session-status__actions">
+              {openSession ? (
+                <KeycapButton variant="primary" onClick={() => setCloseOpen(true)}>
+                  Close Sale
+                </KeycapButton>
+              ) : (
+                <KeycapButton variant="gold" onClick={() => setStartOpen(true)}>
+                  Start Sale
+                </KeycapButton>
+              )}
+            </div>
+          </div>
+        </Card>
+      )}
 
       <Link to="/pos" className="keycap-btn keycap-btn--gold keycap-btn--lg dash-start">
         START SELLING
@@ -203,6 +238,22 @@ export default function DashboardPage() {
           </div>
         </Card>
       )}
+
+      <StartSessionModal
+        open={startOpen}
+        onClose={() => {
+          setStartOpen(false);
+          void refreshSession();
+        }}
+      />
+      <CloseSessionModal
+        open={closeOpen}
+        onClose={() => {
+          setCloseOpen(false);
+          void refreshSession();
+          void load();
+        }}
+      />
     </div>
   );
 }

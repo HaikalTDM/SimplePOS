@@ -19,6 +19,8 @@ export interface PaymentModalProps {
   onClose: () => void;
   items: CartItem[];
   totalMinor: number;
+  /** Register session the sale belongs to, when one is open. */
+  sessionId?: string;
   onSuccess: (stockChanges: StockChange[]) => void;
 }
 
@@ -43,6 +45,7 @@ export default function PaymentModal({
   onClose,
   items,
   totalMinor,
+  sessionId,
   onSuccess,
 }: PaymentModalProps) {
   const { stall } = useStall();
@@ -127,7 +130,7 @@ export default function PaymentModal({
     setSubmitting(true);
     setWarning(false);
     try {
-      const result = await completeCheckout({ items, paymentMethod, currency });
+      const result = await completeCheckout({ items, paymentMethod, currency, sessionId });
       successRef.current = result.stockChanges;
       setStockChanges(result.stockChanges);
       setStep("success");

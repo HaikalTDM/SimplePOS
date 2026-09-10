@@ -28,6 +28,10 @@ match.
 - **Products & stock** — create, edit, deactivate, price. Every stock change
   is recorded as a movement, so you always know whether it was sold,
   restocked, or sacrificed to the floor gods ("Damaged").
+- **Start / Close day** — open the register with an optional cash float, sell,
+  then close the day with a Z-report: totals, payment breakdown, expected cash
+  from the drawer, counted cash, and an honest over/short. Past closes are kept
+  in Sales history. You can run several sessions a day if you like.
 - **Categories** — pre-add them, assign them from a dropdown while adding a
   product, or invent a new one right there in the form. Give a category a
   lucide icon and it shows up on your products page.

@@ -2,10 +2,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Product } from "../types";
 import { formatMoney } from "../utils/currency";
+import { formatTime } from "../utils/dates";
 import { EmptyState, IconCart, IconClear, IconProducts, IconSearch, Input, KeycapButton, PaymentModal, useToast } from "../components";
 import type { StockChange } from "../lib/checkout/checkout";
 import { useStall } from "../contexts/StallContext";
 import { useProducts } from "../contexts/ProductsContext";
+import { useSession } from "../contexts/SessionContext";
+import StartSessionModal from "../components/StartSessionModal";
+import CloseSessionModal from "../components/CloseSessionModal";
 import { useCart } from "../contexts/CartContext";
 import ProductCard from "../components/ProductCard";
 import PosCart from "../components/PosCart";
@@ -39,6 +43,7 @@ export default function PosPage() {
   const currency = stall?.currency ?? "MYR";
   const threshold = stall?.lowStockThreshold ?? 10;
   const { products, categories: categoryRecords, loading, refresh } = useProducts();
+  const { openSession, loading: sessionLoading, refresh: refreshSession } = useSession();
   const { items, entries, totalQty, totalMinor, invalid, addItem, setQty, removeItem, getQty, clear } =
     useCart();
   const { toast } = useToast();
@@ -47,11 +52,17 @@ export default function PosPage() {
   const [category, setCategory] = useState(ALL);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [paymentOpen, setPaymentOpen] = useState(false);
+  const [startOpen, setStartOpen] = useState(false);
+  const [closeOpen, setCloseOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
   const capToasts = useRef<Set<string>>(new Set());
 
+  // Selling is blocked until the register is opened for the day (also while
+  // the session state is still loading, so a sale can't slip through).
+  const sellingBlocked = !openSession;
+
   const onPay = () => {
-    if (totalQty === 0) return;
+    if (sellingBlocked || totalQty === 0) return;
     setPaymentOpen(true);
   };
 
@@ -61,10 +72,11 @@ export default function PosPage() {
     (_stockChanges: StockChange[]) => {
       clear();
       void refresh();
+      void refreshSession();
       toast({ message: "Sale recorded", variant: "success" });
       setPaymentOpen(false);
     },
-    [clear, refresh, toast]
+    [clear, refresh, refreshSession, toast]
   );
 
   const active = useMemo(() => products.filter((p) => p.active), [products]);
@@ -101,6 +113,7 @@ export default function PosPage() {
   }, [sheetOpen]);
 
   const handleAdd = (product: Product) => {
+    if (sellingBlocked) return;
     if (addItem(product)) {
       capToasts.current.delete(product.id);
       return;
@@ -111,7 +124,7 @@ export default function PosPage() {
     toast({ message: `Only ${product.stock} ${product.name} in stock`, variant: "info" });
   };
 
-  const payDisabled = totalQty === 0 || invalid;
+  const payDisabled = sellingBlocked || totalQty === 0 || invalid;
 
   const cartProps = {
     entries,
@@ -154,6 +167,38 @@ export default function PosPage() {
       <div className="pos-layout">
         <div className="pos-layout__left">
           <h1 className="pos-title">POS</h1>
+          {!sessionLoading && (
+            <div
+              className={
+                "session-banner" + (openSession ? "" : " session-banner--closed")
+              }
+            >
+              <span
+                className={
+                  "session-banner__dot" + (openSession ? "" : " session-banner__dot--off")
+                }
+                aria-hidden="true"
+              />
+              <span className="session-banner__text">
+                {openSession ? (
+                  <>
+                    Day open since <strong>{formatTime(openSession.openedAt)}</strong>
+                  </>
+                ) : (
+                  <strong>Day not started — start a sale to begin selling.</strong>
+                )}
+              </span>
+              {openSession ? (
+                <KeycapButton variant="ghost" size="sm" onClick={() => setCloseOpen(true)}>
+                  Close Sale
+                </KeycapButton>
+              ) : (
+                <KeycapButton variant="gold" size="sm" onClick={() => setStartOpen(true)}>
+                  Start Sale
+                </KeycapButton>
+              )}
+            </div>
+          )}
           {searchBox}
           {categories.length > 0 && (
             <CategoryBar categories={categories} active={category} onSelect={setCategory} />
@@ -183,6 +228,7 @@ export default function PosPage() {
                   qty={getQty(p.id)}
                   lowStockThreshold={threshold}
                   categoryIcon={p.category ? iconByName.get(p.category) ?? null : null}
+                  disabled={sellingBlocked}
                   onAdd={handleAdd}
                 />
               ))}
@@ -247,8 +293,12 @@ export default function PosPage() {
         onClose={() => setPaymentOpen(false)}
         items={items}
         totalMinor={totalMinor}
+        sessionId={openSession?.id}
         onSuccess={handlePaymentSuccess}
       />
+
+      <StartSessionModal open={startOpen} onClose={() => setStartOpen(false)} />
+      <CloseSessionModal open={closeOpen} onClose={() => setCloseOpen(false)} />
     </div>
   );
 }

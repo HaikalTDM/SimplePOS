@@ -11,6 +11,8 @@ interface ProductCardProps {
   lowStockThreshold: number;
   /** Lucide icon key of the product's category (optional). */
   categoryIcon?: string | null;
+  /** Blocked (e.g. the day hasn't been started). */
+  disabled?: boolean;
   onAdd: (product: Product) => void;
 }
 
@@ -24,11 +26,13 @@ export default function ProductCard({
   qty,
   lowStockThreshold,
   categoryIcon: _categoryIcon, // disabled while icon UI is paused
+  disabled = false,
   onAdd,
 }: ProductCardProps) {
   const soldOut = product.stock <= 0;
   const veryLow = !soldOut && product.stock < 5;
   const low = !soldOut && !veryLow && product.stock <= lowStockThreshold;
+  const blocked = soldOut || disabled;
   // Icon disabled for now (overflow rework in progress). Keep resolution
   // commented so re-enabling is one step.
   // const Glyph = iconForKey(categoryIcon);
@@ -36,9 +40,12 @@ export default function ProductCard({
   return (
     <button
       type="button"
-      className={soldOut ? "product-card product-card--soldout" : "product-card"}
-      disabled={soldOut}
-      aria-disabled={soldOut || undefined}
+      className={
+        (soldOut ? "product-card product-card--soldout" : "product-card") +
+        (disabled && !soldOut ? " product-card--disabled" : "")
+      }
+      disabled={blocked}
+      aria-disabled={blocked || undefined}
       aria-label={`Add ${product.name}, ${formatMoney(product.sellingPrice, currency)}`}
       onClick={() => onAdd(product)}
     >

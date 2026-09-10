@@ -1,0 +1,208 @@
+/* ============================================================
+   Register sessions — start / close (Z-report) and history.
+   ============================================================ */
+
+.session-modal__intro {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.session-modal__hint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Status card on the dashboard */
+.session-status {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.session-status__body {
+  flex: 1;
+  min-width: 180px;
+}
+
+.session-status__label {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.session-status__meta {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.session-status__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Slim strip above the POS grid */
+.session-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  border-radius: var(--radius-keycap);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-soft);
+}
+
+.session-banner--closed {
+  background: var(--accent-tint);
+  border-color: var(--accent-line);
+}
+
+.session-banner__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--success);
+  flex-shrink: 0;
+}
+
+.session-banner__dot--off {
+  background: var(--text-muted);
+}
+
+.session-banner__text {
+  flex: 1;
+  min-width: 140px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.session-banner__text strong {
+  font-weight: 600;
+}
+
+/* Summary rows (shared by close modal + history detail) */
+.session-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.session-summary__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.session-summary__row--strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.session-summary__value {
+  font-family: var(--font-price);
+  color: var(--text);
+  text-align: right;
+}
+
+.session-summary__diff {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  font-weight: 600;
+}
+
+.session-summary__diff--over {
+  color: var(--success-deep);
+}
+
+.session-summary__diff--short {
+  color: var(--error-deep);
+}
+
+.session-summary__notes {
+  margin-top: 8px;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.session-close {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.session-close__diff {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.session-close__diff--over {
+  color: var(--success-deep);
+}
+
+.session-close__diff--short {
+  color: var(--error-deep);
+}
+
+/* History list on the Sales page */
+.session-history {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.session-history__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-keycap);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  text-align: left;
+}
+
+.session-history__row:hover {
+  border-color: var(--accent-line);
+}
+
+.session-history__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.session-history__date {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.session-history__meta {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.session-history__total {
+  font-family: var(--font-price);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}

@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import type { PaymentMethod, Sale, SaleItem } from "../types";
+import type { PaymentMethod, Sale, SaleItem, Session } from "../types";
 import { openDatabase, saleItemsDb, salesDb } from "../lib/db";
 import { formatMoney, asCurrency } from "../utils/currency";
 import { formatDateTime, localDateOf } from "../utils/dates";
+import { cashDifference } from "../lib/session";
 import { useStall } from "../contexts/StallContext";
+import { useSession } from "../contexts/SessionContext";
 import {
   Badge,
   EmptyState,
@@ -13,6 +15,8 @@ import {
   IconSales,
   Input,
   KeycapButton,
+  Modal,
+  SessionSummary,
   useToast,
 } from "../components";
 
@@ -53,12 +57,19 @@ function saleLabel(n: number): string {
 
 export default function SalesPage() {
   const { stall } = useStall();
+  const { sessions } = useSession();
   const { toast } = useToast();
 
   const [sales, setSales] = useState<Sale[] | null>(null);
   const [itemInfo, setItemInfo] = useState<Map<string, SaleRowInfo>>(new Map());
   const [dateFilter, setDateFilter] = useState("");
   const [error, setError] = useState(false);
+  const [detail, setDetail] = useState<Session | null>(null);
+
+  const closedSessions = useMemo(
+    () => sessions.filter((s) => s.closedAt !== null),
+    [sessions],
+  );
 
   const load = useCallback(async () => {
     try {
@@ -111,6 +122,45 @@ export default function SalesPage() {
         )}
       </div>
 
+      {closedSessions.length > 0 && (
+        <section aria-label="Day closes" className="session-history">
+          <h2 className="page__subtitle">Day closes</h2>
+          {closedSessions.map((session) => {
+            const cur = asCurrency(session.currency || stall?.currency || "MYR");
+            const diff = cashDifference(session.countedCash, session.expectedCash);
+            return (
+              <button
+                key={session.id}
+                type="button"
+                className="session-history__row"
+                onClick={() => setDetail(session)}
+              >
+                <div className="session-history__main">
+                  <p className="session-history__date">
+                    {formatDateTime(session.closedAt ?? session.openedAt)}
+                  </p>
+                  <p className="session-history__meta">
+                    {session.totals.transactions} transactions ·{" "}
+                    {formatMoney(session.totals.sales, cur)}
+                  </p>
+                </div>
+                {diff !== null && (
+                  <Badge
+                    variant={diff === 0 ? "neutral" : diff > 0 ? "success" : "error"}
+                  >
+                    {diff === 0
+                      ? "Balanced"
+                      : diff > 0
+                        ? `+${formatMoney(diff, cur)}`
+                        : `−${formatMoney(Math.abs(diff), cur)}`}
+                  </Badge>
+                )}
+              </button>
+            );
+          })}
+        </section>
+      )}
+
       {error ? (
         <div className="sales-error">
           <p className="sales-error__text">We couldn't load your data.</p>
@@ -158,6 +208,19 @@ export default function SalesPage() {
           })}
         </ul>
       )}
+
+      <Modal
+        open={detail !== null}
+        onClose={() => setDetail(null)}
+        title="Day close"
+      >
+        {detail && (
+          <SessionSummary
+            session={detail}
+            currency={asCurrency(detail.currency || stall?.currency || "MYR")}
+          />
+        )}
+      </Modal>
     </div>
   );
 }

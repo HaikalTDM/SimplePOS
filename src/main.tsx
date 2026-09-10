@@ -17,6 +17,7 @@ import "./styles/products.css";
 import "./styles/sales.css";
 import "./styles/expenses.css";
 import "./styles/settings.css";
+import "./styles/session.css";
 import { ToastProvider } from "./components";
 import AppGate from "./components/AppGate";
 import ThemeApplier from "./components/ThemeApplier";
